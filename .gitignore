@@ -1,0 +1,15 @@
+.DS_Store
+yarn.lock
+package-lock.json
+yarn-error.log
+yarn-error.log
+npm-debug.log
+node_modules
+.nyc_output
+coverage
+*.map
+..map
+*.old
+@type
+
+/lib/**/*.js
