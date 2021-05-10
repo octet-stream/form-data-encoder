@@ -64,20 +64,26 @@ export class Encoder {
     return length + Buffer.byteLength(this.#footer)
   }
 
-  async* encode() {
+  private async* _getField() {
     for (const [name, value] of this.#form) {
       yield this._getFieldHeader(name, value)
 
       if (isFile(value)) {
         yield* value.stream()
       } else {
-        yield String(value)
+        yield value
       }
 
       yield CRLF
     }
 
     yield this.#footer
+  }
+
+  async* encode() {
+    for await (const chunk of this._getField()) {
+      yield Buffer.isBuffer(chunk) ? chunk : Buffer.from(String(chunk))
+    }
   }
 
   [Symbol.asyncIterator]() {

@@ -3,8 +3,6 @@ import {FileLike} from "./FileLike"
 export type FormDataEntryValue = string | FileLike
 
 export interface FormDataLike {
-  constructor(): this
-
   set(name: string, value: unknown): void
 
   append(name: string, value: unknown): void

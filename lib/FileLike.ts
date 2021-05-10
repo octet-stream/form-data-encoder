@@ -7,7 +7,7 @@ export interface FileLike {
 
   lastModified: number
 
-  stream(): AsyncIterableIterator<any>
+  stream(): {[Symbol.asyncIterator](): AsyncIterableIterator<any>}
 
   [Symbol.toStringTag]: string
 }
