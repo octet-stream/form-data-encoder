@@ -5,7 +5,7 @@ import test from "ava"
 import {FormData, File} from "formdata-node"
 
 import readStream from "./__helper__/readStream"
-import readline from "./__helper__/readLine"
+import readLine from "./__helper__/readLine"
 
 import {Encoder} from "./Encoder"
 
@@ -37,10 +37,19 @@ test("Has content-type string with custom boundary string", t => {
   t.is(encoder.contentType, `multipart/form-data; boundary=${expected}`)
 })
 
+test("Has correct headers", async t => {
+  const encoder = new Encoder(new FormData())
+
+  t.deepEqual(encoder.headers, {
+    "Content-Type": `multipart/form-data; boundary=${encoder.boundary}`,
+    "Content-Length": await readStream(encoder).then(({length}) => length)
+  })
+})
+
 test("Yields correct footer for empty FormData", async t => {
   const encoder = new Encoder(new FormData())
 
-  const iterable = readline(Readable.from(encoder))
+  const iterable = readLine(Readable.from(encoder))
 
   const {value} = await iterable.next()
 
@@ -53,8 +62,21 @@ test("The footer ends with two crlf", async t => {
   t.true(actual.endsWith("\r\n\r\n"))
 })
 
-test("Returns correct length of the FormData content", async t => {
+test("Returns correct length of the empty FormData content", async t => {
   const encoder = new Encoder(new FormData())
+  const expected = await readStream(encoder).then(({length}) => length)
+
+  t.is<number>(encoder.getContentLength(), expected)
+})
+
+test("Returns the length of the FormData content", async t => {
+  const fd = new FormData()
+
+  fd.set("field", "Some string")
+  fd.set("file", new File(["Some content"], "file.txt"))
+
+  const encoder = new Encoder(fd)
+
   const expected = await readStream(encoder).then(({length}) => length)
 
   t.is<number>(encoder.getContentLength(), expected)
@@ -65,7 +87,7 @@ test("Yields correct headers for a field", async t => {
 
   fd.set("field", "Some value")
 
-  const iterable = readline(Readable.from(new Encoder(fd)))
+  const iterable = readLine(Readable.from(new Encoder(fd)))
 
   await iterable.next()
 
@@ -79,7 +101,7 @@ test("Yields correct headers for a file", async t => {
 
   fd.set("file", new File(["My hovercraft is full of eels"], "file.txt"))
 
-  const iterable = readline(Readable.from(new Encoder(fd)))
+  const iterable = readLine(Readable.from(new Encoder(fd)))
 
   await iterable.next()
 
@@ -92,6 +114,21 @@ test("Yields correct headers for a file", async t => {
   )
 
   t.is(fileContntType, "Content-Type: text/plain")
+})
+
+test("File has default Content-Type set to application/octet-stream", async t => {
+  const fd = new FormData()
+
+  fd.set("file", new File(["Some content"], "file"))
+
+  const iterable = readLine(Readable.from(new Encoder(fd)))
+
+  await iterable.next()
+  await iterable.next()
+
+  const {value} = await iterable.next()
+
+  t.is(value, "Content-Type: application/octet-stream")
 })
 
 test("Throws TypeError when the first argument is not a FormData instance", t => {

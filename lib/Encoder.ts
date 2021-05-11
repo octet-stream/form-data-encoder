@@ -10,8 +10,15 @@ const CRLF = "\r\n"
 const CRLF_BYTES_LENGTH = Buffer.byteLength(CRLF)
 
 export class Encoder {
+  /**
+   * Returns a boundary string
+   */
   readonly boundary: string
 
+
+  /**
+   * Returns Content-Type header for multipart/form-data
+   */
   readonly contentType: string
 
   /**
@@ -40,6 +47,9 @@ export class Encoder {
     this.#footer = `${DASHES}${this.boundary}${DASHES}${CRLF.repeat(2)}`
   }
 
+  /**
+   * Returns headers for multipart/form-data
+   */
   get headers() {
     return {
       "Content-Type": this.contentType,
@@ -61,6 +71,9 @@ export class Encoder {
     return `${header}${CRLF.repeat(2)}`
   }
 
+  /**
+   * Returns form-data content length
+   */
   getContentLength(): number {
     let length = 0
 
@@ -89,6 +102,9 @@ export class Encoder {
     yield this.#footer
   }
 
+  /**
+   * Returns async generator allowing to encode FormData content into the spec format
+   */
   async* encode(): AsyncGenerator<Buffer, void> {
     for await (const chunk of this._getField()) {
       yield Buffer.isBuffer(chunk) ? chunk : Buffer.from(String(chunk))
