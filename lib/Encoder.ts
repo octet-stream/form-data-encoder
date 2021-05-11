@@ -1,5 +1,6 @@
 import createBoundary from "./util/createBoundary"
 import getMime from "./util/getMimeFromFilename"
+import isFormData from "./util/isFormData"
 import isFile from "./util/isFile"
 
 import {FormDataLike} from "./FormDataLike"
@@ -24,6 +25,14 @@ export class Encoder {
   readonly #form: FormDataLike
 
   constructor(form: FormDataLike, boundary: string = createBoundary()) {
+    if (!isFormData(form)) {
+      throw new TypeError("Expected first argument to be a FormData instance.")
+    }
+
+    if (typeof boundary !== "string") {
+      throw new TypeError("Expected boundary to be a string.")
+    }
+
     this.boundary = boundary
     this.contentType = `multipart/form-data; boundary=${this.boundary}`
 
