@@ -89,7 +89,7 @@ export class Encoder {
     yield this.#footer
   }
 
-  async* encode() {
+  async* encode(): AsyncGenerator<Buffer, void> {
     for await (const chunk of this._getField()) {
       yield Buffer.isBuffer(chunk) ? chunk : Buffer.from(String(chunk))
     }
