@@ -108,7 +108,7 @@ test("Yields field's content", async t => {
   t.is(value, expected)
 })
 
-test("Yields correct Content-Disposition header for a File", async t => {
+test("Yields Content-Disposition header for a File", async t => {
   const fd = new FormData()
 
   fd.set("file", new File(["My hovercraft is full of eels"], "file.txt"))
@@ -121,7 +121,7 @@ test("Yields correct Content-Disposition header for a File", async t => {
   )
 })
 
-test("Yields correct Content-Type header for a File", async t => {
+test("Yields Content-Type header for a File", async t => {
   const fd = new FormData()
 
   fd.set("file", new File(["My hovercraft is full of eels"], "file.txt"))
