@@ -2,7 +2,9 @@
 
 Encode `FormData` content into the `multipart/form-data` format
 
-# Usage
+## Usage
+
+To start the encoding process, you need to create a new Encoder instance with the FormData you want to encode:
 
 ```js
 import {Readable} from "stream"
@@ -26,6 +28,7 @@ const options = {
   headers: encoder.headers,
 
   // Create a Readable stream from the Encoder.
+  // You can omit usage of `Readable.from` for HTTP clients whose support async iterables.
   // The Encoder will yield FormData content portions encoded into the multipart/form-data format as node-fetch consumes the stream.
   body: Readable.from(encoder)
 }
@@ -54,3 +57,22 @@ Or pnpm:
 ```sh
 pnpm add form-data-encoder
 ```
+
+## API
+
+### `class Encoder`
+
+#### `constructor(form[, boundary]) -> {Encoder}`
+
+  - **{FormDataLike}** form - A FormData object to encode. This object must be a spec-compatible FormData implementation.
+  - **{string}** boundary - An optional boundary string that will be used by the encoder. If there's no boundary string is present, Encoder will generate it automatically.
+
+Creates a multipart/form-data encoder.
+
+#### `encode() -> {AsyncGenerator<Buffer, void, undefined>}`
+
+Creates a async iterator allowing to perform encoding process by portions.
+
+#### `[Symbol.asyncIterator]() -> {AsyncGenerator<Buffer, void, undefined>}`
+
+An alias for `Encoder#encode()` method.
