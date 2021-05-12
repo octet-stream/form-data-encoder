@@ -1,5 +1,10 @@
 import {randomBytes} from "crypto"
 
-const createBoundary = (): string => randomBytes(16).toString("hex")
+/**
+ * Generates a boundary string for FormData encoder.
+ */
+const createBoundary = (): string => (
+  `FormDataBoundary${randomBytes(16).toString("hex")}`
+)
 
 export default createBoundary
