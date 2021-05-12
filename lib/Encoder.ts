@@ -15,7 +15,6 @@ export class Encoder {
    */
   readonly boundary: string
 
-
   /**
    * Returns Content-Type header for multipart/form-data
    */
