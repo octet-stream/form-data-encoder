@@ -1,9 +1,9 @@
 type Unwrap<T> = T extends AsyncGenerator<infer U> ? Unwrap<U> : T
 
 async function skipIterations<
-  T extends AsyncGenerator<any>
+T extends AsyncGenerator<any>
 >(iterable: T, iterations = 1): Promise<
-  IteratorResult<Unwrap<T>, void>
+IteratorResult<Unwrap<T>, void>
 > {
   while (--iterations) {
     await iterable.next()
