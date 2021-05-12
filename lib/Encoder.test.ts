@@ -1,8 +1,9 @@
 import {Readable} from "stream"
+import {promises as fs} from "fs"
 
 import test from "ava"
 
-import {FormData, File} from "formdata-node"
+import {FormData, File, fileFromPath} from "formdata-node"
 
 import readStream from "./__helper__/readStream"
 import skip from "./__helper__/skipIterations"
@@ -95,6 +96,18 @@ test("Yields correct headers for a field", async t => {
   t.is(value, "Content-Disposition: form-data; name=\"field\"")
 })
 
+test("Yields field's content", async t => {
+  const expected = "Some value"
+
+  const fd = new FormData()
+
+  fd.set("field", expected)
+
+  const {value} = await skip(readLine(Readable.from(new Encoder(fd))), 4)
+
+  t.is(value, expected)
+})
+
 test("Yields correct Content-Disposition header for a File", async t => {
   const fd = new FormData()
 
@@ -128,6 +141,33 @@ test("File has default Content-Type set to application/octet-stream", async t =>
   const {value} = await skip(iterable, 3)
 
   t.is(value, "Content-Type: application/octet-stream")
+})
+
+test("Yields File's content", async t => {
+  const filePath = "license"
+  const fd = new FormData()
+
+  const expected = await fs.readFile(filePath, "utf-8")
+
+  fd.set("license", await fileFromPath(filePath))
+
+  const encoder = new Encoder(fd)
+  const iterable = readLine(Readable.from(encoder))
+
+  await skip(iterable, 4)
+
+  const footer = `--${encoder.boundary}--`;
+  let chunks: string[] = []
+
+  for await (const chunk of iterable) {
+    if (chunk !== footer) {
+      chunks.push(chunk)
+    }
+  }
+
+  chunks.pop() // Remove trailing empty line
+
+  t.is<string>(chunks.join("\n"), expected)
 })
 
 test("Throws TypeError when the first argument is not a FormData instance", t => {
