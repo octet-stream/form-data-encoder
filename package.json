@@ -1,7 +1,7 @@
 {
   "name": "form-data-encoder",
   "version": "0.1.0",
-  "description": "Consume FormData content and encode it to async iterable",
+  "description": "Encode FormData content into the multipart/form-data format",
   "main": "lib/encoder.js",
   "scripts": {
     "test": "ava"
