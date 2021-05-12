@@ -4,19 +4,20 @@ Encode `FormData` content into the `multipart/form-data` format
 
 ## Usage
 
-To start the encoding process, you need to create a new Encoder instance with the FormData you want to encode:
+1. To start the encoding process, you need to create a new Encoder instance with the FormData you want to encode:
 
 ```js
 import {Readable} from "stream"
 
+import {FormData, File} from "formdata-node"
 import {Encoder} from "form-data-encoder"
-import {FormData} from "formdata-node"
 
 import fetch from "node-fetch"
 
 const fd = new FormData()
 
 fd.set("greeting", "Hello, World!")
+fd.set("file", new File(["On Soviet Moon landscape see binoculars through YOU"], "file.txt"))
 
 const encoder = new Encoder(fd)
 
@@ -36,6 +37,30 @@ const options = {
 const response = await fetch("https://httpbin.org/post", options)
 
 console.log(await response.json())
+```
+
+2. Encoder support different spec-compatible FormData implementation. Let's try it with [`formdata-polyfill`](https://github.com/jimmywarting/FormData):
+
+```js
+import {Readable} from "stream"
+
+import {Encoder} from "form-data-encoder"
+import {FormData, File} from "formdata-polyfill/esm-min.js"
+
+const fd = new FormData()
+
+fd.set("field", "Some value")
+fd.set("file", new File(["File content goes here"], "file.txt"))
+
+const encoder = new Encoder(fd)
+
+const options = {
+  method: "post",
+  headers: encoder.headers,
+  body: Readable.from(encoder)
+}
+
+await fetch("https://httpbin.org/post", options)
 ```
 
 # Installation
