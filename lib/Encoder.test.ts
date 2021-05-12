@@ -1,5 +1,5 @@
-import {Readable} from "stream"
 import {promises as fs} from "fs"
+import {Readable} from "stream"
 
 import test from "ava"
 
@@ -159,8 +159,8 @@ test("Yields File's content", async t => {
 
   await skip(iterable, 4)
 
-  const footer = `--${encoder.boundary}--`;
-  let chunks: string[] = []
+  const footer = `--${encoder.boundary}--`
+  const chunks: string[] = []
 
   for await (const chunk of iterable) {
     if (chunk !== footer) {
