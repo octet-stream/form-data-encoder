@@ -1,6 +1,10 @@
+type Unwrap<T> = T extends AsyncGenerator<infer U> ? Unwrap<U> : T
+
 async function skipIterations<
-  T extends AsyncGenerator
->(iterable: T, iterations = 1): Promise<ReturnType<T["next"]>> {
+  T extends AsyncGenerator<any>
+>(iterable: T, iterations = 1): Promise<
+  IteratorResult<Unwrap<T>, void>
+> {
   while (--iterations) {
     await iterable.next()
   }

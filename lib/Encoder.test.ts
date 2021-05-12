@@ -95,24 +95,19 @@ test("Yields correct headers for a field", async t => {
   t.is(value, "Content-Disposition: form-data; name=\"field\"")
 })
 
-test("Yields correct headers for a file", async t => {
+test("Yields correct Content-Disposition header for a File", async t => {
   const fd = new FormData()
 
   fd.set("file", new File(["My hovercraft is full of eels"], "file.txt"))
 
   const iterable = readLine(Readable.from(new Encoder(fd)))
 
-  await iterable.next()
-
-  const {value: fileDispositionAndName} = await iterable.next()
-  const {value: fileContntType} = await iterable.next()
+  const {value} = await skip(iterable)
 
   t.is(
-    fileDispositionAndName,
+    value,
     "Content-Disposition: form-data; name=\"file\"; filename=\"file.txt\""
   )
-
-  t.is(fileContntType, "Content-Type: text/plain")
 })
 
 test("File has default Content-Type set to application/octet-stream", async t => {
