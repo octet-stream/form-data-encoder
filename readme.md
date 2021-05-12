@@ -43,7 +43,7 @@ const response = await fetch("https://httpbin.org/post", options)
 console.log(await response.json())
 ```
 
-2. Encoder support different spec-compatible FormData implementation. Let's try it with [`formdata-polyfill`](https://github.com/jimmywarting/FormData):
+2. Encoder support different spec-compatible FormData implementations. Let's try it with [`formdata-polyfill`](https://github.com/jimmywarting/FormData):
 
 ```js
 import {Readable} from "stream"

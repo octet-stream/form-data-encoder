@@ -3,7 +3,15 @@
   "version": "0.1.0",
   "description": "Encode FormData content into the multipart/form-data format",
   "repository": "octet-stream/form-data-encoder",
-  "keywords": ["form-data", "encoder", "multipart", "files-upload", "async-iterator", "form", "node"],
+  "keywords": [
+    "form-data",
+    "encoder",
+    "multipart",
+    "files-upload",
+    "async-iterator",
+    "form",
+    "node"
+  ],
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
   "types": "./@type/index.d.ts",
