@@ -86,7 +86,7 @@ export class Encoder {
     return length + Buffer.byteLength(this.#footer)
   }
 
-  private async* _getField() {
+  private async* _getField(): AsyncGenerator<Buffer | string, void, undefined> {
     for (const [name, value] of this.#form) {
       yield this._getFieldHeader(name, value)
 
@@ -105,7 +105,7 @@ export class Encoder {
   /**
    * Returns async generator allowing to encode FormData content into the spec format
    */
-  async* encode(): AsyncGenerator<Buffer, void> {
+  async* encode(): AsyncGenerator<Buffer, void, undefined> {
     for await (const chunk of this._getField()) {
       yield Buffer.isBuffer(chunk) ? chunk : Buffer.from(String(chunk))
     }

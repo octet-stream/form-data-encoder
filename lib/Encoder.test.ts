@@ -5,6 +5,7 @@ import test from "ava"
 import {FormData, File} from "formdata-node"
 
 import readStream from "./__helper__/readStream"
+import skip from "./__helper__/skipIterations"
 import readLine from "./__helper__/readLine"
 
 import {Encoder} from "./Encoder"
@@ -51,7 +52,7 @@ test("Yields correct footer for empty FormData", async t => {
 
   const iterable = readLine(Readable.from(encoder))
 
-  const {value} = await iterable.next()
+  const {value} = await skip(iterable)
 
   t.is(value, `--${encoder.boundary}--`)
 })
@@ -89,9 +90,7 @@ test("Yields correct headers for a field", async t => {
 
   const iterable = readLine(Readable.from(new Encoder(fd)))
 
-  await iterable.next()
-
-  const {value} = await iterable.next()
+  const {value} = await skip(iterable, 2)
 
   t.is(value, "Content-Disposition: form-data; name=\"field\"")
 })
@@ -123,10 +122,7 @@ test("File has default Content-Type set to application/octet-stream", async t =>
 
   const iterable = readLine(Readable.from(new Encoder(fd)))
 
-  await iterable.next()
-  await iterable.next()
-
-  const {value} = await iterable.next()
+  const {value} = await skip(iterable, 3)
 
   t.is(value, "Content-Type: application/octet-stream")
 })
