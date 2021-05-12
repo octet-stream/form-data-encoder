@@ -131,17 +131,20 @@ test("Yields Content-Type header for a File", async t => {
   t.is(value, "Content-Type: text/plain")
 })
 
-test("File has default Content-Type set to application/octet-stream", async t => {
-  const fd = new FormData()
+test(
+  "File has default Content-Type set to application/octet-stream",
+  async t => {
+    const fd = new FormData()
 
-  fd.set("file", new File(["Some content"], "file"))
+    fd.set("file", new File(["Some content"], "file"))
 
-  const iterable = readLine(Readable.from(new Encoder(fd)))
+    const iterable = readLine(Readable.from(new Encoder(fd)))
 
-  const {value} = await skip(iterable, 3)
+    const {value} = await skip(iterable, 3)
 
-  t.is(value, "Content-Type: application/octet-stream")
-})
+    t.is(value, "Content-Type: application/octet-stream")
+  }
+)
 
 test("Yields File's content", async t => {
   const filePath = "license"
@@ -170,14 +173,17 @@ test("Yields File's content", async t => {
   t.is<string>(chunks.join("\n"), expected)
 })
 
-test("Throws TypeError when the first argument is not a FormData instance", t => {
-  const trap = () => new Encoder({} as any)
+test(
+  "Throws TypeError when the first argument is not a FormData instance",
+  t => {
+    const trap = () => new Encoder({} as any)
 
-  t.throws(trap, {
-    instanceOf: TypeError,
-    message: "Expected first argument to be a FormData instance."
-  })
-})
+    t.throws(trap, {
+      instanceOf: TypeError,
+      message: "Expected first argument to be a FormData instance."
+    })
+  }
+)
 
 test("Throws TypeError when given boundary is not a string", t => {
   const trap = () => new Encoder(new FormData(), 42 as any)
