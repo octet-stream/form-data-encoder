@@ -23,6 +23,14 @@ export class Encoder {
   readonly contentType: string
 
   /**
+   * Returns headers object with Content-Type and Content-Length header
+   */
+  readonly headers: {
+    "Content-Type": string
+    "Content-Length": number
+  }
+
+  /**
    * Returns field's footer
    */
   readonly #footer: Uint8Array
@@ -65,16 +73,11 @@ export class Encoder {
     this.#footer = new TextEncoder().encode(
       `${DASHES}${this.boundary}${DASHES}${CRLF.repeat(2)}`
     )
-  }
 
-  /**
-   * Returns headers object with Content-Type and Content-Length header
-   */
-  get headers() {
-    return {
+    this.headers = Object.freeze({
       "Content-Type": this.contentType,
-      "Content-Length": this.getContentLength(),
-    }
+      "Content-Length": this.getContentLength()
+    })
   }
 
   private _getFieldHeader(name: string, value: unknown): Uint8Array {
