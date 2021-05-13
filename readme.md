@@ -98,10 +98,10 @@ pnpm add form-data-encoder
 
 Creates a multipart/form-data encoder.
 
-#### `encode() -> {AsyncGenerator<Buffer, void, undefined>}`
+#### `encode() -> {AsyncGenerator<Uint8Array, void, undefined>}`
 
 Creates an async iterator allowing to perform the encoding by portions.
 
-#### `[Symbol.asyncIterator]() -> {AsyncGenerator<Buffer, void, undefined>}`
+#### `[Symbol.asyncIterator]() -> {AsyncGenerator<Uint8Array, void, undefined>}`
 
 An alias for `Encoder#encode()` method.
