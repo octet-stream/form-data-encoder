@@ -127,7 +127,7 @@ pnpm add form-data-encoder
 
 ##### `constructor(form[, boundary]) -> {Encoder}`
 
-  - **{FormDataLike}** form - A FormData object to encode. This object must be a spec-compatible FormData implementation.
+  - **{FormDataLike}** form - FormData object to encode. This object must be a spec-compatible FormData implementation.
   - **{string}** boundary - An optional boundary string that will be used by the encoder. If there's no boundary string is present, Encoder will generate it automatically.
 
 Creates a multipart/form-data encoder.
