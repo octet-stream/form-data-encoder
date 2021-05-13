@@ -37,7 +37,7 @@ test("Has content-type string with custom boundary string", t => {
 
   const encoder = new Encoder(new FormData(), expected)
 
-  t.is(encoder.contentType, `multipart/form-data; boundary=${expected}`)
+  t.is(encoder.boundary, expected)
 })
 
 test("Has correct headers", async t => {
@@ -174,7 +174,7 @@ test("Yields File's content", async t => {
   t.is<string>(chunks.join("\n"), expected)
 })
 
-test("Yields every appended file", async t => {
+test("Yields every appended field", async t => {
   const expectedDisposition = "Content-Disposition: form-data; name=\"field\""
 
   const fd = new FormData()
