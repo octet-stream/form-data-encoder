@@ -67,6 +67,40 @@ const options = {
 await fetch("https://httpbin.org/post", options)
 ```
 
+3. Because the Encoder is async iterable, you can use it with different targets. Let's say you want to put FormData content into `Blob`, for that you can write a function like this:
+
+```js
+import {FormData} from "formdata-polyfill/esm-min.js"
+import {blobFrom} from "fetch-blob/from.js"
+import {Encoder} from "form-data-encoder"
+import {Blob} from "fetch-blob" // For this example I will use v3 of this package
+
+import fetch from "node-fetch"
+
+async function toBlob(form) {
+  const encoder = new Encoder(form)
+  const chunks = []
+
+  for await (const chunk of encoder) {
+    chunks.push(chunk)
+  }
+
+  return new Blob(chunks, {type: encoder.contentType})
+}
+
+const fd = new FormData()
+
+fd.set("name", "John Doe")
+fd.set("avatar", await blobFrom("path/to/an/avatar.png"))
+
+const options = {
+  method: "post",
+  body: await toBlob(fd)
+}
+
+await fetch("https://httpbin.org/post", options)
+```
+
 # Installation
 
 You can install this package using npm:
