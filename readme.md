@@ -100,7 +100,7 @@ Creates a multipart/form-data encoder.
 
 #### `encode() -> {AsyncGenerator<Buffer, void, undefined>}`
 
-Creates an async iterator allowing to perform encoding process by portions.
+Creates an async iterator allowing to perform the encoding by portions.
 
 #### `[Symbol.asyncIterator]() -> {AsyncGenerator<Buffer, void, undefined>}`
 

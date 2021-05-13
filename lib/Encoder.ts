@@ -6,6 +6,7 @@ import isFile from "./util/isFile"
 import {FormDataLike} from "./FormDataLike"
 
 const DASHES = "-".repeat(2)
+
 const CRLF = "\r\n"
 const CRLF_BYTES = new TextEncoder().encode(CRLF)
 const CRLF_BYTES_LENGTH = CRLF_BYTES.byteLength
@@ -91,6 +92,9 @@ export class Encoder {
     return length + this.#footer.byteLength
   }
 
+  /**
+   * Creates an async iterator allowing to perform the encoding by portions.
+   */
   async* encode(): AsyncGenerator<Uint8Array, void, undefined> {
     for (const [name, value] of this.#form) {
       yield this._getFieldHeader(name, value)
