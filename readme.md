@@ -91,7 +91,7 @@ async function toBlob(form) {
 const fd = new FormData()
 
 fd.set("name", "John Doe")
-fd.set("avatar", await blobFrom("path/to/an/avatar.png"))
+fd.set("avatar", await blobFrom("path/to/an/avatar.png"). "avatar.jpg")
 
 const options = {
   method: "post",
