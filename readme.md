@@ -91,17 +91,33 @@ pnpm add form-data-encoder
 
 ### `class Encoder`
 
-#### `constructor(form[, boundary]) -> {Encoder}`
+##### `constructor(form[, boundary]) -> {Encoder}`
 
   - **{FormDataLike}** form - A FormData object to encode. This object must be a spec-compatible FormData implementation.
   - **{string}** boundary - An optional boundary string that will be used by the encoder. If there's no boundary string is present, Encoder will generate it automatically.
 
 Creates a multipart/form-data encoder.
 
-#### `encode() -> {AsyncGenerator<Uint8Array, void, undefined>}`
+#### Instance properties
+
+##### `boundary -> {string}`
+
+Returns boundary string
+
+##### `contentType -> {string}`
+
+Returns Content-Type header for multipart/form-data
+
+##### `headers -> {object}`
+
+Returns headers object with Content-Type and Content-Length header
+
+#### Instance methods
+
+##### `encode() -> {AsyncGenerator<Uint8Array, void, undefined>}`
 
 Creates an async iterator allowing to perform the encoding by portions.
 
-#### `[Symbol.asyncIterator]() -> {AsyncGenerator<Uint8Array, void, undefined>}`
+##### `[Symbol.asyncIterator]() -> {AsyncGenerator<Uint8Array, void, undefined>}`
 
 An alias for `Encoder#encode()` method.

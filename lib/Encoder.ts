@@ -13,7 +13,7 @@ const CRLF_BYTES_LENGTH = CRLF_BYTES.byteLength
 
 export class Encoder {
   /**
-   * Returns a boundary string
+   * Returns boundary string
    */
   readonly boundary: string
 
@@ -68,7 +68,7 @@ export class Encoder {
   }
 
   /**
-   * Returns headers for multipart/form-data
+   * Returns headers object with Content-Type and Content-Length header
    */
   get headers() {
     return {
