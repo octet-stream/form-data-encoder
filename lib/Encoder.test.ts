@@ -3,6 +3,7 @@ import {Readable} from "stream"
 
 import test from "ava"
 
+import {ReadableStream} from "web-streams-polyfill/ponyfill/es2018"
 import {FormData, File, fileFromPath} from "formdata-node"
 
 import readStream from "./__helper__/readStream"
@@ -171,6 +172,32 @@ test("Yields File's content", async t => {
   chunks.pop() // Remove trailing empty line
 
   t.is<string>(chunks.join("\n"), expected)
+})
+
+test("Can be used with ReadableStream", async t => {
+  const fd = new FormData()
+
+  fd.set("field", "Some field value")
+
+  const encoder = new Encoder(fd)
+  const iterable = encoder.encode()
+
+  const readable = new ReadableStream<Uint8Array>({
+    async pull(controller) {
+      const {value, done} = await iterable.next()
+
+      if (done) {
+        return controller.close()
+      }
+
+      controller.enqueue(value as Uint8Array)
+    }
+  })
+
+  const expected = await readStream(encoder)
+  const actual = await readStream(readable)
+
+  t.true(actual.equals(expected))
 })
 
 test(

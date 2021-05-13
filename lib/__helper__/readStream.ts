@@ -1,6 +1,8 @@
 import {Readable} from "stream"
 
-type Input = Readable | {
+import {ReadableStream} from "web-streams-polyfill/ponyfill/es2018"
+
+type Input = Readable | ReadableStream | {
   [Symbol.asyncIterator](): AsyncIterableIterator<any>
 }
 
