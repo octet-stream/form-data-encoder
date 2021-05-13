@@ -35,7 +35,7 @@ const options = {
   // Create a Readable stream from the Encoder.
   // You can omit usage of `Readable.from` for HTTP clients whose support async iterables.
   // The Encoder will yield FormData content portions encoded into the multipart/form-data format as node-fetch consumes the stream.
-  body: Readable.from(encoder)
+  body: Readable.from(encoder.encode()) // or Readable.from(encoder)
 }
 
 const response = await fetch("https://httpbin.org/post", options)
