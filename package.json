@@ -1,6 +1,6 @@
 {
   "name": "form-data-encoder",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Encode FormData content into the multipart/form-data format",
   "repository": "octet-stream/form-data-encoder",
   "keywords": [
