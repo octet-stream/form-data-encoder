@@ -7,7 +7,8 @@ import {FormDataLike} from "./FormDataLike"
 
 const DASHES = "-".repeat(2)
 const CRLF = "\r\n"
-const CRLF_BYTES_LENGTH = Buffer.byteLength(CRLF)
+const CRLF_BYTES = new TextEncoder().encode(CRLF)
+const CRLF_BYTES_LENGTH = CRLF_BYTES.byteLength
 
 export class Encoder {
   /**
@@ -23,7 +24,7 @@ export class Encoder {
   /**
    * Returns field's footer
    */
-  readonly #footer: string
+  readonly #footer: Uint8Array
 
   /**
    * FormData instance
@@ -43,7 +44,8 @@ export class Encoder {
     this.contentType = `multipart/form-data; boundary=${this.boundary}`
 
     this.#form = form
-    this.#footer = `${DASHES}${this.boundary}${DASHES}${CRLF.repeat(2)}`
+    this.#footer = new TextEncoder()
+      .encode(`${DASHES}${this.boundary}${DASHES}${CRLF.repeat(2)}`)
   }
 
   /**
@@ -56,7 +58,7 @@ export class Encoder {
     }
   }
 
-  private _getFieldHeader(name: string, value: unknown) {
+  private _getFieldHeader(name: string, value: unknown): Uint8Array {
     let header = ""
 
     header += `${DASHES}${this.boundary}${CRLF}`
@@ -67,7 +69,7 @@ export class Encoder {
       header += `Content-Type: ${value.type || getMime(value.name)}`
     }
 
-    return `${header}${CRLF.repeat(2)}`
+    return new TextEncoder().encode(`${header}${CRLF.repeat(2)}`)
   }
 
   /**
@@ -77,37 +79,32 @@ export class Encoder {
     let length = 0
 
     for (const [name, value] of this.#form) {
-      length += Buffer.byteLength(this._getFieldHeader(name, value))
-      length += isFile(value) ? value.size : Buffer.byteLength(String(value))
+      length += this._getFieldHeader(name, value).byteLength
+
+      length += isFile(value)
+        ? value.size
+        : new TextEncoder().encode(String(value)).byteLength
+
       length += CRLF_BYTES_LENGTH
     }
 
-    return length + Buffer.byteLength(this.#footer)
+    return length + this.#footer.byteLength
   }
 
-  private async* _getField(): AsyncGenerator<Buffer | string, void, undefined> {
+  async* encode(): AsyncGenerator<Uint8Array, void, undefined> {
     for (const [name, value] of this.#form) {
       yield this._getFieldHeader(name, value)
 
       if (isFile(value)) {
         yield* value.stream()
       } else {
-        yield value
+        yield new TextEncoder().encode(String(value))
       }
 
-      yield CRLF
+      yield CRLF_BYTES
     }
 
     yield this.#footer
-  }
-
-  /**
-   * Returns async generator allowing to encode FormData content into the spec format
-   */
-  async* encode(): AsyncGenerator<Buffer, void, undefined> {
-    for await (const chunk of this._getField()) {
-      yield Buffer.isBuffer(chunk) ? chunk : Buffer.from(String(chunk))
-    }
   }
 
   [Symbol.asyncIterator]() {
