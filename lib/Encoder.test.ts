@@ -174,6 +174,68 @@ test("Yields File's content", async t => {
   t.is<string>(chunks.join("\n"), expected)
 })
 
+test("Yields every appended file", async t => {
+  const expectedDisposition = "Content-Disposition: form-data; name=\"field\""
+
+  const fd = new FormData()
+
+  fd.append("field", "Some string")
+  fd.append("field", "Some other string")
+
+  const iterable = readLine(Readable.from(new Encoder(fd)))
+
+  const {value: firstFieldDisposition} = await skip(iterable, 2)
+
+  t.is(firstFieldDisposition, expectedDisposition)
+
+  const {value: firstFieldContent} = await skip(iterable, 2)
+
+  t.is(firstFieldContent, "Some string")
+
+  const {value: secondFieldDisposition} = await skip(iterable, 2)
+
+  t.is(secondFieldDisposition, expectedDisposition)
+
+  const {value: secondFieldContent} = await skip(iterable, 2)
+
+  t.is(secondFieldContent, "Some other string")
+})
+
+test("Yields every appended File", async t => {
+  const expectedDisposition = "Content-Disposition: form-data; name=\"file\""
+
+  const fd = new FormData()
+
+  fd.append("file", new File(["Some content"], "file.txt"))
+  fd.append("file", new File(["Some **content**"], "file.md"))
+
+  const iterable = readLine(Readable.from(new Encoder(fd)))
+
+  const {value: firstFileDisposition} = await skip(iterable, 2)
+
+  t.is(firstFileDisposition, `${expectedDisposition}; filename="file.txt"`)
+
+  const {value: firstFileType} = await skip(iterable)
+
+  t.is(firstFileType, "Content-Type: text/plain")
+
+  const {value: firstFileContent} = await skip(iterable, 2)
+
+  t.is(firstFileContent, "Some content")
+
+  const {value: secondFileDisposition} = await skip(iterable, 2)
+
+  t.is(secondFileDisposition, `${expectedDisposition}; filename="file.md"`)
+
+  const {value: secondFileType} = await skip(iterable)
+
+  t.is(secondFileType, "Content-Type: text/markdown")
+
+  const {value: secondFileContent} = await skip(iterable, 2)
+
+  t.is(secondFileContent, "Some **content**")
+})
+
 test("Can be used with ReadableStream", async t => {
   const fd = new FormData()
 
