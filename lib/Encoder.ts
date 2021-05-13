@@ -32,6 +32,23 @@ export class Encoder {
    */
   readonly #form: FormDataLike
 
+  /**
+   * Creates a multipart/form-data encoder.
+   *
+   * @param form - A FormData object to encode. This object must be a spec-compatible FormData implementation.
+   * @param boundary - An optional boundary string that will be used by the encoder. If there's no boundary string is present, Encoder will generate it automatically.
+   *
+   * @example
+   *
+   * import {Encoder} from "form-data-encoder"
+   * import {FormData} from "formdata-node"
+   *
+   * const fd = new FormData()
+   *
+   * fd.set("greeting", "Hello, World!")
+   *
+   * const encoder = new Encoder(fd)
+   */
   constructor(form: FormDataLike, boundary: string = createBoundary()) {
     if (!isFormData(form)) {
       throw new TypeError("Expected first argument to be a FormData instance.")
@@ -45,8 +62,9 @@ export class Encoder {
     this.contentType = `multipart/form-data; boundary=${this.boundary}`
 
     this.#form = form
-    this.#footer = new TextEncoder()
-      .encode(`${DASHES}${this.boundary}${DASHES}${CRLF.repeat(2)}`)
+    this.#footer = new TextEncoder().encode(
+      `${DASHES}${this.boundary}${DASHES}${CRLF.repeat(2)}`
+    )
   }
 
   /**
@@ -55,7 +73,7 @@ export class Encoder {
   get headers() {
     return {
       "Content-Type": this.contentType,
-      "Content-Length": this.getContentLength()
+      "Content-Length": this.getContentLength(),
     }
   }
 
@@ -94,6 +112,33 @@ export class Encoder {
 
   /**
    * Creates an async iterator allowing to perform the encoding by portions.
+   *
+   * @example
+   *
+   * import {Readable} from "stream"
+   *
+   * import {FormData, File, fileFromPath} from "formdata-node"
+   * import {Encoder} from "form-data-encoder"
+   *
+   * import fetch from "node-fetch"
+   *
+   * const fd = new FormData()
+   *
+   * fd.set("field", "Just a random string")
+   * fd.set("file", new File(["Using files is class amazing"]))
+   * fd.set("fileFromPath", await fileFromPath("path/to/a/file.txt"))
+   *
+   * const encoder = new Encoder(fd)
+   *
+   * const options = {
+   *   method: "post",
+   *   headers: encoder.headers,
+   *   body: Readable.from(encoder.encode()) // or Readable.from(encoder)
+   * }
+   *
+   * const response = await fetch("https://httpbin.org/post", options)
+   *
+   * console.log(await response.json())
    */
   async* encode(): AsyncGenerator<Uint8Array, void, undefined> {
     for (const [name, value] of this.#form) {
