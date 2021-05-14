@@ -70,7 +70,7 @@ await fetch("https://httpbin.org/post", options)
 3. Because the Encoder is async iterable, you can use it with different targets. Let's say you want to put FormData content into `Blob`, for that you can write a function like this:
 
 ```js
-import {randomType} from "crypto"
+import {randomBytes} from "crypto"
 
 import {FormData} from "formdata-polyfill/esm-min.js"
 import {blobFrom} from "fetch-blob/from.js"
