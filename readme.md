@@ -105,6 +105,45 @@ const options = {
 await fetch("https://httpbin.org/post", options)
 ```
 
+4. In this example we will pull FormData content into the ReadableStream:
+
+```js
+ // This module is only necessary when you targeting Node.js or need web streams that implement Symbol.asyncIterator
+import {ReadableStream} from "web-streams-api/ponyfill/es2018"
+
+import {Encoder} from "form-data-encoder"
+import {FormData} from "formdata-node"
+
+import fetch from "node-fetch"
+
+const toReadableStream = iterable => new ReadableStream({
+  async pull(controller) {
+    const {value, done} = await iterable.next()
+
+    if (done) {
+      return controller.close()
+    }
+
+    controller.enqueue(value)
+  }
+})
+
+const fd = new FormData()
+
+fd.set("field", "My hovercraft is full of eels")
+
+const encoder = new Encoder(fd)
+
+const options = {
+  method: "post",
+  headers: encoder.headers,
+  body: toReadableStream(encoder.encode())
+}
+
+// Note that this example requires `fetch` to support Symbol.asyncIterator, which node-fetch lacks of (but will support eventually)
+await fetch("https://httpbin.org/post", options)
+```
+
 # Installation
 
 You can install this package using npm:
