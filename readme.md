@@ -70,6 +70,8 @@ await fetch("https://httpbin.org/post", options)
 3. Because the Encoder is async iterable, you can use it with different targets. Let's say you want to put FormData content into `Blob`, for that you can write a function like this:
 
 ```js
+import {randomType} from "crypto"
+
 import {FormData} from "formdata-polyfill/esm-min.js"
 import {blobFrom} from "fetch-blob/from.js"
 import {Encoder} from "form-data-encoder"
@@ -78,7 +80,9 @@ import {Blob} from "fetch-blob" // For this example I will use v3 of this packag
 import fetch from "node-fetch"
 
 async function toBlob(form) {
-  const encoder = new Encoder(form)
+  // Note that Blob will lowercase the boundary string before assign it to Blob#type property. So you may need to bring your own boundary string, which must contain only lowercase alphabetic characters.
+  const boundary = randomBytes(16).toString("hex")
+  const encoder = new Encoder(form, boundary)
   const chunks = []
 
   for await (const chunk of encoder) {
