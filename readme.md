@@ -116,9 +116,9 @@ import {FormData} from "formdata-node"
 
 import fetch from "node-fetch"
 
-const toReadableStream = iterable => new ReadableStream({
+const toReadableStream = iterator => new ReadableStream({
   async pull(controller) {
-    const {value, done} = await iterable.next()
+    const {value, done} = await iterator.next()
 
     if (done) {
       return controller.close()
