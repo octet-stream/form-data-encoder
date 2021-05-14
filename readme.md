@@ -144,6 +144,49 @@ const options = {
 await fetch("https://httpbin.org/post", options)
 ```
 
+5. Speaking of async iterables - if HTTP client supports them, you can use encoder like this:
+
+```js
+import {Encoder} from "form-data-encoder"
+import {FormData} from "formdata-node"
+
+import fetch from "node-fetch"
+
+const fd = new FormData()
+
+fd.set("field", "My hovercraft is full of eels")
+
+const encoder = new Encoder(fd)
+
+const options = {
+  method: "post",
+  headers: encoder.headers,
+  body: encoder
+}
+
+await fetch("https://httpbin.org/post", options)
+```
+
+6. ...And for those client whose supporting form-data-encoder out of the box, the usage will be much, much more simpler:
+
+```js
+import {FormData} from "formdata-node" // Or any other spec-compatible implementation
+
+import fetch from "node-fetch"
+
+const fd = new FormData()
+
+fd.set("field", "My hovercraft is full of eels")
+
+const options = {
+  method: "post",
+  body: fd
+}
+
+// Note that node-fetch does NOT support form-data-encoder
+await fetch("https://httpbin.org/post", options)
+```
+
 # Installation
 
 You can install this package using npm:
