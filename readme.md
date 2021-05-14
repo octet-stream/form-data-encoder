@@ -28,7 +28,7 @@ const encoder = new Encoder(fd)
 const options = {
   method: "post",
 
-  // Set request headers provided the Encoder.
+  // Set request headers provided by the Encoder.
   // The `headers` property has `Content-Type` and `Content-Length` headers.
   headers: encoder.headers,
 
