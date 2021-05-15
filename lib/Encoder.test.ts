@@ -125,7 +125,9 @@ test("Yields Content-Disposition header for a File", async t => {
 test("Yields Content-Type header for a File", async t => {
   const fd = new FormData()
 
-  fd.set("file", new File(["My hovercraft is full of eels"], "file.txt"))
+  fd.set("file", new File(["My hovercraft is full of eels"], "file.txt"), {
+    type: "text/plain"
+  })
 
   const {value} = await skip(readLine(Readable.from(new Encoder(fd))), 3)
 
@@ -206,8 +208,14 @@ test("Yields every appended File", async t => {
 
   const fd = new FormData()
 
-  fd.append("file", new File(["Some content"], "file.txt"))
-  fd.append("file", new File(["Some **content**"], "file.md"))
+  const firstFile = new File(["Some content"], "file.txt", {type: "text/plain"})
+  const secondFile = new File(["Some **content**"], "file.md", {
+    type: "text/markdown"
+  })
+
+  fd.append("file", firstFile)
+
+  fd.append("file", secondFile)
 
   const iterable = readLine(Readable.from(new Encoder(fd)))
 
@@ -221,7 +229,7 @@ test("Yields every appended File", async t => {
 
   const {value: firstFileContent} = await skip(iterable, 2)
 
-  t.is(firstFileContent, "Some content")
+  t.is(firstFileContent, await firstFile.text())
 
   const {value: secondFileDisposition} = await skip(iterable, 2)
 
@@ -233,7 +241,7 @@ test("Yields every appended File", async t => {
 
   const {value: secondFileContent} = await skip(iterable, 2)
 
-  t.is(secondFileContent, "Some **content**")
+  t.is(secondFileContent, await secondFile.text())
 })
 
 test("Can be used with ReadableStream", async t => {

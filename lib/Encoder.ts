@@ -1,5 +1,4 @@
 import createBoundary from "./util/createBoundary"
-import getMime from "./util/getMimeFromFilename"
 import isFormData from "./util/isFormData"
 import isFile from "./util/isFile"
 
@@ -98,7 +97,7 @@ export class Encoder {
 
     if (isFile(value)) {
       header += `; filename="${value.name}"${this.#CRLF}`
-      header += `Content-Type: ${value.type || getMime(value.name)}`
+      header += `Content-Type: ${value.type || "application/octet-stream"}`
     }
 
     return this.#encoder.encode(`${header}${this.#CRLF.repeat(2)}`)
