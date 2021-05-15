@@ -73,8 +73,8 @@ await fetch("https://httpbin.org/post", options)
 import {FormData} from "formdata-polyfill/esm-min.js"
 import {blobFrom} from "fetch-blob/from.js"
 import {Encoder} from "form-data-encoder"
-import {Blob} from "fetch-blob" // For this example I will use v3 of this package
 
+import Blob from "fetch-blob"
 import fetch from "node-fetch"
 
 async function toBlob(form) {
