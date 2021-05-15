@@ -5,12 +5,6 @@ import isFile from "./util/isFile"
 
 import {FormDataLike} from "./FormDataLike"
 
-const DASHES = "-".repeat(2)
-
-const CRLF = "\r\n"
-const CRLF_BYTES = new TextEncoder().encode(CRLF)
-const CRLF_BYTES_LENGTH = CRLF_BYTES.byteLength
-
 export class Encoder {
   /**
    * Returns boundary string
@@ -29,6 +23,16 @@ export class Encoder {
     "Content-Type": string
     "Content-Length": number
   }
+
+  readonly #CRLF: string
+
+  readonly #CRLF_BYTES: Uint8Array
+
+  readonly #CRLF_BYTES_LENGTH: number
+
+  readonly #DASHES = "-".repeat(2)
+
+  readonly #encoder: TextEncoder
 
   /**
    * Returns field's footer
@@ -69,9 +73,15 @@ export class Encoder {
     this.boundary = boundary
     this.contentType = `multipart/form-data; boundary=${this.boundary}`
 
+    this.#encoder = new TextEncoder()
+
+    this.#CRLF = "\r\n"
+    this.#CRLF_BYTES = this.#encoder.encode(this.#CRLF)
+    this.#CRLF_BYTES_LENGTH = this.#CRLF_BYTES.byteLength
+
     this.#form = form
-    this.#footer = new TextEncoder().encode(
-      `${DASHES}${this.boundary}${DASHES}${CRLF.repeat(2)}`
+    this.#footer = this.#encoder.encode(
+      `${this.#DASHES}${this.boundary}${this.#DASHES}${this.#CRLF.repeat(2)}`
     )
 
     this.headers = Object.freeze({
@@ -83,15 +93,15 @@ export class Encoder {
   private _getFieldHeader(name: string, value: unknown): Uint8Array {
     let header = ""
 
-    header += `${DASHES}${this.boundary}${CRLF}`
+    header += `${this.#DASHES}${this.boundary}${this.#CRLF}`
     header += `Content-Disposition: form-data; name="${name}"`
 
     if (isFile(value)) {
-      header += `; filename="${value.name}"${CRLF}`
+      header += `; filename="${value.name}"${this.#CRLF}`
       header += `Content-Type: ${value.type || getMime(value.name)}`
     }
 
-    return new TextEncoder().encode(`${header}${CRLF.repeat(2)}`)
+    return this.#encoder.encode(`${header}${this.#CRLF.repeat(2)}`)
   }
 
   /**
@@ -105,9 +115,9 @@ export class Encoder {
 
       length += isFile(value)
         ? value.size
-        : new TextEncoder().encode(String(value)).byteLength
+        : this.#encoder.encode(String(value)).byteLength
 
-      length += CRLF_BYTES_LENGTH
+      length += this.#CRLF_BYTES_LENGTH
     }
 
     return length + this.#footer.byteLength
@@ -150,10 +160,10 @@ export class Encoder {
       if (isFile(value)) {
         yield* value.stream()
       } else {
-        yield new TextEncoder().encode(String(value))
+        yield this.#encoder.encode(String(value))
       }
 
-      yield CRLF_BYTES
+      yield this.#CRLF_BYTES
     }
 
     yield this.#footer
