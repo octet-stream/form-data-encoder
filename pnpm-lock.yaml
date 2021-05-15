@@ -17,7 +17,7 @@ specifiers:
   formdata-node: 3.3.2
   husky: 6.0.0
   lint-staged: 11.0.0
-  nanoid: ^3.1.23
+  nanoid: 3.1.23
   pinst: 2.1.6
   ts-node: 9.1.1
   ttypescript: 1.5.12
