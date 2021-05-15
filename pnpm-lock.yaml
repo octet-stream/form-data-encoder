@@ -3,7 +3,7 @@ lockfileVersion: 5.3
 specifiers:
   '@octetstream/eslint-config': 5.0.0
   '@types/mime-types': 2.1.0
-  '@types/node': 15.0.2
+  '@types/node': 15.3.0
   '@typescript-eslint/eslint-plugin': 4.23.0
   '@zoltu/typescript-transformer-append-js-extension': 1.0.1
   ava: 3.15.0
@@ -14,7 +14,7 @@ specifiers:
   eslint-plugin-ava: 12.0.0
   eslint-plugin-jsx-a11y: 6.4.1
   eslint-plugin-react: 7.23.2
-  formdata-node: 3.3.1
+  formdata-node: 3.3.2
   husky: 6.0.0
   lint-staged: 11.0.0
   mime-types: 2.1.30
@@ -30,7 +30,7 @@ dependencies:
 devDependencies:
   '@octetstream/eslint-config': 5.0.0_eslint@7.26.0
   '@types/mime-types': 2.1.0
-  '@types/node': 15.0.2
+  '@types/node': 15.3.0
   '@typescript-eslint/eslint-plugin': 4.23.0_eslint@7.26.0+typescript@4.2.4
   '@zoltu/typescript-transformer-append-js-extension': 1.0.1
   ava: 3.15.0
@@ -41,7 +41,7 @@ devDependencies:
   eslint-plugin-ava: 12.0.0_eslint@7.26.0
   eslint-plugin-jsx-a11y: 6.4.1_eslint@7.26.0
   eslint-plugin-react: 7.23.2_eslint@7.26.0
-  formdata-node: 3.3.1
+  formdata-node: 3.3.2
   husky: 6.0.0
   lint-staged: 11.0.0
   pinst: 2.1.6
@@ -249,8 +249,8 @@ packages:
     resolution: {integrity: sha1-nKUs2jY/aZxpRmwqbM2q2RPqenM=}
     dev: true
 
-  /@types/node/15.0.2:
-    resolution: {integrity: sha512-p68+a+KoxpoB47015IeYZYRrdqMUcpbK8re/zpFB8Ld46LHC1lPEbp3EXgkEhAYEcPvjJF6ZO+869SQ0aH1dcA==}
+  /@types/node/15.3.0:
+    resolution: {integrity: sha512-8/bnjSZD86ZfpBsDlCIkNXIvm+h6wi9g7IqL+kmFkQ+Wvu3JrasgLElfiPgoo8V8vVfnEi0QVS12gbl94h9YsQ==}
     dev: true
 
   /@types/normalize-package-data/2.4.0:
@@ -1660,8 +1660,8 @@ packages:
       signal-exit: 3.0.3
     dev: true
 
-  /formdata-node/3.3.1:
-    resolution: {integrity: sha512-58ByKn6EwE8wDJ+ME8xLJvdqMfMg3fhBK5XMLsjcIrrJAHdofiSyRevHA67GPAt0r3btk5LGdErfU9mNkJFg+A==}
+  /formdata-node/3.3.2:
+    resolution: {integrity: sha512-rdQBxZ/fLpyj2OOow7mfOUAy0DFRs49g2AQalpJZYbYPCcZej1Iboh9mJeSr2pyepxLgBgzNk/vXrSqOwDFwFQ==}
     engines: {node: '>= 12.4'}
     dependencies:
       domexception: 2.0.1
