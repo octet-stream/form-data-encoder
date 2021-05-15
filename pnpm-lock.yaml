@@ -17,15 +17,11 @@ specifiers:
   formdata-node: 3.3.2
   husky: 6.0.0
   lint-staged: 11.0.0
-  mime-types: 2.1.30
   pinst: 2.1.6
   ts-node: 9.1.1
   ttypescript: 1.5.12
   typescript: 4.2.4
   web-streams-polyfill: 3.0.3
-
-dependencies:
-  mime-types: 2.1.30
 
 devDependencies:
   '@octetstream/eslint-config': 5.0.0_eslint@7.26.0
@@ -2461,12 +2457,14 @@ packages:
   /mime-db/1.47.0:
     resolution: {integrity: sha512-QBmA/G2y+IfeS4oktet3qRZ+P5kPhCKRXxXnQEudYqUaEioAU1/Lq2us3D/t1Jfo4hE9REQPrbB7K5sOczJVIw==}
     engines: {node: '>= 0.6'}
+    dev: true
 
   /mime-types/2.1.30:
     resolution: {integrity: sha512-crmjA4bLtR8m9qLpHvgxSChT+XoSlZi8J4n/aIdn3z92e/U47Z0V/yl+Wh9W046GgFVAmoNR/fmdbZYcSSIUeg==}
     engines: {node: '>= 0.6'}
     dependencies:
       mime-db: 1.47.0
+    dev: true
 
   /mimic-fn/2.1.0:
     resolution: {integrity: sha512-OqbOk5oEQeAZ8WXWydlu9HJjz9WVdEIvamMCcXmuqUYjTknH/sqsWvhQ3vgwKFRR1HpjvNBKQ37nbJgYzGqGcg==}
