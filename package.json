@@ -1,6 +1,6 @@
 {
   "name": "form-data-encoder",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Encode FormData content into the multipart/form-data format",
   "repository": "octet-stream/form-data-encoder",
   "keywords": [
@@ -9,6 +9,7 @@
     "multipart",
     "files-upload",
     "async-iterator",
+    "spec-compatible",
     "form",
     "node"
   ],
