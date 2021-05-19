@@ -183,7 +183,7 @@ const options = {
 await fetch("https://httpbin.org/post", options)
 ```
 
-# Installation
+## Installation
 
 You can install this package using npm:
 
