@@ -105,7 +105,7 @@ await fetch("https://httpbin.org/post", options)
 
 ```js
  // This module is only necessary when you targeting Node.js or need web streams that implement Symbol.asyncIterator
-import {ReadableStream} from "web-streams-api/ponyfill/es2018"
+import {ReadableStream} from "web-streams-polyfill/ponyfill/es2018"
 
 import {Encoder} from "form-data-encoder"
 import {FormData} from "formdata-node"
