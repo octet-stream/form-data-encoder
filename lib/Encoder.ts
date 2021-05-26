@@ -89,7 +89,7 @@ export class Encoder {
     })
   }
 
-  private _getFieldHeader(name: string, value: unknown): Uint8Array {
+  #getFieldHeader(name: string, value: unknown): Uint8Array {
     let header = ""
 
     header += `${this.#DASHES}${this.boundary}${this.#CRLF}`
@@ -110,7 +110,7 @@ export class Encoder {
     let length = 0
 
     for (const [name, value] of this.#form) {
-      length += this._getFieldHeader(name, value).byteLength
+      length += this.#getFieldHeader(name, value).byteLength
 
       length += isFile(value)
         ? value.size
@@ -154,7 +154,7 @@ export class Encoder {
    */
   async* encode(): AsyncGenerator<Uint8Array, void, undefined> {
     for (const [name, value] of this.#form) {
-      yield this._getFieldHeader(name, value)
+      yield this.#getFieldHeader(name, value)
 
       if (isFile(value)) {
         yield* value.stream()
