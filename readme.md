@@ -237,3 +237,15 @@ Creates an async iterator allowing to perform the encoding by portions.
 ##### `[Symbol.asyncIterator]() -> {AsyncGenerator<Uint8Array, void, undefined>}`
 
 An alias for `Encoder#encode()` method.
+
+### `isFileLike(value) -> {boolean}`
+
+Check if given value is a File-ish object.
+
+  - **{unknown}** value - a value to test
+
+### `isFormDataLike(value) -> {boolean}`
+
+Check if is a FormData-ish object.
+
+  - **{unknown}** value - a value to test
