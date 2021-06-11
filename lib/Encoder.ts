@@ -31,10 +31,13 @@ export class Encoder {
 
   readonly #DASHES = "-".repeat(2)
 
+  /**
+   * TextEncoder instance
+   */
   readonly #encoder: TextEncoder
 
   /**
-   * Returns field's footer
+   * Returns form-data footer bytes
    */
   readonly #footer: Uint8Array
 
