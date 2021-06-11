@@ -1,27 +1,21 @@
 import {FileLike} from "./FileLike"
 
+/**
+ * This interface reflects possible values of each FormData entry
+ */
 export type FormDataEntryValue = string | FileLike
 
+/**
+ * This interface reflects minimal shape of the FormData
+ */
 export interface FormDataLike {
-  set(name: string, value: unknown): void
+  append(name: string, value: unknown, filename?: string): void
 
-  append(name: string, value: unknown): void
+  getAll(name: string): FormDataEntryValue[]
 
-  has(name: string): boolean
+  entries(): Generator<[string, FormDataEntryValue]>
 
-  get(name: string): null | FormDataEntryValue
-
-  getAll(name: string): Array<null | FormDataEntryValue>
-
-  delete(name: string): void
-
-  keys(): IterableIterator<string>
-
-  values(): IterableIterator<FormDataEntryValue>
-
-  entries(): IterableIterator<[string, FormDataEntryValue]>
-
-  [Symbol.iterator](): IterableIterator<[string, FormDataEntryValue]>
+  [Symbol.iterator](): Generator<[string, FormDataEntryValue]>
 
   [Symbol.toStringTag]: string
 }
