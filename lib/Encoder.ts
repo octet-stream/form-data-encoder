@@ -1,4 +1,5 @@
 import createBoundary from "./util/createBoundary"
+import escape from "./util/escapeName"
 import isFormData from "./util/isFormData"
 import isFile from "./util/isFile"
 
@@ -96,10 +97,10 @@ export class Encoder {
     let header = ""
 
     header += `${this.#DASHES}${this.boundary}${this.#CRLF}`
-    header += `Content-Disposition: form-data; name="${name}"`
+    header += `Content-Disposition: form-data; name="${escape(name)}"`
 
     if (isFile(value)) {
-      header += `; filename="${value.name}"${this.#CRLF}`
+      header += `; filename="${escape(value.name)}"${this.#CRLF}`
       header += `Content-Type: ${value.type || "application/octet-stream"}`
     }
 
