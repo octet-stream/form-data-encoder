@@ -1,6 +1,6 @@
 {
   "name": "form-data-encoder",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Encode FormData content into the multipart/form-data format",
   "repository": "octet-stream/form-data-encoder",
   "sideEffects": false,
@@ -11,8 +11,7 @@
     "files-upload",
     "async-iterator",
     "spec-compatible",
-    "form",
-    "node"
+    "form"
   ],
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
