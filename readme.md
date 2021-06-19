@@ -101,7 +101,61 @@ const options = {
 await fetch("https://httpbin.org/post", options)
 ```
 
-4. In this example we will pull FormData content into the ReadableStream:
+4. Another way to convert FormData parts to blob using `form-data-encoder` is making a Blob-ish class:
+
+```js
+import {Readable} from "stream"
+
+import {FormData} from "formdata-polyfill/esm-min.js"
+import {blobFrom} from "fetch-blob/from.js"
+import {Encoder} from "form-data-encoder"
+
+import Blob from "fetch-blob"
+import fetch from "node-fetch"
+
+class BlobDataItem {
+  constructor(encoder) {
+    this.#encoder = encoder
+    this.#size = encoder.headers["Content-Length"]
+    this.#type = encoder.headers["Content-Type"]
+  }
+
+  get type() {
+    return this.#type
+  }
+
+  get size() {
+    return this.#size
+  }
+
+  stream() {
+    return Readable.from(this.#encoder)
+  }
+
+  get [Symbol.toStringTag]() {
+    return "Blob"
+  }
+}
+
+const fd = new FormData()
+
+fd.set("name", "John Doe")
+fd.set("avatar", await blobFrom("path/to/an/avatar.png"), "avatar.png")
+
+const encoder = new Encoder(fd)
+
+// Note that node-fetch@2 performs more strictness tests for Blob objects, so you may need to do extra steps before you set up request body (like, maybe you'll need to instaniate a Blob with BlobDataItem as one of its blobPart)
+const blob = new BlobDataItem(enocoder) // or new Blob([new BlobDataItem(enocoder)], {type: encoder.contentType})
+
+const options = {
+  method: "post",
+  body: blob
+}
+
+await fetch("https://httpbin.org/post", options)
+```
+
+5. In this example we will pull FormData content into the ReadableStream:
 
 ```js
  // This module is only necessary when you targeting Node.js or need web streams that implement Symbol.asyncIterator
@@ -140,7 +194,7 @@ const options = {
 await fetch("https://httpbin.org/post", options)
 ```
 
-5. Speaking of async iterables - if HTTP client supports them, you can use encoder like this:
+6. Speaking of async iterables - if HTTP client supports them, you can use encoder like this:
 
 ```js
 import {Encoder} from "form-data-encoder"
@@ -163,7 +217,7 @@ const options = {
 await fetch("https://httpbin.org/post", options)
 ```
 
-6. ...And for those client whose supporting form-data-encoder out of the box, the usage will be much, much more simpler:
+7. ...And for those client whose supporting form-data-encoder out of the box, the usage will be much, much more simpler:
 
 ```js
 import {FormData} from "formdata-node" // Or any other spec-compatible implementation
