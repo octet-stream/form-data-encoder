@@ -64,7 +64,7 @@ export class Encoder {
    *
    * const encoder = new Encoder(fd)
    */
-  constructor(form: FormDataLike, boundary: string = createBoundary()) {
+  constructor(form: FormDataLike, boundary: string = createBoundary(8)) {
     if (!isFormData(form)) {
       throw new TypeError("Expected first argument to be a FormData instance.")
     }
@@ -73,7 +73,7 @@ export class Encoder {
       throw new TypeError("Expected boundary to be a string.")
     }
 
-    this.boundary = boundary
+    this.boundary = `form-data-boundary-${boundary}`
     this.contentType = `multipart/form-data; boundary=${this.boundary}`
 
     this.#encoder = new TextEncoder()

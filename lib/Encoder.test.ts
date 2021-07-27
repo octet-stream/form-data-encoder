@@ -22,7 +22,7 @@ test("Accepts custom boundary as the second argument", t => {
 
   const encoder = new Encoder(new FormData(), expected)
 
-  t.is(encoder.boundary, expected)
+  t.is(encoder.boundary, `form-data-boundary-${expected}`)
 })
 
 test("Has content-type string", t => {
@@ -36,7 +36,10 @@ test("Has content-type string with custom boundary string", t => {
 
   const encoder = new Encoder(new FormData(), expected)
 
-  t.is(encoder.boundary, expected)
+  t.is(
+    encoder.contentType,
+    `multipart/form-data; boundary=form-data-boundary-${expected}`
+  )
 })
 
 test("Has correct headers", async t => {
@@ -246,7 +249,8 @@ test("Yields every appended File", async t => {
 test(
   "Throws TypeError when the first argument is not a FormData instance",
   t => {
-    const trap = () => new Encoder({} as any)
+    // @ts-expect-error
+    const trap = () => new Encoder({})
 
     t.throws(trap, {
       instanceOf: TypeError,
@@ -256,7 +260,8 @@ test(
 )
 
 test("Throws TypeError when given boundary is not a string", t => {
-  const trap = () => new Encoder(new FormData(), 42 as any)
+  // @ts-expect-error
+  const trap = () => new Encoder(new FormData(), 42)
 
   t.throws(trap, {
     instanceOf: TypeError,
