@@ -1,4 +1,4 @@
-type Unwrap<T> = T extends AsyncGenerator<infer U> ? Unwrap<U> : T
+type Unwrap<T> = T extends AsyncGenerator<infer U> ? U : T
 
 async function skipIterations<
 T extends AsyncGenerator<any>

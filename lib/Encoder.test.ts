@@ -3,8 +3,9 @@ import {Readable} from "stream"
 
 import test from "ava"
 
-import {FormData, File, fileFromPath} from "formdata-node"
+import {FormData, Blob, File, fileFromPath} from "formdata-node"
 
+import skipSync from "./__helper__/skipIterationsSync"
 import readStream from "./__helper__/readStream"
 import skip from "./__helper__/skipIterations"
 import readLine from "./__helper__/readLine"
@@ -85,6 +86,54 @@ test("Returns the length of the FormData content", async t => {
   const expected = await readStream(encoder).then(({length}) => length)
 
   t.is<number>(encoder.getContentLength(), expected)
+})
+
+test(".values() yields headers as Uint8Array", t => {
+  const fd = new FormData()
+
+  fd.set("field", "Some value")
+
+  const iterable = new Encoder(fd).values()
+
+  const {value: actual} = skipSync(iterable)
+
+  t.true(actual instanceof Uint8Array)
+})
+
+test(".valeus() yields field as Uint8Array", t => {
+  const fd = new FormData()
+
+  fd.set("field", "Some value")
+
+  const {value: actual} = skipSync(new Encoder(fd).values(), 2)
+
+  t.true(actual instanceof Uint8Array)
+})
+
+test(".valeus() yields field's content", t => {
+  const string = "Some value"
+  const expected = new TextEncoder().encode(string)
+
+  const fd = new FormData()
+
+  fd.set("field", string)
+
+  const {value: actual} = skipSync(new Encoder(fd).values(), 2)
+
+  t.true(Buffer.from(actual as Uint8Array).equals(expected))
+})
+
+test(".values() yields a file as is", async t => {
+  const file = new File(["File content"], "name.txt")
+
+  const fd = new FormData()
+
+  fd.set("file", file)
+
+  const {value: actual} = skipSync(new Encoder(fd).values(), 2)
+
+  t.true(actual instanceof File)
+  t.is(await (actual as File).text(), await file.text())
 })
 
 test("Yields correct headers for a field", async t => {
@@ -216,7 +265,6 @@ test("Yields every appended File", async t => {
   })
 
   fd.append("file", firstFile)
-
   fd.append("file", secondFile)
 
   const iterable = readLine(Readable.from(new Encoder(fd)))
@@ -244,6 +292,22 @@ test("Yields every appended File", async t => {
   const {value: secondFileContent} = await skip(iterable, 2)
 
   t.is(secondFileContent, await secondFile.text())
+})
+
+test("Can be read through using Blob", async t => {
+  const fd = new FormData()
+
+  fd.set("field", "Some field")
+  fd.set("file", await fileFromPath("license", {type: "text/plain"}))
+
+  const encoder = new Encoder(fd)
+  const blob = new Blob([...encoder] as any[])
+
+  t.true(
+    Buffer
+      .from(await blob.arrayBuffer())
+      .equals(await readStream(Readable.from(encoder)))
+  )
 })
 
 test(
