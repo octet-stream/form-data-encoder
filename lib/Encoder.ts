@@ -4,6 +4,7 @@ import isFormData from "./util/isFormData"
 import isFile from "./util/isFile"
 
 import {FormDataLike} from "./FormDataLike"
+import {FileLike} from "./FileLike"
 
 export class Encoder {
   /**
@@ -127,7 +128,56 @@ export class Encoder {
   }
 
   /**
+   * Creates an iterator allowing to go through form-data parts (with metadata).
+   * This method **will not** read the files.
+   *
+   * Using this method, you can convert form-data content into Blob:
+   *
+   * @example
+   *
+   * import {Readable} from "stream"
+   *
+   * import {Encoder} from "form-data-encoder"
+   *
+   * import {FormData} from "formdata-polyfill/esm-min.js"
+   * import {fileFrom} from "fetch-blob/form.js"
+   * import {File} from "fetch-blob/file.js"
+   * import {Blob} from "fetch-blob"
+   *
+   * import fetch from "node-fetch"
+   *
+   * const fd = new FormData()
+   *
+   * fd.set("field", "Just a random string")
+   * fd.set("file", new File(["Using files is class amazing"]))
+   * fd.set("fileFromPath", await fileFromPath("path/to/a/file.txt"))
+   *
+   * const encoder = new Encoder(fd)
+   *
+   * const options = {
+   *   method: "post",
+   *   body: new Blob(encoder, {type: encoder.contentType})
+   * }
+   *
+   * const response = await fetch("https://httpbin.org/post", options)
+   *
+   * console.log(await response.json())
+   */
+  * values(): Generator<Uint8Array | FileLike, void, undefined> {
+    for (const [name, value] of this.#form.entries()) {
+      yield this.#getFieldHeader(name, value)
+
+      yield isFile(value) ? value : this.#encoder.encode(String(value))
+
+      yield this.#CRLF_BYTES
+    }
+
+    yield this.#footer
+  }
+
+  /**
    * Creates an async iterator allowing to perform the encoding by portions.
+   * This method **will** also read files.
    *
    * @example
    *
@@ -157,22 +207,26 @@ export class Encoder {
    * console.log(await response.json())
    */
   async* encode(): AsyncGenerator<Uint8Array, void, undefined> {
-    for (const [name, value] of this.#form) {
-      yield this.#getFieldHeader(name, value)
-
-      if (isFile(value)) {
-        yield* value.stream()
+    for (const part of this.values()) {
+      if (isFile(part)) {
+        yield* part.stream()
       } else {
-        yield this.#encoder.encode(String(value))
+        yield part
       }
-
-      yield this.#CRLF_BYTES
     }
-
-    yield this.#footer
   }
 
-  [Symbol.asyncIterator]() {
+  /**
+   * Creates an iterator allowing to read through the encoder data using for...of loops
+   */
+  [Symbol.iterator](): Generator<Uint8Array | FileLike, void, undefined> {
+    return this.values()
+  }
+
+  /**
+   * Creates an **async** iterator allowing to read through the encoder data using for-await...of loops
+   */
+  [Symbol.asyncIterator](): AsyncGenerator<Uint8Array, void, undefined> {
     return this.encode()
   }
 }
