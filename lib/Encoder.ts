@@ -150,7 +150,7 @@ export class Encoder {
    *
    * fd.set("field", "Just a random string")
    * fd.set("file", new File(["Using files is class amazing"]))
-   * fd.set("fileFromPath", await fileFromPath("path/to/a/file.txt"))
+   * fd.set("fileFromPath", await fileFrom("path/to/a/file.txt"))
    *
    * const encoder = new Encoder(fd)
    *

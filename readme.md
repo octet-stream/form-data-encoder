@@ -67,7 +67,36 @@ const options = {
 await fetch("https://httpbin.org/post", options)
 ```
 
-3. Because the Encoder is async iterable, you can use it with different targets. Let's say you want to put FormData content into `Blob`, for that you can write a function like this:
+3. Because the Encoder is iterable (it has both Symbol.asyncIterator and Symbol.iterator methods), you can use it with different targets. Let's say you want to convert FormData content into `Blob`, for that you can write a function like this:
+
+```js
+import {Readable} from "stream"
+
+import {Encoder} from "form-data-encoder"
+
+import {FormData, File, Blob, fileFromPath} from "formdata-node"
+
+import fetch from "node-fetch"
+
+const fd = new FormData()
+
+fd.set("field", "Just a random string")
+fd.set("file", new File(["Using files is class amazing"]))
+fd.set("fileFromPath", await fileFromPath("path/to/a/file.txt"))
+
+const encoder = new Encoder(fd)
+
+const options = {
+  method: "post",
+  body: new Blob(encoder, {type: encoder.contentType})
+}
+
+const response = await fetch("https://httpbin.org/post", options)
+
+console.log(await response.json())
+```
+
+4. Here's FormData to Blob conversion with async-iterator approach:
 
 ```js
 import {FormData} from "formdata-polyfill/esm-min.js"
@@ -101,7 +130,7 @@ const options = {
 await fetch("https://httpbin.org/post", options)
 ```
 
-4. Another way to convert FormData parts to blob using `form-data-encoder` is making a Blob-ish class:
+5. Another way to convert FormData parts to blob using `form-data-encoder` is making a Blob-ish class:
 
 ```js
 import {Readable} from "stream"
@@ -155,7 +184,7 @@ const options = {
 await fetch("https://httpbin.org/post", options)
 ```
 
-5. In this example we will pull FormData content into the ReadableStream:
+6. In this example we will pull FormData content into the ReadableStream:
 
 ```js
  // This module is only necessary when you targeting Node.js or need web streams that implement Symbol.asyncIterator
@@ -194,7 +223,7 @@ const options = {
 await fetch("https://httpbin.org/post", options)
 ```
 
-6. Speaking of async iterables - if HTTP client supports them, you can use encoder like this:
+7. Speaking of async iterables - if HTTP client supports them, you can use encoder like this:
 
 ```js
 import {Encoder} from "form-data-encoder"
@@ -217,7 +246,7 @@ const options = {
 await fetch("https://httpbin.org/post", options)
 ```
 
-7. ...And for those client whose supporting form-data-encoder out of the box, the usage will be much, much more simpler:
+8. ...And for those client whose supporting form-data-encoder out of the box, the usage will be much, much more simpler:
 
 ```js
 import {FormData} from "formdata-node" // Or any other spec-compatible implementation
