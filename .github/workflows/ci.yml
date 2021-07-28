@@ -61,5 +61,6 @@ jobs:
         if: matrix.node == '16.x' && matrix.os == 'ubuntu-latest'
         with:
           file: ./coverage/coverage-final.json
+          token: ${{ secrets.CODECOV_TOKEN }}
           flags: unittests
           fail_ci_if_error: true
