@@ -1,5 +1,9 @@
 module.exports = {
   extensions: ["ts"],
-  require: ["dotenv/config", "ts-node/register/transpile-only"],
-  files: ["lib/**/*.test.ts"],
+  environmentVariables: {
+    TS_NODE_COMPILER: "ttypescript",
+    TS_NODE_PROJECT: "tsconfig.cjs.json"
+  },
+  require: ["ts-node/register/transpile-only"],
+  files: ["lib/**/*.test.ts"]
 }
