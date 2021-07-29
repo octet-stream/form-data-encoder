@@ -3,11 +3,11 @@ lockfileVersion: 5.3
 specifiers:
   '@octetstream/eslint-config': 5.0.0
   '@types/mime-types': 2.1.0
-  '@types/node': 16.4.5
+  '@types/node': 16.4.7
   '@typescript-eslint/eslint-plugin': 4.28.5
   '@zoltu/typescript-transformer-append-js-extension': 1.0.1
   ava: 3.15.0
-  c8: 7.7.3
+  c8: 7.8.0
   eslint: 7.31.0
   eslint-config-airbnb-typescript: 12.3.1
   eslint-plugin-ava: 12.0.0
@@ -24,11 +24,11 @@ specifiers:
 devDependencies:
   '@octetstream/eslint-config': 5.0.0_eslint@7.31.0
   '@types/mime-types': 2.1.0
-  '@types/node': 16.4.5
+  '@types/node': 16.4.7
   '@typescript-eslint/eslint-plugin': 4.28.5_eslint@7.31.0+typescript@4.3.5
   '@zoltu/typescript-transformer-append-js-extension': 1.0.1
   ava: 3.15.0
-  c8: 7.7.3
+  c8: 7.8.0
   eslint: 7.31.0
   eslint-config-airbnb-typescript: 12.3.1_6010ae60852770971f2bba63c9aeb4b0
   eslint-plugin-ava: 12.0.0_eslint@7.31.0
@@ -38,7 +38,7 @@ devDependencies:
   husky: 7.0.1
   lint-staged: 11.1.1
   pinst: 2.1.6
-  ts-node: 10.1.0_bcd20cbcee4eaec53cba3e968050d0d2
+  ts-node: 10.1.0_f2063b572686d2161cbb68d9f9612f30
   ttypescript: 1.5.12_ts-node@10.1.0+typescript@4.3.5
   typescript: 4.3.5
 
@@ -301,8 +301,8 @@ packages:
     resolution: {integrity: sha1-nKUs2jY/aZxpRmwqbM2q2RPqenM=}
     dev: true
 
-  /@types/node/16.4.5:
-    resolution: {integrity: sha512-+0GPv/hIFNoy8r5MFf7vRpBjnqNYNrlHdetoy23E7TYc7JB2ctwyi3GMKpviozaHQ/Sy2kBNUTvG9ywN66zV1g==}
+  /@types/node/16.4.7:
+    resolution: {integrity: sha512-aDDY54sst8sx47CWT6QQqIZp45yURq4dic0+HCYfYNcY5Ejlb/CLmFnRLfy3wQuYafOeh3lB/DAKaqRKBtcZmA==}
     dev: true
 
   /@types/normalize-package-data/2.4.0:
@@ -812,8 +812,8 @@ packages:
       ieee754: 1.2.1
     dev: true
 
-  /c8/7.7.3:
-    resolution: {integrity: sha512-ZyA7n3w8i4ETV25tVYMHwJxCSnaOf/LfA8vOcuZOPbonuQfD7tBT/gMWZy7eczRpCDuHcvMXwoqAemg6R0p3+A==}
+  /c8/7.8.0:
+    resolution: {integrity: sha512-x2Bx+IIEd608B1LmjiNQ/kizRPkCWo5XzuV57J9afPjAHSnYXALwbCSOkQ7cSaNXBNblfqcvdycj+klmL+j6yA==}
     engines: {node: '>=10.12.0'}
     hasBin: true
     dependencies:
@@ -828,7 +828,7 @@ packages:
       test-exclude: 6.0.0
       v8-to-istanbul: 8.0.0
       yargs: 16.2.0
-      yargs-parser: 20.2.7
+      yargs-parser: 20.2.9
     dev: true
 
   /cacheable-request/6.1.0:
@@ -3624,7 +3624,7 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
-  /ts-node/10.1.0_bcd20cbcee4eaec53cba3e968050d0d2:
+  /ts-node/10.1.0_f2063b572686d2161cbb68d9f9612f30:
     resolution: {integrity: sha512-6szn3+J9WyG2hE+5W8e0ruZrzyk1uFLYye6IGMBadnOzDh8aP7t8CbFpsfCiEx2+wMixAhjFt7lOZC4+l+WbEA==}
     engines: {node: '>=12.0.0'}
     hasBin: true
@@ -3643,7 +3643,7 @@ packages:
       '@tsconfig/node12': 1.0.9
       '@tsconfig/node14': 1.0.1
       '@tsconfig/node16': 1.0.2
-      '@types/node': 16.4.5
+      '@types/node': 16.4.7
       arg: 4.1.3
       create-require: 1.1.1
       diff: 4.0.2
@@ -3684,7 +3684,7 @@ packages:
       typescript: '>=3.2.2'
     dependencies:
       resolve: 1.20.0
-      ts-node: 10.1.0_bcd20cbcee4eaec53cba3e968050d0d2
+      ts-node: 10.1.0_f2063b572686d2161cbb68d9f9612f30
       typescript: 4.3.5
     dev: true
 
@@ -3898,6 +3898,11 @@ packages:
 
   /yargs-parser/20.2.7:
     resolution: {integrity: sha512-FiNkvbeHzB/syOjIUxFDCnhSfzAL8R5vs40MgLFBorXACCOAEaWu0gRZl14vG8MR9AOJIZbmkjhusqBYZ3HTHw==}
+    engines: {node: '>=10'}
+    dev: true
+
+  /yargs-parser/20.2.9:
+    resolution: {integrity: sha512-y11nGElTIV+CT3Zv9t7VKl+Q3hTQoT9a1Qzezhhl6Rp21gJ/IVTW7Z3y9EWXhuUBC2Shnf+DX0antecpAwSP8w==}
     engines: {node: '>=10'}
     dev: true
 
