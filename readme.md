@@ -88,6 +88,9 @@ const encoder = new Encoder(fd)
 
 const options = {
   method: "post",
+
+  // To use this approach with fetch-blob@2 you probably gonna need to convert the encoder parts output to an array first:
+  // new Blob([...encoder], {type: encoder.connectType})
   body: new Blob(encoder, {type: encoder.contentType})
 }
 
