@@ -316,9 +316,19 @@ Returns headers object with Content-Type and Content-Length header
 
 #### Instance methods
 
+##### `values() -> {Generator<Uint8Array | FileLike, void, undefined>}`
+
+Creates an iterator allowing to go through form-data parts (with metadata).
+This method **will not** read the files.
+
 ##### `encode() -> {AsyncGenerator<Uint8Array, void, undefined>}`
 
 Creates an async iterator allowing to perform the encoding by portions.
+This method **will** also read files.
+
+##### `[Symbol.iterator]() -> {Generator<Uint8Array | FileLike, void, undefined>}`
+
+An alias for `Encoder#values()` method.
 
 ##### `[Symbol.asyncIterator]() -> {AsyncGenerator<Uint8Array, void, undefined>}`
 
