@@ -3,6 +3,8 @@ const alphabet
 
 /**
  * Generates a boundary string for FormData encoder.
+ *
+ * @param size The size of the resulting string
  */
 function createBoundary(size: number): string {
   let res = ""
