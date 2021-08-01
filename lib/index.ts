@@ -4,3 +4,4 @@ export * from "./Encoder"
 
 export {default as isFileLike} from "./util/isFile"
 export {default as isFormDataLike} from "./util/isFormData"
+export {default as createBoundary} from "./util/createBoundary"

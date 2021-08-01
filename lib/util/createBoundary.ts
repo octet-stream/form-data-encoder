@@ -1,10 +1,17 @@
-import {randomBytes} from "crypto"
+const alphabet
+  = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
 /**
  * Generates a boundary string for FormData encoder.
  */
-const createBoundary = (size: number): string => (
-  randomBytes(size).toString("hex")
-)
+function createBoundary(size: number): string {
+  let res = ""
+
+  while (size--) {
+    res += alphabet[Math.floor(Math.random() * alphabet.length)]
+  }
+
+  return res
+}
 
 export default createBoundary
