@@ -5,6 +5,7 @@ specifiers:
   '@types/mime-types': 2.1.0
   '@types/node': 16.4.7
   '@typescript-eslint/eslint-plugin': 4.28.5
+  '@typescript-eslint/parser': ^4.28.5
   '@zoltu/typescript-transformer-append-js-extension': 1.0.1
   ava: 3.15.0
   c8: 7.8.0
@@ -25,7 +26,8 @@ devDependencies:
   '@octetstream/eslint-config': 5.0.0_eslint@7.31.0
   '@types/mime-types': 2.1.0
   '@types/node': 16.4.7
-  '@typescript-eslint/eslint-plugin': 4.28.5_eslint@7.31.0+typescript@4.3.5
+  '@typescript-eslint/eslint-plugin': 4.28.5_514553717ff968e20f6d1c6e521f8616
+  '@typescript-eslint/parser': 4.28.5_eslint@7.31.0+typescript@4.3.5
   '@zoltu/typescript-transformer-append-js-extension': 1.0.1
   ava: 3.15.0
   c8: 7.8.0
@@ -313,7 +315,7 @@ packages:
     resolution: {integrity: sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==}
     dev: true
 
-  /@typescript-eslint/eslint-plugin/4.28.5_eslint@7.31.0+typescript@4.3.5:
+  /@typescript-eslint/eslint-plugin/4.28.5_514553717ff968e20f6d1c6e521f8616:
     resolution: {integrity: sha512-m31cPEnbuCqXtEZQJOXAHsHvtoDi9OVaeL5wZnO2KZTnkvELk+u6J6jHg+NzvWQxk+87Zjbc4lJS4NHmgImz6Q==}
     engines: {node: ^10.12.0 || >=12.0.0}
     peerDependencies:
@@ -325,6 +327,7 @@ packages:
         optional: true
     dependencies:
       '@typescript-eslint/experimental-utils': 4.28.5_eslint@7.31.0+typescript@4.3.5
+      '@typescript-eslint/parser': 4.28.5_eslint@7.31.0+typescript@4.3.5
       '@typescript-eslint/scope-manager': 4.28.5
       debug: 4.3.2
       eslint: 7.31.0
@@ -369,6 +372,26 @@ packages:
       '@typescript-eslint/types': 4.23.0
       '@typescript-eslint/typescript-estree': 4.23.0_typescript@4.3.5
       debug: 4.3.1
+      eslint: 7.31.0
+      typescript: 4.3.5
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
+  /@typescript-eslint/parser/4.28.5_eslint@7.31.0+typescript@4.3.5:
+    resolution: {integrity: sha512-NPCOGhTnkXGMqTznqgVbA5LqVsnw+i3+XA1UKLnAb+MG1Y1rP4ZSK9GX0kJBmAZTMIktf+dTwXToT6kFwyimbw==}
+    engines: {node: ^10.12.0 || >=12.0.0}
+    peerDependencies:
+      eslint: ^5.0.0 || ^6.0.0 || ^7.0.0
+      typescript: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      '@typescript-eslint/scope-manager': 4.28.5
+      '@typescript-eslint/types': 4.28.5
+      '@typescript-eslint/typescript-estree': 4.28.5_typescript@4.3.5
+      debug: 4.3.2
       eslint: 7.31.0
       typescript: 4.3.5
     transitivePeerDependencies:
