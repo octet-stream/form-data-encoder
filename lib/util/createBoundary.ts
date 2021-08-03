@@ -10,8 +10,8 @@ function createBoundary(size: number): string {
   let res = ""
 
   while (size--) {
-    // I use bitwise `<<` here for slightly more performant string fill.
-    // It will basically do same thing as `Math.truc()`,
+    // I use bitwise `<<` for slightly more performant string fill.
+    // It will do basically the same thing as `Math.trunc()`,
     // except it only support signed 32-bit integers.
     // Because the result of this operation will always be
     // a number in range `0` and `alphabet.length - 1` (inclusive),
