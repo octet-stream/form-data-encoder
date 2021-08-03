@@ -25,4 +25,5 @@ pnpm-lock.yaml
 /tsconfig.esm.json
 /tsconfig.cjs.json
 /tsconfig.eslint.json
+/tsconfig.d.ts.json
 lib/**/*.ts
