@@ -15,7 +15,7 @@ function createBoundary(size: number): string {
     // except it only support signed 32-bit integers.
     // Because the result of this operation will always be
     // a number in range `0` and `alphabet.length - 1` (inclusive),
-    // so we don't need `Math.floor()` too.
+    // we don't need `Math.floor()` too.
     /* eslint no-bitwise: ["error", {"allow": ["<<"]}] */
     res += alphabet[(Math.random() * alphabet.length) << 0]
   }
