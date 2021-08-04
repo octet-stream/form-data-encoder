@@ -15,8 +15,8 @@ test("Returns a string of given length", t => {
   t.is(actual.length, expected)
 })
 
-test("Returns a string of characters in alphanum range", t => {
+test("Returns a string that passes regex of valid range", t => {
   const actual = createBoundary(16)
 
-  t.regex(actual, /^[a-zA-Z0-9]+$/)
+  t.regex(actual, /^[a-zA-Z0-9'_-]+$/)
 })
