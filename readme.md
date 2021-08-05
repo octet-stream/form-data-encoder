@@ -81,7 +81,7 @@ import fetch from "node-fetch"
 const fd = new FormData()
 
 fd.set("field", "Just a random string")
-fd.set("file", new File(["Using files is class amazing"]))
+fd.set("file", new File(["Using files is class amazing"], "file.txt"))
 fd.set("fileFromPath", await fileFromPath("path/to/a/file.txt"))
 
 const encoder = new Encoder(fd)
