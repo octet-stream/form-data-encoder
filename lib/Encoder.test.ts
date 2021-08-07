@@ -48,7 +48,7 @@ test("Has correct headers", async t => {
 
   t.deepEqual(encoder.headers, {
     "Content-Type": `multipart/form-data; boundary=${encoder.boundary}`,
-    "Content-Length": await readStream(encoder).then(({length}) => length)
+    "Content-Length": await readStream(encoder).then(({length}) => `${length}`)
   })
 })
 

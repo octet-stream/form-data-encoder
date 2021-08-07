@@ -22,7 +22,7 @@ export class Encoder {
    */
   readonly headers: {
     "Content-Type": string
-    "Content-Length": number
+    "Content-Length": string
   }
 
   readonly #CRLF: string
@@ -90,7 +90,7 @@ export class Encoder {
 
     this.headers = Object.freeze({
       "Content-Type": this.contentType,
-      "Content-Length": this.getContentLength()
+      "Content-Length": String(this.getContentLength())
     })
   }
 
