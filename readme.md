@@ -336,12 +336,12 @@ An alias for `Encoder#encode()` method.
 
 ### `isFileLike(value) -> {boolean}`
 
-Check if given value is a File-ish object.
+Check if a value is File-ish object.
 
   - **{unknown}** value - a value to test
 
 ### `isFormDataLike(value) -> {boolean}`
 
-Check if is a FormData-ish object.
+Check if a value is FormData-ish object.
 
   - **{unknown}** value - a value to test
