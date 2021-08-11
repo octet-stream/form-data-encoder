@@ -19,6 +19,8 @@ pnpm-lock.yaml
 /.lintstagedrc
 /.travis.yml
 /ava.config.cjs
+/ava.config.mjs
+/ava.config.js
 /yarn.lock
 /test.mjs
 /tsconfig.json
@@ -26,4 +28,5 @@ pnpm-lock.yaml
 /tsconfig.cjs.json
 /tsconfig.eslint.json
 /tsconfig.d.ts.json
+/tsconfig.ava.json
 lib/**/*.ts
