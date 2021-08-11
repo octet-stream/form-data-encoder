@@ -1,6 +1,7 @@
 import createBoundary from "./util/createBoundary"
-import escape from "./util/escapeName"
+import normalize from "./util/normalizeValue"
 import isFormData from "./util/isFormData"
+import escape from "./util/escapeName"
 import isFile from "./util/isFile"
 
 import {FormDataLike} from "./FormDataLike"
@@ -119,7 +120,7 @@ export class FormDataEncoder {
 
       length += isFile(value)
         ? value.size
-        : this.#encoder.encode(String(value)).byteLength
+        : this.#encoder.encode(normalize(value)).byteLength
 
       length += this.#CRLF_BYTES_LENGTH
     }
@@ -167,7 +168,7 @@ export class FormDataEncoder {
     for (const [name, value] of this.#form.entries()) {
       yield this.#getFieldHeader(name, value)
 
-      yield isFile(value) ? value : this.#encoder.encode(String(value))
+      yield isFile(value) ? value : this.#encoder.encode(normalize(value))
 
       yield this.#CRLF_BYTES
     }
