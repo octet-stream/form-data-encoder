@@ -6,7 +6,7 @@ import isFile from "./util/isFile"
 import {FormDataLike} from "./FormDataLike"
 import {FileLike} from "./FileLike"
 
-export class Encoder {
+export class FormDataEncoder {
   /**
    * Returns boundary string
    */
@@ -230,3 +230,9 @@ export class Encoder {
     return this.encode()
   }
 }
+
+/**
+ * @deprecated Use FormDataEncoder to import the encoder class instead
+ */
+/* c8 ignore next */
+export const Encoder = FormDataEncoder
