@@ -66,7 +66,7 @@ export class FormDataEncoder {
    *
    * const encoder = new Encoder(fd)
    */
-  constructor(form: FormDataLike, boundary: string = createBoundary(16)) {
+  constructor(form: FormDataLike, boundary: string = createBoundary()) {
     if (!isFormData(form)) {
       throw new TypeError("Expected first argument to be a FormData instance.")
     }
