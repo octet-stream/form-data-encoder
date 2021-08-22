@@ -52,8 +52,8 @@ export class FormDataEncoder {
   /**
    * Creates a multipart/form-data encoder.
    *
-   * @param form - FormData object to encode. This object must be a spec-compatible FormData implementation.
-   * @param boundary - An optional boundary string that will be used by the encoder. If there's no boundary string is present, Encoder will generate it automatically.
+   * @param form FormData object to encode. This object must be a spec-compatible FormData implementation.
+   * @param boundary An optional boundary string that will be used by the encoder. If there's no boundary string is present, Encoder will generate it automatically.
    *
    * @example
    *
