@@ -1,5 +1,6 @@
 import {promises as fs} from "fs"
 import {Readable} from "stream"
+import {EOL} from "os"
 
 import test from "ava"
 
@@ -233,7 +234,8 @@ test("Yields File's content", async t => {
 
   chunks.pop() // Remove trailing empty line
 
-  t.is<string>(chunks.join("\n"), expected)
+  // It looks like files on Windows have different EOL when you read them, even though they were created on macOS x)
+  t.is<string>(chunks.join(EOL), expected)
 })
 
 test("Yields every appended field", async t => {
