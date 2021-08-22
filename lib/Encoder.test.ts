@@ -3,7 +3,10 @@ import {Readable} from "stream"
 
 import test from "ava"
 
-import {FormData, Blob, File, fileFromPath} from "formdata-node"
+// eslint-disable-next-line import/no-unresolved
+import {fileFromPath} from "formdata-node/file-from-path"
+
+import {FormData, Blob, File} from "formdata-node"
 
 import skipSync from "./__helper__/skipIterationsSync"
 import readStream from "./__helper__/readStream"
@@ -180,9 +183,9 @@ test("Yields Content-Disposition header for a File", async t => {
 test("Yields Content-Type header for a File", async t => {
   const fd = new FormData()
 
-  fd.set("file", new File(["My hovercraft is full of eels"], "file.txt"), {
+  fd.set("file", new File(["My hovercraft is full of eels"], "file.txt", {
     type: "text/plain"
-  })
+  }))
 
   const {
     value
