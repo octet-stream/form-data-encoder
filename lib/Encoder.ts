@@ -102,7 +102,7 @@ export class FormDataEncoder {
       "Content-Length": this.contentLength
     })
 
-    // Make sure following properties read/only in runtime.
+    // Make sure following properties read-only in runtime.
     Object.defineProperties(this, {
       boundary: {writable: false, configurable: false},
       contentType: {writable: false, configurable: false},
