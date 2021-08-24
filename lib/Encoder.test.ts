@@ -19,7 +19,30 @@ import {FormDataEncoder} from "./Encoder"
 test("Has boundary string", t => {
   const encoder = new FormDataEncoder(new FormData())
 
-  t.true(typeof encoder.boundary === "string")
+  t.true("boundary" in encoder)
+  t.is(typeof encoder.boundary, "string")
+})
+
+test("boundary property is read-only", t => {
+  const encoder = new FormDataEncoder(new FormData())
+
+  const {boundary: expected} = encoder
+
+  // @ts-expect-error
+  try { encoder.boundary = "some string" } catch { /* noop */ }
+
+  t.is(encoder.boundary, expected)
+})
+
+test("boundary property cannot be deleted", t => {
+  const encoder = new FormDataEncoder(new FormData())
+
+  const {boundary: expected} = encoder
+
+  // @ts-expect-error
+  try { delete encoder.boundary } catch { /* noop */ }
+
+  t.is(encoder.boundary, expected)
 })
 
 test("Accepts custom boundary as the second argument", t => {
@@ -33,7 +56,31 @@ test("Accepts custom boundary as the second argument", t => {
 test("Has content-type string", t => {
   const encoder = new FormDataEncoder(new FormData())
 
+  t.true("contentType" in encoder)
+  t.is(typeof encoder.contentType, "string")
   t.true(encoder.contentType.startsWith("multipart/form-data; boundary="))
+})
+
+test("contentType property is read-only", t => {
+  const encoder = new FormDataEncoder(new FormData())
+
+  const {contentType: expected} = encoder
+
+  // @ts-expect-error
+  try { encoder.contentType = "application/json" } catch { /* noop */ }
+
+  t.is(encoder.contentType, expected)
+})
+
+test("contentType cannot be deleted", t => {
+  const encoder = new FormDataEncoder(new FormData())
+
+  const {contentType: expected} = encoder
+
+  // @ts-expect-error
+  try { delete encoder.contentType } catch { /* noop */ }
+
+  t.is(encoder.contentType, expected)
 })
 
 test("Has content-type string with custom boundary string", t => {
@@ -45,6 +92,40 @@ test("Has content-type string with custom boundary string", t => {
     encoder.contentType,
     `multipart/form-data; boundary=form-data-boundary-${expected}`
   )
+})
+
+test("Has contentLength property", async t => {
+  const encoder = new FormDataEncoder(new FormData())
+
+  t.true("contentLength" in encoder)
+  t.is(typeof encoder.contentLength, "string")
+  t.is(
+    encoder.contentLength,
+
+    await readStream(encoder).then(({length}) => `${length}`)
+  )
+})
+
+test("contentLength property is read-only", t => {
+  const encoder = new FormDataEncoder(new FormData())
+
+  const {contentLength: expected} = encoder
+
+  // @ts-expect-error
+  try { encoder.contentLength = String(Date.now()) } catch { /* noop */ }
+
+  t.is(encoder.contentLength, expected)
+})
+
+test("contentLength property cannot be deleted", t => {
+  const encoder = new FormDataEncoder(new FormData())
+
+  const {contentLength: expected} = encoder
+
+  // @ts-expect-error
+  try { encoder.contentLength = String(Date.now()) } catch { /* noop */ }
+
+  t.is(encoder.contentLength, expected)
 })
 
 test("Has correct headers", async t => {

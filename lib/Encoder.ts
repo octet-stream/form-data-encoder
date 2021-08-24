@@ -8,25 +8,7 @@ import {FormDataLike} from "./FormDataLike"
 import {FileLike} from "./FileLike"
 
 export class FormDataEncoder {
-  /**
-   * Returns boundary string
-   */
-  readonly boundary: string
-
-  /**
-   * Returns Content-Type header for multipart/form-data
-   */
-  readonly contentType: string
-
-  /**
-   * Returns headers object with Content-Type and Content-Length header
-   */
-  readonly headers: {
-    "Content-Type": string
-    "Content-Length": string
-  }
-
-  readonly #CRLF: string
+  readonly #CRLF: string = "\r\n"
 
   readonly #CRLF_BYTES: Uint8Array
 
@@ -37,7 +19,7 @@ export class FormDataEncoder {
   /**
    * TextEncoder instance
    */
-  readonly #encoder: TextEncoder
+  readonly #encoder = new TextEncoder()
 
   /**
    * Returns form-data footer bytes
@@ -48,6 +30,29 @@ export class FormDataEncoder {
    * FormData instance
    */
   readonly #form: FormDataLike
+
+  /**
+   * Returns boundary string
+   */
+  readonly boundary: string
+
+  /**
+   * Returns Content-Type header
+   */
+  readonly contentType: string
+
+  /**
+   * Returns Content-Length header
+   */
+  readonly contentLength: string
+
+  /**
+   * Returns headers object with Content-Type and Content-Length header
+   */
+  readonly headers: {
+    "Content-Type": string
+    "Content-Length": string
+  }
 
   /**
    * Creates a multipart/form-data encoder.
@@ -75,23 +80,34 @@ export class FormDataEncoder {
       throw new TypeError("Expected boundary to be a string.")
     }
 
-    this.boundary = `form-data-boundary-${boundary}`
-    this.contentType = `multipart/form-data; boundary=${this.boundary}`
+    // ? Should I preserve FormData entries in array instead?
+    // ? That way it will be immutable, but require to allocate a new array
+    // ? and go through entries during initialization.
+    this.#form = form
 
-    this.#encoder = new TextEncoder()
-
-    this.#CRLF = "\r\n"
     this.#CRLF_BYTES = this.#encoder.encode(this.#CRLF)
     this.#CRLF_BYTES_LENGTH = this.#CRLF_BYTES.byteLength
 
-    this.#form = form
+    this.boundary = `form-data-boundary-${boundary}`
+    this.contentType = `multipart/form-data; boundary=${this.boundary}`
+
     this.#footer = this.#encoder.encode(
       `${this.#DASHES}${this.boundary}${this.#DASHES}${this.#CRLF.repeat(2)}`
     )
 
+    this.contentLength = String(this.getContentLength())
+
     this.headers = Object.freeze({
       "Content-Type": this.contentType,
-      "Content-Length": String(this.getContentLength())
+      "Content-Length": this.contentLength
+    })
+
+    // Make sure following properties read/only in runtime.
+    Object.defineProperties(this, {
+      boundary: {writable: false, configurable: false},
+      contentType: {writable: false, configurable: false},
+      contentLength: {writable: false, configurable: false},
+      headers: {writable: false, configurable: false}
     })
   }
 
