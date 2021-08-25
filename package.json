@@ -43,7 +43,7 @@
     "@types/mime-types": "2.1.1",
     "@types/node": "16.7.1",
     "@typescript-eslint/eslint-plugin": "4.29.2",
-    "@typescript-eslint/parser": "^4.29.2",
+    "@typescript-eslint/parser": "4.29.2",
     "@zoltu/typescript-transformer-append-js-extension": "1.0.1",
     "ava": "3.15.0",
     "c8": "7.8.0",
