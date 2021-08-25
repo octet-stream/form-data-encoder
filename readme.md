@@ -308,7 +308,11 @@ Returns boundary string
 
 ##### `contentType -> {string}`
 
-Returns Content-Type header for multipart/form-data
+Returns Content-Type header
+
+##### `contentLength -> {string}`
+
+Return Content-Length header
 
 ##### `headers -> {object}`
 
