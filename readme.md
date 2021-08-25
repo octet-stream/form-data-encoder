@@ -304,19 +304,19 @@ Creates a multipart/form-data encoder.
 
 ##### `boundary -> {string}`
 
-Returns boundary string
+Returns boundary string.
 
 ##### `contentType -> {string}`
 
-Returns Content-Type header
+Returns Content-Type header.
 
 ##### `contentLength -> {string}`
 
-Return Content-Length header
+Return Content-Length header.
 
 ##### `headers -> {object}`
 
-Returns headers object with Content-Type and Content-Length header
+Returns headers object with Content-Type and Content-Length header.
 
 #### Instance methods
 
