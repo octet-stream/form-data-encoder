@@ -14,7 +14,7 @@ Encode `FormData` content into the `multipart/form-data` format
 import {Readable} from "stream"
 
 import {FormData, File} from "formdata-node"
-import {Encoder} from "form-data-encoder"
+import {FormDataEncoder} from "form-data-encoder"
 
 import fetch from "node-fetch"
 
@@ -23,7 +23,7 @@ const fd = new FormData()
 fd.set("greeting", "Hello, World!")
 fd.set("file", new File(["On Soviet Moon landscape see binoculars through YOU"], "file.txt"))
 
-const encoder = new Encoder(fd)
+const encoder = new FormDataEncoder(fd)
 
 const options = {
   method: "post",
@@ -48,7 +48,7 @@ console.log(await response.json())
 ```js
 import {Readable} from "stream"
 
-import {Encoder} from "form-data-encoder"
+import {FormDataEncoder} from "form-data-encoder"
 import {FormData, File} from "formdata-polyfill/esm-min.js"
 
 const fd = new FormData()
@@ -56,7 +56,7 @@ const fd = new FormData()
 fd.set("field", "Some value")
 fd.set("file", new File(["File content goes here"], "file.txt"))
 
-const encoder = new Encoder(fd)
+const encoder = new FormDataEncoder(fd)
 
 const options = {
   method: "post",
@@ -72,7 +72,7 @@ await fetch("https://httpbin.org/post", options)
 ```js
 import {Readable} from "stream"
 
-import {Encoder} from "form-data-encoder"
+import {FormDataEncoder} from "form-data-encoder"
 
 import {FormData, File, Blob, fileFromPath} from "formdata-node"
 
@@ -84,7 +84,7 @@ fd.set("field", "Just a random string")
 fd.set("file", new File(["Using files is class amazing"], "file.txt"))
 fd.set("fileFromPath", await fileFromPath("path/to/a/file.txt"))
 
-const encoder = new Encoder(fd)
+const encoder = new FormDataEncoder(fd)
 
 const options = {
   method: "post",
@@ -104,7 +104,7 @@ console.log(await response.json())
 ```js
 import {FormData} from "formdata-polyfill/esm-min.js"
 import {blobFrom} from "fetch-blob/from.js"
-import {Encoder} from "form-data-encoder"
+import {FormDataEncoder} from "form-data-encoder"
 
 import Blob from "fetch-blob"
 import fetch from "node-fetch"
@@ -140,7 +140,7 @@ import {Readable} from "stream"
 
 import {FormData} from "formdata-polyfill/esm-min.js"
 import {blobFrom} from "fetch-blob/from.js"
-import {Encoder} from "form-data-encoder"
+import {FormDataEncoder} from "form-data-encoder"
 
 import Blob from "fetch-blob"
 import fetch from "node-fetch"
@@ -174,7 +174,7 @@ const fd = new FormData()
 fd.set("name", "John Doe")
 fd.set("avatar", await blobFrom("path/to/an/avatar.png"), "avatar.png")
 
-const encoder = new Encoder(fd)
+const encoder = new FormDataEncoder(fd)
 
 // Note that node-fetch@2 performs more strictness tests for Blob objects, so you may need to do extra steps before you set up request body (like, maybe you'll need to instaniate a Blob with BlobDataItem as one of its blobPart)
 const blob = new BlobDataItem(enocoder) // or new Blob([new BlobDataItem(enocoder)], {type: encoder.contentType})
@@ -193,7 +193,7 @@ await fetch("https://httpbin.org/post", options)
  // This module is only necessary when you targeting Node.js or need web streams that implement Symbol.asyncIterator
 import {ReadableStream} from "web-streams-polyfill/ponyfill/es2018"
 
-import {Encoder} from "form-data-encoder"
+import {FormDataEncoder} from "form-data-encoder"
 import {FormData} from "formdata-node"
 
 import fetch from "node-fetch"
@@ -214,7 +214,7 @@ const fd = new FormData()
 
 fd.set("field", "My hovercraft is full of eels")
 
-const encoder = new Encoder(fd)
+const encoder = new FormDataEncoder(fd)
 
 const options = {
   method: "post",
@@ -229,7 +229,7 @@ await fetch("https://httpbin.org/post", options)
 7. Speaking of async iterables - if HTTP client supports them, you can use encoder like this:
 
 ```js
-import {Encoder} from "form-data-encoder"
+import {FormDataEncoder} from "form-data-encoder"
 import {FormData} from "formdata-node"
 
 import fetch from "node-fetch"
@@ -238,7 +238,7 @@ const fd = new FormData()
 
 fd.set("field", "My hovercraft is full of eels")
 
-const encoder = new Encoder(fd)
+const encoder = new FormDataEncoder(fd)
 
 const options = {
   method: "post",
@@ -291,7 +291,7 @@ pnpm add form-data-encoder
 
 ## API
 
-### `class Encoder`
+### `class FormDataEncoder`
 
 ##### `constructor(form[, boundary]) -> {Encoder}`
 
