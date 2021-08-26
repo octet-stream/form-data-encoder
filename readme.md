@@ -49,7 +49,8 @@ console.log(await response.json())
 import {Readable} from "stream"
 
 import {FormDataEncoder} from "form-data-encoder"
-import {FormData, File} from "formdata-polyfill/esm-min.js"
+import {FormData} from "formdata-polyfill/esm-min.js"
+import {File} from "fetch-blob" // v3
 
 const fd = new FormData()
 
