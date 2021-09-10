@@ -7,6 +7,10 @@ import isFile from "./util/isFile"
 import {FormDataLike} from "./FormDataLike"
 import {FileLike} from "./FileLike"
 
+/**
+ * Implements [`multipart/form-data` encoding algorithm](https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#multipart/form-data-encoding-algorithm),
+ * allowing to add support for spec-comliant [`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/FormData) to an HTTP client.
+ */
 export class FormDataEncoder {
   readonly #CRLF: string = "\r\n"
 
