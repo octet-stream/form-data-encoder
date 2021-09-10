@@ -14,7 +14,7 @@ import readStream from "./__helper__/readStream"
 import skip from "./__helper__/skipIterations"
 import readLine from "./__helper__/readLine"
 
-import {FormDataEncoder} from "./Encoder"
+import {FormDataEncoder} from "./FormDataEncoder"
 
 test("Has boundary string", t => {
   const encoder = new FormDataEncoder(new FormData())
