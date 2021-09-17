@@ -86,7 +86,8 @@ form.set("file", new File(["Using files is class amazing"], "file.txt"))
 form.set("fileFromPath", await fileFromPath("path/to/a/file.txt"))
 
 // Note 1: When using with native Blob or fetch-blob@2 you might also need to generate boundary string for your FormDataEncoder instance
-// because Blob will lowercase value of the `type` option and default boundary generator produces a string with both lower and upper cased alphabetical characters.
+// because Blob will lowercase value of the `type` option and default boundary generator produces a string with both lower and upper cased alphabetical characters. Math.random() should be enough to fix this:
+// const encoder = new FormDataEncoder(form, String(Math.random()))
 const encoder = new FormDataEncoder(form)
 
 const options = {
