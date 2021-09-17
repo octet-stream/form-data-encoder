@@ -33,7 +33,7 @@ const options = {
   headers: encoder.headers,
 
   // Create a Readable stream from the Encoder.
-  // You can omit usage of `Readable.from` for HTTP clients whose support async iterables.
+  // You can omit usage of `Readable.from` for HTTP clients whose support async iterables in request body.
   // The Encoder will yield FormData content portions encoded into the multipart/form-data format as node-fetch consumes the stream.
   body: Readable.from(encoder.encode()) // or just Readable.from(encoder)
 }
