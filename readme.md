@@ -18,12 +18,12 @@ import {FormDataEncoder} from "form-data-encoder"
 
 import fetch from "node-fetch"
 
-const fd = new FormData()
+const form = new FormData()
 
-fd.set("greeting", "Hello, World!")
-fd.set("file", new File(["On Soviet Moon landscape see binoculars through YOU"], "file.txt"))
+form.set("greeting", "Hello, World!")
+form.set("file", new File(["On Soviet Moon landscape see binoculars through YOU"], "file.txt"))
 
-const encoder = new FormDataEncoder(fd)
+const encoder = new FormDataEncoder(form)
 
 const options = {
   method: "post",
@@ -35,7 +35,7 @@ const options = {
   // Create a Readable stream from the Encoder.
   // You can omit usage of `Readable.from` for HTTP clients whose support async iterables.
   // The Encoder will yield FormData content portions encoded into the multipart/form-data format as node-fetch consumes the stream.
-  body: Readable.from(encoder.encode()) // or Readable.from(encoder)
+  body: Readable.from(encoder.encode()) // or just Readable.from(encoder)
 }
 
 const response = await fetch("https://httpbin.org/post", options)
@@ -52,12 +52,12 @@ import {FormDataEncoder} from "form-data-encoder"
 import {FormData} from "formdata-polyfill/esm-min.js"
 import {File} from "fetch-blob" // v3
 
-const fd = new FormData()
+const form = new FormData()
 
-fd.set("field", "Some value")
-fd.set("file", new File(["File content goes here"], "file.txt"))
+form.set("field", "Some value")
+form.set("file", new File(["File content goes here"], "file.txt"))
 
-const encoder = new FormDataEncoder(fd)
+const encoder = new FormDataEncoder(form)
 
 const options = {
   method: "post",
@@ -79,19 +79,21 @@ import {FormData, File, Blob, fileFromPath} from "formdata-node"
 
 import fetch from "node-fetch"
 
-const fd = new FormData()
+const form = new FormData()
 
-fd.set("field", "Just a random string")
-fd.set("file", new File(["Using files is class amazing"], "file.txt"))
-fd.set("fileFromPath", await fileFromPath("path/to/a/file.txt"))
+form.set("field", "Just a random string")
+form.set("file", new File(["Using files is class amazing"], "file.txt"))
+form.set("fileFromPath", await fileFromPath("path/to/a/file.txt"))
 
-const encoder = new FormDataEncoder(fd)
+// Note 1: When using with native Blob or fetch-blob@2 you might also need to generate boundary string for your FormDataEncoder instance
+// because Blob will lowercase value of the `type` option and default boundary generator produces a string with both lower and upper cased alphabetical characters.
+const encoder = new FormDataEncoder(form)
 
 const options = {
   method: "post",
 
-  // To use this approach with fetch-blob@2 you probably gonna need to convert the encoder parts output to an array first:
-  // new Blob([...encoder], {type: encoder.connectType})
+  // Note 2: To use this approach with fetch-blob@2 you probably gonna need to convert the encoder parts output to an array first:
+  // new Blob([...encoder], {type: encoder.contentType})
   body: new Blob(encoder, {type: encoder.contentType})
 }
 
@@ -110,6 +112,7 @@ import {FormDataEncoder} from "form-data-encoder"
 import Blob from "fetch-blob"
 import fetch from "node-fetch"
 
+// This approach may require much more RAM compared to the previous one, but it works too.
 async function toBlob(form) {
   const encoder = new Encoder(form)
   const chunks = []
@@ -121,14 +124,14 @@ async function toBlob(form) {
   return new Blob(chunks, {type: encoder.contentType})
 }
 
-const fd = new FormData()
+const form = new FormData()
 
-fd.set("name", "John Doe")
-fd.set("avatar", await blobFrom("path/to/an/avatar.png"), "avatar.png")
+form.set("name", "John Doe")
+form.set("avatar", await blobFrom("path/to/an/avatar.png"), "avatar.png")
 
 const options = {
   method: "post",
-  body: await toBlob(fd)
+  body: await toBlob(form)
 }
 
 await fetch("https://httpbin.org/post", options)
@@ -139,9 +142,9 @@ await fetch("https://httpbin.org/post", options)
 ```js
 import {Readable} from "stream"
 
+import {FormDataEncoder} from "form-data-encoder"
 import {FormData} from "formdata-polyfill/esm-min.js"
 import {blobFrom} from "fetch-blob/from.js"
-import {FormDataEncoder} from "form-data-encoder"
 
 import Blob from "fetch-blob"
 import fetch from "node-fetch"
@@ -170,12 +173,12 @@ class BlobDataItem {
   }
 }
 
-const fd = new FormData()
+const form = new FormData()
 
-fd.set("name", "John Doe")
-fd.set("avatar", await blobFrom("path/to/an/avatar.png"), "avatar.png")
+form.set("name", "John Doe")
+form.set("avatar", await blobFrom("path/to/an/avatar.png"), "avatar.png")
 
-const encoder = new FormDataEncoder(fd)
+const encoder = new FormDataEncoder(form)
 
 // Note that node-fetch@2 performs more strictness tests for Blob objects, so you may need to do extra steps before you set up request body (like, maybe you'll need to instaniate a Blob with BlobDataItem as one of its blobPart)
 const blob = new BlobDataItem(enocoder) // or new Blob([new BlobDataItem(enocoder)], {type: encoder.contentType})
@@ -199,28 +202,32 @@ import {FormData} from "formdata-node"
 
 import fetch from "node-fetch"
 
-const toReadableStream = iterator => new ReadableStream({
-  async pull(controller) {
-    const {value, done} = await iterator.next()
+function toReadableStream(encoder) {
+  const iterator = encoder.encode()
 
-    if (done) {
-      return controller.close()
+  return new ReadableStream({
+    async pull(controller) {
+      const {value, done} = await iterator.next()
+
+      if (done) {
+        return controller.close()
+      }
+
+      controller.enqueue(value)
     }
+  })
+}
 
-    controller.enqueue(value)
-  }
-})
+const form = new FormData()
 
-const fd = new FormData()
+form.set("field", "My hovercraft is full of eels")
 
-fd.set("field", "My hovercraft is full of eels")
-
-const encoder = new FormDataEncoder(fd)
+const encoder = new FormDataEncoder(form)
 
 const options = {
   method: "post",
   headers: encoder.headers,
-  body: toReadableStream(encoder.encode())
+  body: toReadableStream(encoder)
 }
 
 // Note that this example requires `fetch` to support Symbol.asyncIterator, which node-fetch lacks of (but will support eventually)
@@ -235,11 +242,11 @@ import {FormData} from "formdata-node"
 
 import fetch from "node-fetch"
 
-const fd = new FormData()
+const form = new FormData()
 
-fd.set("field", "My hovercraft is full of eels")
+form.set("field", "My hovercraft is full of eels")
 
-const encoder = new FormDataEncoder(fd)
+const encoder = new FormDataEncoder(form)
 
 const options = {
   method: "post",
@@ -257,13 +264,13 @@ import {FormData} from "formdata-node" // Or any other spec-compatible implement
 
 import fetch from "node-fetch"
 
-const fd = new FormData()
+const form = new FormData()
 
-fd.set("field", "My hovercraft is full of eels")
+form.set("field", "My hovercraft is full of eels")
 
 const options = {
   method: "post",
-  body: fd
+  body: form
 }
 
 // Note that node-fetch does NOT support form-data-encoder
