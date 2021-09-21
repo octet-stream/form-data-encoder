@@ -42,5 +42,5 @@ export interface FormDataLike {
    */
   [Symbol.iterator](): Generator<[string, FormDataEntryValue]>
 
-  [Symbol.toStringTag]: string
+  readonly [Symbol.toStringTag]: string
 }
