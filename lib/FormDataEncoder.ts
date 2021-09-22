@@ -1,4 +1,5 @@
 import createBoundary from "./util/createBoundary"
+import isPlainObject from "./util/isPlainObject"
 import normalize from "./util/normalizeValue"
 import isFormData from "./util/isFormData"
 import escape from "./util/escapeName"
@@ -6,6 +7,21 @@ import isFile from "./util/isFile"
 
 import {FormDataLike} from "./FormDataLike"
 import {FileLike} from "./FileLike"
+
+export interface FormDataEncoderOptions {
+  /**
+   * When enabled, the encoder will emit additional per part headers, such as `Content-Length`.
+   *
+   * Please note that the web clients do not include these, so when enabled this option might cause an error if `multipart/form-data` does not consider additional headers.
+   *
+   * Defaults to `false`.
+   */
+  enableAdditionalHeaders?: boolean
+}
+
+const defaultOptionss: FormDataEncoderOptions = {
+  enableAdditionalHeaders: false
+}
 
 /**
  * Implements [`multipart/form-data` encoding algorithm](https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#multipart/form-data-encoding-algorithm),
@@ -34,6 +50,8 @@ export class FormDataEncoder {
    * FormData instance
    */
   readonly #form: FormDataLike
+
+  readonly #options: FormDataEncoderOptions
 
   /**
    * Returns boundary string
@@ -75,19 +93,49 @@ export class FormDataEncoder {
    *
    * const encoder = new Encoder(fd)
    */
-  constructor(form: FormDataLike, boundary: string = createBoundary()) {
+  constructor(form: FormDataLike)
+  constructor(form: FormDataLike, boundary: string)
+  constructor(form: FormDataLike, options: FormDataEncoderOptions)
+  constructor(
+    form: FormDataLike,
+    boundary: string,
+    options?: FormDataEncoderOptions
+  )
+  constructor(
+    form: FormDataLike,
+    boundaryOrOptions?: string | FormDataEncoderOptions,
+    options?: FormDataEncoderOptions
+  ) {
     if (!isFormData(form)) {
       throw new TypeError("Expected first argument to be a FormData instance.")
     }
 
+    let boundary: string | undefined
+    if (isPlainObject(boundaryOrOptions)) {
+      options = boundaryOrOptions
+    } else {
+      boundary = boundaryOrOptions
+    }
+
+    // Use default generator when the boundary argument is not present
+    if (!boundary) {
+      boundary = createBoundary()
+    }
+
     if (typeof boundary !== "string") {
-      throw new TypeError("Expected boundary to be a string.")
+      throw new TypeError("Expected boundary argument to be a string.")
+    }
+
+    if (options && !isPlainObject(options)) {
+      throw new TypeError("Expected options argument to be an object.")
     }
 
     // ? Should I preserve FormData entries in array instead?
     // ? That way it will be immutable, but require to allocate a new array
     // ? and go through entries during initialization.
     this.#form = form
+
+    this.#options = {...defaultOptionss, ...options}
 
     this.#CRLF_BYTES = this.#encoder.encode(this.#CRLF)
     this.#CRLF_BYTES_LENGTH = this.#CRLF_BYTES.byteLength
@@ -115,7 +163,7 @@ export class FormDataEncoder {
     })
   }
 
-  #getFieldHeader(name: string, value: unknown): Uint8Array {
+  #getFieldHeader(name: string, value: FileLike | Uint8Array): Uint8Array {
     let header = ""
 
     header += `${this.#DASHES}${this.boundary}${this.#CRLF}`
@@ -124,6 +172,12 @@ export class FormDataEncoder {
     if (isFile(value)) {
       header += `; filename="${escape(value.name)}"${this.#CRLF}`
       header += `Content-Type: ${value.type || "application/octet-stream"}`
+    }
+
+    if (this.#options.enableAdditionalHeaders === true) {
+      header += `${this.#CRLF}Content-Length: ${
+        isFile(value) ? value.size : value.byteLength
+      }`
     }
 
     return this.#encoder.encode(`${header}${this.#CRLF.repeat(2)}`)
@@ -135,12 +189,12 @@ export class FormDataEncoder {
   getContentLength(): number {
     let length = 0
 
-    for (const [name, value] of this.#form) {
+    for (const [name, raw] of this.#form) {
+      const value = isFile(raw) ? raw : this.#encoder.encode(normalize(raw))
+
       length += this.#getFieldHeader(name, value).byteLength
 
-      length += isFile(value)
-        ? value.size
-        : this.#encoder.encode(normalize(value)).byteLength
+      length += isFile(value) ? value.size : value.byteLength
 
       length += this.#CRLF_BYTES_LENGTH
     }
@@ -185,10 +239,12 @@ export class FormDataEncoder {
    * console.log(await response.json())
    */
   * values(): Generator<Uint8Array | FileLike, void, undefined> {
-    for (const [name, value] of this.#form.entries()) {
+    for (const [name, raw] of this.#form.entries()) {
+      const value = isFile(raw) ? raw : this.#encoder.encode(normalize(raw))
+
       yield this.#getFieldHeader(name, value)
 
-      yield isFile(value) ? value : this.#encoder.encode(normalize(value))
+      yield value
 
       yield this.#CRLF_BYTES
     }

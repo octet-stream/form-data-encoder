@@ -147,7 +147,7 @@ test("Yields correct footer for empty FormData", async t => {
   t.is(value, `--${encoder.boundary}--`)
 })
 
-test("The footer ends with two crlf", async t => {
+test("The footer ends with double crlf", async t => {
   const actual = await readStream(new FormDataEncoder(new FormData()), true)
 
   t.true(actual.endsWith("\r\n\r\n"))
@@ -161,12 +161,12 @@ test("Returns correct length of the empty FormData content", async t => {
 })
 
 test("Returns the length of the FormData content", async t => {
-  const fd = new FormData()
+  const form = new FormData()
 
-  fd.set("field", "Some string")
-  fd.set("file", new File(["Some content"], "file.txt"))
+  form.set("field", "Some string")
+  form.set("file", new File(["Some content"], "file.txt"))
 
-  const encoder = new FormDataEncoder(fd)
+  const encoder = new FormDataEncoder(form)
 
   const expected = await readStream(encoder).then(({length}) => length)
 
@@ -174,11 +174,11 @@ test("Returns the length of the FormData content", async t => {
 })
 
 test(".values() yields headers as Uint8Array", t => {
-  const fd = new FormData()
+  const form = new FormData()
 
-  fd.set("field", "Some value")
+  form.set("field", "Some value")
 
-  const iterable = new FormDataEncoder(fd).values()
+  const iterable = new FormDataEncoder(form).values()
 
   const {value: actual} = skipSync(iterable)
 
@@ -186,11 +186,11 @@ test(".values() yields headers as Uint8Array", t => {
 })
 
 test(".valeus() yields field as Uint8Array", t => {
-  const fd = new FormData()
+  const form = new FormData()
 
-  fd.set("field", "Some value")
+  form.set("field", "Some value")
 
-  const {value: actual} = skipSync(new FormDataEncoder(fd).values(), 2)
+  const {value: actual} = skipSync(new FormDataEncoder(form).values(), 2)
 
   t.true(actual instanceof Uint8Array)
 })
@@ -199,11 +199,11 @@ test(".valeus() yields field's content", t => {
   const string = "Some value"
   const expected = new TextEncoder().encode(string)
 
-  const fd = new FormData()
+  const form = new FormData()
 
-  fd.set("field", string)
+  form.set("field", string)
 
-  const {value: actual} = skipSync(new FormDataEncoder(fd).values(), 2)
+  const {value: actual} = skipSync(new FormDataEncoder(form).values(), 2)
 
   t.true(Buffer.from(actual as Uint8Array).equals(expected))
 })
@@ -211,22 +211,22 @@ test(".valeus() yields field's content", t => {
 test(".values() yields a file as is", async t => {
   const file = new File(["File content"], "name.txt")
 
-  const fd = new FormData()
+  const form = new FormData()
 
-  fd.set("file", file)
+  form.set("file", file)
 
-  const {value: actual} = skipSync(new FormDataEncoder(fd).values(), 2)
+  const {value: actual} = skipSync(new FormDataEncoder(form).values(), 2)
 
   t.true(actual instanceof File)
   t.is(await (actual as File).text(), await file.text())
 })
 
 test("Yields correct headers for a field", async t => {
-  const fd = new FormData()
+  const form = new FormData()
 
-  fd.set("field", "Some value")
+  form.set("field", "Some value")
 
-  const iterable = readLine(Readable.from(new FormDataEncoder(fd)))
+  const iterable = readLine(Readable.from(new FormDataEncoder(form)))
 
   const {value} = await skip(iterable, 2)
 
@@ -236,25 +236,25 @@ test("Yields correct headers for a field", async t => {
 test("Yields field's content", async t => {
   const expected = "Some value"
 
-  const fd = new FormData()
+  const form = new FormData()
 
-  fd.set("field", expected)
+  form.set("field", expected)
 
   const {
     value
-  } = await skip(readLine(Readable.from(new FormDataEncoder(fd))), 4)
+  } = await skip(readLine(Readable.from(new FormDataEncoder(form))), 4)
 
   t.is(value, expected)
 })
 
 test("Yields Content-Disposition header for a File", async t => {
-  const fd = new FormData()
+  const form = new FormData()
 
-  fd.set("file", new File(["My hovercraft is full of eels"], "file.txt"))
+  form.set("file", new File(["My hovercraft is full of eels"], "file.txt"))
 
   const {
     value
-  } = await skip(readLine(Readable.from(new FormDataEncoder(fd))), 2)
+  } = await skip(readLine(Readable.from(new FormDataEncoder(form))), 2)
 
   t.is(
     value,
@@ -263,15 +263,15 @@ test("Yields Content-Disposition header for a File", async t => {
 })
 
 test("Yields Content-Type header for a File", async t => {
-  const fd = new FormData()
+  const form = new FormData()
 
-  fd.set("file", new File(["My hovercraft is full of eels"], "file.txt", {
+  form.set("file", new File(["My hovercraft is full of eels"], "file.txt", {
     type: "text/plain"
   }))
 
   const {
     value
-  } = await skip(readLine(Readable.from(new FormDataEncoder(fd))), 3)
+  } = await skip(readLine(Readable.from(new FormDataEncoder(form))), 3)
 
   t.is(value, "Content-Type: text/plain")
 })
@@ -279,11 +279,11 @@ test("Yields Content-Type header for a File", async t => {
 test(
   "File has default Content-Type set to application/octet-stream",
   async t => {
-    const fd = new FormData()
+    const form = new FormData()
 
-    fd.set("file", new File(["Some content"], "file"))
+    form.set("file", new File(["Some content"], "file"))
 
-    const iterable = readLine(Readable.from(new FormDataEncoder(fd)))
+    const iterable = readLine(Readable.from(new FormDataEncoder(form)))
 
     const {value} = await skip(iterable, 3)
 
@@ -291,15 +291,53 @@ test(
   }
 )
 
+test(
+  "Yields Content-Length File header when enableAdditionalHeaders option is on",
+
+  async t => {
+    const form = new FormData()
+    const file = new File(["Some content"], "file")
+
+    form.set("file", file)
+
+    const iterable = readLine(Readable.from(new FormDataEncoder(form, {
+      enableAdditionalHeaders: true
+    })))
+
+    const {value} = await skip(iterable, 4)
+
+    t.is(value, `Content-Length: ${file.size}`)
+  }
+)
+
+test(
+  "Yields Content-Length header when enableAdditionalHeaders option is on",
+
+  async t => {
+    const form = new FormData()
+    const field = "Some value"
+
+    form.set("field", field)
+
+    const iterable = readLine(Readable.from(new FormDataEncoder(form, {
+      enableAdditionalHeaders: true
+    })))
+
+    const {value} = await skip(iterable, 3)
+
+    t.is(value, `Content-Length: ${Buffer.byteLength(field)}`)
+  }
+)
+
 test("Yields File's content", async t => {
   const filePath = "license"
-  const fd = new FormData()
+  const form = new FormData()
 
   const expected = await fs.readFile(filePath, "utf-8")
 
-  fd.set("license", await fileFromPath(filePath))
+  form.set("license", await fileFromPath(filePath))
 
-  const encoder = new FormDataEncoder(fd)
+  const encoder = new FormDataEncoder(form)
   const iterable = readLine(Readable.from(encoder))
 
   await skip(iterable, 4)
@@ -322,12 +360,12 @@ test("Yields File's content", async t => {
 test("Yields every appended field", async t => {
   const expectedDisposition = "Content-Disposition: form-data; name=\"field\""
 
-  const fd = new FormData()
+  const form = new FormData()
 
-  fd.append("field", "Some string")
-  fd.append("field", "Some other string")
+  form.append("field", "Some string")
+  form.append("field", "Some other string")
 
-  const iterable = readLine(Readable.from(new FormDataEncoder(fd)))
+  const iterable = readLine(Readable.from(new FormDataEncoder(form)))
 
   const {value: firstFieldDisposition} = await skip(iterable, 2)
 
@@ -349,17 +387,17 @@ test("Yields every appended field", async t => {
 test("Yields every appended File", async t => {
   const expectedDisposition = "Content-Disposition: form-data; name=\"file\""
 
-  const fd = new FormData()
+  const form = new FormData()
 
   const firstFile = new File(["Some content"], "file.txt", {type: "text/plain"})
   const secondFile = new File(["Some **content**"], "file.md", {
     type: "text/markdown"
   })
 
-  fd.append("file", firstFile)
-  fd.append("file", secondFile)
+  form.append("file", firstFile)
+  form.append("file", secondFile)
 
-  const iterable = readLine(Readable.from(new FormDataEncoder(fd)))
+  const iterable = readLine(Readable.from(new FormDataEncoder(form)))
 
   const {value: firstFileDisposition} = await skip(iterable, 2)
 
@@ -387,12 +425,12 @@ test("Yields every appended File", async t => {
 })
 
 test("Can be read through using Blob", async t => {
-  const fd = new FormData()
+  const form = new FormData()
 
-  fd.set("field", "Some field")
-  fd.set("file", await fileFromPath("license", {type: "text/plain"}))
+  form.set("field", "Some field")
+  form.set("file", await fileFromPath("license", {type: "text/plain"}))
 
-  const encoder = new FormDataEncoder(fd)
+  const encoder = new FormDataEncoder(form)
   const blob = new Blob([...encoder] as any[])
 
   t.true(
@@ -421,6 +459,16 @@ test("Throws TypeError when given boundary is not a string", t => {
 
   t.throws(trap, {
     instanceOf: TypeError,
-    message: "Expected boundary to be a string."
+    message: "Expected boundary argument to be a string."
+  })
+})
+
+test("Throws TypeError when options argument is not an object", t => {
+  // @ts-expect-error
+  const trap = () => new FormDataEncoder(new FormData(), undefined, "451")
+
+  t.throws(trap, {
+    instanceOf: TypeError,
+    message: "Expected options argument to be an object."
   })
 })
