@@ -306,10 +306,12 @@ await fetch("https://httpbin.org/post", options)
 
 ### `class FormDataEncoder`
 
-##### `constructor(form[, boundary]) -> {Encoder}`
+##### `constructor(form[, boundary, options]) -> {Encoder}`
 
   - **{FormDataLike}** form - FormData object to encode. This object must be a spec-compatible FormData implementation.
-  - **{string}** boundary - An optional boundary string that will be used by the encoder. If there's no boundary string is present, Encoder will generate it automatically.
+  - **{string}** [boundary] - An optional boundary string that will be used by the encoder. If there's no boundary string is present, Encoder will generate it automatically.
+  - **{object}** [options] - Encoder options.
+  - **{boolean}** [options.enableAdditionalHeaders = false] - When enabled, the encoder will emit additional per part headers, such as `Content-Length`. Please note that the web clients do not include these, so when enabled this option might cause an error if `multipart/form-data` does not consider additional headers.
 
 Creates a multipart/form-data encoder.
 
