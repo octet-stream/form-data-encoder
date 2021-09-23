@@ -94,7 +94,7 @@ export class FormDataEncoder {
    * const form = new FormData()
    *
    * form.set("field", "Just a random string")
-   * form.set("file", new File(["Using files is class amazing"]))
+   * form.set("file", new File(["Using files is class amazing"], "file.txt"))
    * form.set("fileFromPath", await fileFromPath("path/to/a/file.txt"))
    *
    * const encoder = new FormDataEncoder(form)
@@ -284,7 +284,7 @@ export class FormDataEncoder {
    * const form = new FormData()
    *
    * form.set("field", "Just a random string")
-   * form.set("file", new File(["Using files is class amazing"]))
+   * form.set("file", new File(["Using files is class amazing"], "file.txt"))
    * form.set("fileFromPath", await fileFromPath("path/to/a/file.txt"))
    *
    * const encoder = new FormDataEncoder(form)
