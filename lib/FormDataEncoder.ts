@@ -84,14 +84,30 @@ export class FormDataEncoder {
    *
    * @example
    *
-   * import {Encoder} from "form-data-encoder"
-   * import {FormData} from "formdata-node"
+   * import {Readable} from "stream"
    *
-   * const fd = new FormData()
+   * import {FormData, File, fileFromPath} from "formdata-node"
+   * import {FormDataEncoder} from "form-data-encoder"
    *
-   * fd.set("greeting", "Hello, World!")
+   * import fetch from "node-fetch"
    *
-   * const encoder = new Encoder(fd)
+   * const form = new FormData()
+   *
+   * form.set("field", "Just a random string")
+   * form.set("file", new File(["Using files is class amazing"]))
+   * form.set("fileFromPath", await fileFromPath("path/to/a/file.txt"))
+   *
+   * const encoder = new FormDataEncoder(form)
+   *
+   * const options = {
+   *   method: "post",
+   *   headers: encoder.headers,
+   *   body: Readable.from(encoder)
+   * }
+   *
+   * const response = await fetch("https://httpbin.org/post", options)
+   *
+   * console.log(await response.json())
    */
   constructor(form: FormDataLike)
   constructor(form: FormDataLike, boundary: string)
@@ -212,7 +228,7 @@ export class FormDataEncoder {
    *
    * import {Readable} from "stream"
    *
-   * import {Encoder} from "form-data-encoder"
+   * import {FormDataEncoder} from "form-data-encoder"
    *
    * import {FormData} from "formdata-polyfill/esm-min.js"
    * import {fileFrom} from "fetch-blob/form.js"
@@ -221,13 +237,13 @@ export class FormDataEncoder {
    *
    * import fetch from "node-fetch"
    *
-   * const fd = new FormData()
+   * const form = new FormData()
    *
-   * fd.set("field", "Just a random string")
-   * fd.set("file", new File(["Using files is class amazing"]))
-   * fd.set("fileFromPath", await fileFrom("path/to/a/file.txt"))
+   * form.set("field", "Just a random string")
+   * form.set("file", new File(["Using files is class amazing"]))
+   * form.set("fileFromPath", await fileFrom("path/to/a/file.txt"))
    *
-   * const encoder = new Encoder(fd)
+   * const encoder = new FormDataEncoder(form)
    *
    * const options = {
    *   method: "post",
@@ -261,17 +277,17 @@ export class FormDataEncoder {
    * import {Readable} from "stream"
    *
    * import {FormData, File, fileFromPath} from "formdata-node"
-   * import {Encoder} from "form-data-encoder"
+   * import {FormDataEncoder} from "form-data-encoder"
    *
    * import fetch from "node-fetch"
    *
-   * const fd = new FormData()
+   * const form = new FormData()
    *
-   * fd.set("field", "Just a random string")
-   * fd.set("file", new File(["Using files is class amazing"]))
-   * fd.set("fileFromPath", await fileFromPath("path/to/a/file.txt"))
+   * form.set("field", "Just a random string")
+   * form.set("file", new File(["Using files is class amazing"]))
+   * form.set("fileFromPath", await fileFromPath("path/to/a/file.txt"))
    *
-   * const encoder = new Encoder(fd)
+   * const encoder = new FormDataEncoder(form)
    *
    * const options = {
    *   method: "post",
