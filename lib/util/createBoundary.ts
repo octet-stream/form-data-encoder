@@ -6,6 +6,14 @@ const alphabet = "abcdefghijklmnopqrstuvwxyz0123456789"
 
 /**
  * Generates a boundary string for FormData encoder.
+ *
+ * @api private
+ *
+ * ```js
+ * import createBoundary from "./util/createBoundary"
+ *
+ * createBoundary() // -> n2vw38xdagaq6lrv
+ * ```
  */
 function createBoundary(): string {
   let size = 16

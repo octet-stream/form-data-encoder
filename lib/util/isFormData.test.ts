@@ -2,7 +2,7 @@ import test from "ava"
 
 import {FormData} from "formdata-node"
 
-import isFormData from "./isFormData"
+import {isFormData} from "./isFormData"
 
 import {FormDataLike, FormDataEntryValue} from "../FormDataLike"
 

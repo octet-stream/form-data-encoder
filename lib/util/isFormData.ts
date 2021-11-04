@@ -7,7 +7,7 @@ import {FormDataLike} from "../FormDataLike"
  *
  * @param value an object to test
  */
-const isFormData = (value?: unknown): value is FormDataLike => Boolean(
+export const isFormData = (value?: unknown): value is FormDataLike => Boolean(
   (value as FormDataLike)
     && isFunction((value as FormDataLike).constructor)
     && (value as FormDataLike)[Symbol.toStringTag] === "FormData"
@@ -16,5 +16,3 @@ const isFormData = (value?: unknown): value is FormDataLike => Boolean(
     && isFunction((value as FormDataLike).entries)
     && isFunction((value as FormDataLike)[Symbol.iterator])
 )
-
-export default isFormData

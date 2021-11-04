@@ -1,10 +1,10 @@
 import createBoundary from "./util/createBoundary"
 import isPlainObject from "./util/isPlainObject"
 import normalize from "./util/normalizeValue"
-import isFormData from "./util/isFormData"
 import escape from "./util/escapeName"
-import isFile from "./util/isFile"
 
+import {isFileLike} from "./util/isFileLike"
+import {isFormData} from "./util/isFormData"
 import {FormDataLike} from "./FormDataLike"
 import {FileLike} from "./FileLike"
 
@@ -185,14 +185,14 @@ export class FormDataEncoder {
     header += `${this.#DASHES}${this.boundary}${this.#CRLF}`
     header += `Content-Disposition: form-data; name="${escape(name)}"`
 
-    if (isFile(value)) {
+    if (isFileLike(value)) {
       header += `; filename="${escape(value.name)}"${this.#CRLF}`
       header += `Content-Type: ${value.type || "application/octet-stream"}`
     }
 
     if (this.#options.enableAdditionalHeaders === true) {
       header += `${this.#CRLF}Content-Length: ${
-        isFile(value) ? value.size : value.byteLength
+        isFileLike(value) ? value.size : value.byteLength
       }`
     }
 
@@ -206,11 +206,11 @@ export class FormDataEncoder {
     let length = 0
 
     for (const [name, raw] of this.#form) {
-      const value = isFile(raw) ? raw : this.#encoder.encode(normalize(raw))
+      const value = isFileLike(raw) ? raw : this.#encoder.encode(normalize(raw))
 
       length += this.#getFieldHeader(name, value).byteLength
 
-      length += isFile(value) ? value.size : value.byteLength
+      length += isFileLike(value) ? value.size : value.byteLength
 
       length += this.#CRLF_BYTES_LENGTH
     }
@@ -256,7 +256,7 @@ export class FormDataEncoder {
    */
   * values(): Generator<Uint8Array | FileLike, void, undefined> {
     for (const [name, raw] of this.#form.entries()) {
-      const value = isFile(raw) ? raw : this.#encoder.encode(normalize(raw))
+      const value = isFileLike(raw) ? raw : this.#encoder.encode(normalize(raw))
 
       yield this.#getFieldHeader(name, value)
 
@@ -301,7 +301,7 @@ export class FormDataEncoder {
    */
   async* encode(): AsyncGenerator<Uint8Array, void, undefined> {
     for (const part of this.values()) {
-      if (isFile(part)) {
+      if (isFileLike(part)) {
         yield* part.stream()
       } else {
         yield part
