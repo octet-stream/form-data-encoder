@@ -1,5 +1,8 @@
-const alphabet
-  = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+// TODO: Return uppercase characters back once the spec gets fixed.
+// Keep track on these:
+// 1. https://github.com/whatwg/html/issues/6251
+// 2. https://github.com/w3c/FileAPI/issues/43
+const alphabet = "abcdefghijklmnopqrstuvwxyz0123456789"
 
 /**
  * Generates a boundary string for FormData encoder.
