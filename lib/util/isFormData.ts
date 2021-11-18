@@ -16,3 +16,12 @@ export const isFormData = (value?: unknown): value is FormDataLike => Boolean(
     && isFunction((value as FormDataLike).entries)
     && isFunction((value as FormDataLike)[Symbol.iterator])
 )
+
+/**
+ * Check if given object is FormData
+ *
+ * @param value an object to test
+ *
+ * @deprecated use `isFormData` instead.
+ */
+export const isFormDataLike = isFormData
