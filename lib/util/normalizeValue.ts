@@ -8,6 +8,15 @@
  * @api private
  */
 const normalizeValue = (value: unknown): string => String(value)
-  .replace(/\r(?!\n)|(?<!\r)\n/g, "\r\n")
+  .replace(/\r|\n/g, (match: string, i: number, str: string) => {
+    if (
+      (match === "\r" && str[i + 1] !== "\n")
+        || (match === "\n" && str[i - 1] !== "\r")
+    ) {
+      return "\r\n"
+    }
+
+    return match
+  })
 
 export default normalizeValue
