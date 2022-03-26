@@ -19,7 +19,7 @@ export interface FormDataEncoderOptions {
   enableAdditionalHeaders?: boolean
 }
 
-const defaultOptionss: FormDataEncoderOptions = {
+const defaultOptions: FormDataEncoderOptions = {
   enableAdditionalHeaders: false
 }
 
@@ -151,7 +151,7 @@ export class FormDataEncoder {
     // ? and go through entries during initialization.
     this.#form = form
 
-    this.#options = {...defaultOptionss, ...options}
+    this.#options = {...defaultOptions, ...options}
 
     this.#CRLF_BYTES = this.#encoder.encode(this.#CRLF)
     this.#CRLF_BYTES_LENGTH = this.#CRLF_BYTES.byteLength
