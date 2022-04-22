@@ -1,6 +1,6 @@
-import isFunction from "./isFunction"
+import isFunction from "./isFunction.js"
 
-import {FormDataLike} from "../FormDataLike"
+import {FormDataLike} from "../FormDataLike.js"
 
 /**
  * Check if given object is FormData

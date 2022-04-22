@@ -4,6 +4,11 @@
   "parserOptions": {
     "project": "./tsconfig.eslint.json"
   },
+  "settings": {
+    "import/resolver": {
+      "typescript": {}
+    }
+  },
   "env": {
     "browser": true,
     "node": true

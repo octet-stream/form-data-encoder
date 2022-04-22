@@ -9,12 +9,12 @@ import {fileFromPath} from "formdata-node/file-from-path"
 
 import {FormData, Blob, File} from "formdata-node"
 
-import skipSync from "./__helper__/skipIterationsSync"
-import readStream from "./__helper__/readStream"
-import skip from "./__helper__/skipIterations"
-import readLine from "./__helper__/readLine"
+import skipSync from "./__helper__/skipIterationsSync.js"
+import readStream from "./__helper__/readStream.js"
+import skip from "./__helper__/skipIterations.js"
+import readLine from "./__helper__/readLine.js"
 
-import {FormDataEncoder} from "./FormDataEncoder"
+import {FormDataEncoder} from "./FormDataEncoder.js"
 
 test("Has boundary string", t => {
   const encoder = new FormDataEncoder(new FormData())
@@ -157,7 +157,7 @@ test("Returns correct length of the empty FormData content", async t => {
   const encoder = new FormDataEncoder(new FormData())
   const expected = await readStream(encoder).then(({length}) => length)
 
-  t.is<number>(encoder.getContentLength(), expected)
+  t.is<number, number>(encoder.getContentLength(), expected)
 })
 
 test("Returns the length of the FormData content", async t => {
@@ -170,7 +170,7 @@ test("Returns the length of the FormData content", async t => {
 
   const expected = await readStream(encoder).then(({length}) => length)
 
-  t.is<number>(encoder.getContentLength(), expected)
+  t.is<number, number>(encoder.getContentLength(), expected)
 })
 
 test(".values() yields headers as Uint8Array", t => {
@@ -354,7 +354,7 @@ test("Yields File's content", async t => {
   chunks.pop() // Remove trailing empty line
 
   // It looks like files on Windows have different EOL when you read them, even though they were created on macOS x)
-  t.is<string>(chunks.join(EOL), expected)
+  t.is<string, string>(chunks.join(EOL), expected)
 })
 
 test("Yields every appended field", async t => {
