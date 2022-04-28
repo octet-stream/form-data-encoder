@@ -26,10 +26,6 @@ Or pnpm:
 pnpm add form-data-encoder
 ```
 
-## ESM/CJS support
-
-This package is targeting ESM and CJS for backwards compatibility reasons and smoothen transition period while you convert your projects to ESM only. Note that CJS support will be removed as [Node.js v12 will reach its EOL](https://github.com/nodejs/release#release-schedule). This change will be released as major version update, so you won't miss it.
-
 ## Usage
 
 1. To start the encoding process, you need to create a new Encoder instance with the FormData you want to encode:
