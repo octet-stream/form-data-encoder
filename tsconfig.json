@@ -9,7 +9,7 @@
   ],
   "compilerOptions": {
     "outDir": "lib",
-    "target": "es2018",
+    "target": "es2020",
     "module": "es2020",
     "noImplicitAny": true,
     "baseUrl": "src",
