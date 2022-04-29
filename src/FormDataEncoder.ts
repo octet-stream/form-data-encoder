@@ -323,9 +323,3 @@ export class FormDataEncoder {
     return this.encode()
   }
 }
-
-/**
- * @deprecated Use FormDataEncoder to import the encoder class instead
- */
-/* c8 ignore next */
-export const Encoder = FormDataEncoder
