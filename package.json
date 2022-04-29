@@ -5,6 +5,9 @@
   "description": "Encode FormData content into the multipart/form-data format",
   "repository": "octet-stream/form-data-encoder",
   "sideEffects": false,
+  "engines": {
+    "node": ">= 14"
+  },
   "keywords": [
     "form-data",
     "encoder",
