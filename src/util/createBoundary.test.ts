@@ -1,6 +1,6 @@
 import test from "ava"
 
-import createBoundary from "./createBoundary"
+import createBoundary from "./createBoundary.js"
 
 test("Returns a string", t => {
   const actual = createBoundary()

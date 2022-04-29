@@ -1,6 +1,6 @@
 import test from "ava"
 
-import normalize from "./normalizeValue"
+import normalize from "./normalizeValue.js"
 
 const expected = "\r\nFirst line.\r\nSecond line.\r\nThird line.\r\n"
 

@@ -2,9 +2,9 @@ import test from "ava"
 
 import {FormData} from "formdata-node"
 
-import {isFormData} from "./isFormData"
+import {isFormData} from "./isFormData.js"
 
-import {FormDataLike, FormDataEntryValue} from "../FormDataLike"
+import {FormDataLike, FormDataEntryValue} from "../FormDataLike.js"
 
 test("Returns true for spec-compatible FormData instance", t => {
   t.true(isFormData(new FormData()))

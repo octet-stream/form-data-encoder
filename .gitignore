@@ -12,4 +12,5 @@ coverage
 *.old
 @type
 
-/lib/**/*.js
+/src/**/*.js
+/lib

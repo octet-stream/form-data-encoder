@@ -3,7 +3,6 @@
 node_modules
 coverage
 __helper__
-coverage
 .codecov
 .husky
 .eslintignore
@@ -11,22 +10,17 @@ package-lock.json
 yarn-error.log
 pnpm-lock.yaml
 .c8rc.json
-.env
 
 /code-of-conduct.md
 /.editorconfig
 /.eslintrc.json
 /.lintstagedrc
 /.travis.yml
-/ava.config.cjs
-/ava.config.mjs
 /ava.config.js
 /yarn.lock
 /test.mjs
 /tsconfig.json
-/tsconfig.esm.json
-/tsconfig.cjs.json
 /tsconfig.eslint.json
 /tsconfig.d.ts.json
 /tsconfig.ava.json
-lib/**/*.ts
+/src

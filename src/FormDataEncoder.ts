@@ -1,12 +1,12 @@
-import createBoundary from "./util/createBoundary"
-import isPlainObject from "./util/isPlainObject"
-import normalize from "./util/normalizeValue"
-import escape from "./util/escapeName"
+import createBoundary from "./util/createBoundary.js"
+import isPlainObject from "./util/isPlainObject.js"
+import normalize from "./util/normalizeValue.js"
+import escape from "./util/escapeName.js"
 
-import {isFileLike} from "./util/isFileLike"
-import {isFormData} from "./util/isFormData"
-import {FormDataLike} from "./FormDataLike"
-import {FileLike} from "./FileLike"
+import {isFileLike} from "./util/isFileLike.js"
+import {isFormData} from "./util/isFormData.js"
+import {FormDataLike} from "./FormDataLike.js"
+import {FileLike} from "./FileLike.js"
 
 export interface FormDataEncoderOptions {
   /**
@@ -323,9 +323,3 @@ export class FormDataEncoder {
     return this.encode()
   }
 }
-
-/**
- * @deprecated Use FormDataEncoder to import the encoder class instead
- */
-/* c8 ignore next */
-export const Encoder = FormDataEncoder
