@@ -22,7 +22,7 @@
   "exports": "./lib/esm/index.js",
   "types": "./@type/index.d.ts",
   "scripts": {
-    "eslint": "eslint lib/**/*.ts",
+    "eslint": "eslint src/**/*.ts",
     "staged": "lint-staged",
     "coverage": "c8 npm test",
     "ci": "c8 npm test && c8 report --reporter=json",
