@@ -30,7 +30,7 @@ import {FileLike} from "../FileLike.js"
  * isFile(createReadStream("path/to/a/file.txt")) // -> false
  * ```
  */
-export const isFile = (value?: unknown): value is FileLike => Boolean(
+export const isFile = (value: unknown): value is FileLike => Boolean(
   (value as FileLike)
     && typeof (value as FileLike) === "object"
     && isFunction((value as FileLike).constructor)
