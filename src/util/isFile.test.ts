@@ -4,12 +4,12 @@ import {File, Blob} from "formdata-node"
 
 import {FileLike} from "../FileLike.js"
 
-import {isFileLike} from "./isFileLike.js"
+import {isFile} from "./isFile.js"
 
 test("Returns true for a File", t => {
   const file = new File(["Content"], "name.txt")
 
-  t.true(isFileLike(file))
+  t.true(isFile(file))
 })
 
 test("Returns true for a class that implements File", t => {
@@ -31,7 +31,7 @@ test("Returns true for a class that implements File", t => {
     }
   }
 
-  t.true(isFileLike(new MyFile()))
+  t.true(isFile(new MyFile()))
 })
 
 test("Returns true for a file-shaped object", t => {
@@ -53,23 +53,23 @@ test("Returns true for a file-shaped object", t => {
     }
   }
 
-  t.true(isFileLike(object))
+  t.true(isFile(object))
 })
 
 test("Returns false for null", t => {
-  t.false(isFileLike(null))
+  t.false(isFile(null))
 })
 
 test("Returns false for undefined", t => {
-  t.false(isFileLike(undefined))
+  t.false(isFile(undefined))
 })
 
 test("Returns false for non-File object", t => {
-  t.false(isFileLike(new Map()))
+  t.false(isFile(new Map()))
 })
 
 test("Returns false for Blob", t => {
   const blob = new Blob(["Content"], {type: "text/plain"})
 
-  t.false(isFileLike(blob))
+  t.false(isFile(blob))
 })

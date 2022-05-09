@@ -3,7 +3,7 @@ import isPlainObject from "./util/isPlainObject.js"
 import normalize from "./util/normalizeValue.js"
 import escape from "./util/escapeName.js"
 
-import {isFileLike} from "./util/isFileLike.js"
+import {isFile} from "./util/isFile.js"
 import {isFormData} from "./util/isFormData.js"
 import {FormDataLike} from "./FormDataLike.js"
 import {FileLike} from "./FileLike.js"
@@ -185,14 +185,14 @@ export class FormDataEncoder {
     header += `${this.#DASHES}${this.boundary}${this.#CRLF}`
     header += `Content-Disposition: form-data; name="${escape(name)}"`
 
-    if (isFileLike(value)) {
+    if (isFile(value)) {
       header += `; filename="${escape(value.name)}"${this.#CRLF}`
       header += `Content-Type: ${value.type || "application/octet-stream"}`
     }
 
     if (this.#options.enableAdditionalHeaders === true) {
       header += `${this.#CRLF}Content-Length: ${
-        isFileLike(value) ? value.size : value.byteLength
+        isFile(value) ? value.size : value.byteLength
       }`
     }
 
@@ -206,11 +206,11 @@ export class FormDataEncoder {
     let length = 0
 
     for (const [name, raw] of this.#form) {
-      const value = isFileLike(raw) ? raw : this.#encoder.encode(normalize(raw))
+      const value = isFile(raw) ? raw : this.#encoder.encode(normalize(raw))
 
       length += this.#getFieldHeader(name, value).byteLength
 
-      length += isFileLike(value) ? value.size : value.byteLength
+      length += isFile(value) ? value.size : value.byteLength
 
       length += this.#CRLF_BYTES_LENGTH
     }
@@ -256,7 +256,7 @@ export class FormDataEncoder {
    */
   * values(): Generator<Uint8Array | FileLike, void, undefined> {
     for (const [name, raw] of this.#form.entries()) {
-      const value = isFileLike(raw) ? raw : this.#encoder.encode(normalize(raw))
+      const value = isFile(raw) ? raw : this.#encoder.encode(normalize(raw))
 
       yield this.#getFieldHeader(name, value)
 
@@ -301,7 +301,7 @@ export class FormDataEncoder {
    */
   async* encode(): AsyncGenerator<Uint8Array, void, undefined> {
     for (const part of this.values()) {
-      if (isFileLike(part)) {
+      if (isFile(part)) {
         yield* part.stream()
       } else {
         yield part
