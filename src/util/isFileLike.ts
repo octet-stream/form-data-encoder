@@ -14,21 +14,23 @@ import {FileLike} from "../FileLike.js"
  * This function will return `true` for FileAPI compatible `File` objects:
  *
  * ```
- * import {isFileLike} from "form-data-encoder"
+ * import {createReadStream} from "node:fs"
  *
- * isFileLike(new File(["Content"], "file.txt")) // -> true
+ * import {isFile} from "form-data-encoder"
+ *
+ * isFile(new File(["Content"], "file.txt")) // -> true
  * ```
  *
  * However, if you pass a Node.js `Buffer` or `ReadStream`, it will return `false`:
  *
  * ```js
- * import {isFileLike} from "form-data-encoder"
+ * import {isFile} from "form-data-encoder"
  *
- * isFileLike(Buffer.from("Content")) // -> false
- * isFileLike(fs.createReadStream("path/to/a/file.txt")) // -> false
+ * isFile(Buffer.from("Content")) // -> false
+ * isFile(createReadStream("path/to/a/file.txt")) // -> false
  * ```
  */
-export const isFileLike = (value?: unknown): value is FileLike => Boolean(
+export const isFile = (value?: unknown): value is FileLike => Boolean(
   (value as FileLike)
     && typeof (value as FileLike) === "object"
     && isFunction((value as FileLike).constructor)
@@ -38,3 +40,35 @@ export const isFileLike = (value?: unknown): value is FileLike => Boolean(
     && (value as FileLike).size != null
     && (value as FileLike).lastModified != null
 )
+
+/**
+ * Check if given object is `File`.
+ *
+ * Note that this function will return `false` for Blob, because the FormDataEncoder expects FormData to return File when a value is binary data.
+ *
+ * @param value an object to test
+ *
+ * @api public
+ *
+ * @deprecated use `isFile` instead
+ *
+ * This function will return `true` for FileAPI compatible `File` objects:
+ *
+ * ```
+ * import {isFileLike} from "form-data-encoder"
+ *
+ * isFileLike(new File(["Content"], "file.txt")) // -> true
+ * ```
+ *
+ * However, if you pass a Node.js `Buffer` or `ReadStream`, it will return `false`:
+ *
+ * ```js
+ * import {createReadStream} from "node:fs"
+ *
+ * import {isFileLike} from "form-data-encoder"
+ *
+ * isFileLike(Buffer.from("Content")) // -> false
+ * isFileLike(createReadStream("path/to/a/file.txt")) // -> false
+ * ```
+ */
+export const isFileLike = isFile
