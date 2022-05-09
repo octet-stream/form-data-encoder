@@ -19,7 +19,7 @@
   ],
   "main": "./lib/index.js",
   "module": "./lib/index.js",
-  "exports": "./lib/esm/index.js",
+  "exports": "./lib/index.js",
   "types": "./@type/index.d.ts",
   "scripts": {
     "eslint": "eslint src/**/*.ts",
