@@ -212,7 +212,7 @@ export class FormDataEncoder {
   /**
    * Returns form-data content length
    */
-  #getContentLength(): number {
+  #getContentLength(): string {
     let length = 0
 
     for (const [name, raw] of this.#form) {
@@ -225,7 +225,7 @@ export class FormDataEncoder {
       length += this.#CRLF_BYTES_LENGTH
     }
 
-    return length + this.#footer.byteLength
+    return String(length + this.#footer.byteLength)
   }
 
   /**
@@ -234,7 +234,7 @@ export class FormDataEncoder {
    * @deprecated Use FormDataEncoder.contentLength or FormDataEncoder.headers["Content-Length"] instead
    */
   getContentLength(): number {
-    return this.#getContentLength()
+    return Number(this.contentLength)
   }
 
   /**
