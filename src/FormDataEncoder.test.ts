@@ -131,10 +131,61 @@ test("contentLength property cannot be deleted", t => {
 test("Has correct headers", async t => {
   const encoder = new FormDataEncoder(new FormData())
 
-  t.deepEqual(encoder.headers, {
+  t.deepEqual({...encoder.headers}, {
     "Content-Type": `multipart/form-data; boundary=${encoder.boundary}`,
     "Content-Length": await readStream(encoder).then(({length}) => `${length}`)
   })
+})
+
+test("Headers can be accessed by lowercased keys", async t => {
+  const encoder = new FormDataEncoder(new FormData())
+
+  t.true("content-type" in encoder.headers)
+  t.is(
+    encoder.headers["content-type"],
+
+    `multipart/form-data; boundary=${encoder.boundary}`
+  )
+
+  t.true("content-length" in encoder.headers)
+  t.is(
+    encoder.headers["content-length"],
+
+    await readStream(encoder).then(({length}) => `${length}`)
+  )
+})
+
+test("FormDataEncoder.headers property is read-only", t => {
+  const encoder = new FormDataEncoder(new FormData())
+
+  const expected = {...encoder.headers}
+
+  // @ts-expect-error
+  try { encoder.headers = {foo: "foo"} } catch { /* noop */ }
+
+  t.deepEqual({...encoder.headers}, expected)
+})
+
+test("Content-Type header is read-only", t => {
+  const {headers} = new FormDataEncoder(new FormData())
+
+  const expected = headers["Content-Type"]
+
+  // @ts-expect-error
+  try { headers["Content-Type"] = "can't override" } catch { /* noop */ }
+
+  t.is(headers["Content-Type"], expected)
+})
+
+test("Content-Length header is read-only", t => {
+  const {headers} = new FormDataEncoder(new FormData())
+
+  const expected = headers["Content-Length"]
+
+  // @ts-expect-error
+  try { headers["Content-Length"] = "can't override" } catch { /* noop */ }
+
+  t.is(headers["Content-Length"], expected)
 })
 
 test("Yields correct footer for empty FormData", async t => {

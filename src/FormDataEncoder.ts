@@ -5,10 +5,21 @@ import escape from "./util/escapeName.js"
 
 import {isFile} from "./util/isFile.js"
 import {isFormData} from "./util/isFormData.js"
+import {proxyHeaders} from "./util/proxyHeaders.js"
+import type {LowercaseObjectKeys} from "./util/LowercaseObjectKeys.js"
 import {FormDataLike} from "./FormDataLike.js"
 import {FileLike} from "./FileLike.js"
 
 type FormDataEntryValue = string | FileLike
+
+type RawHeaders = Readonly<{
+  "Content-Type": string
+  "Content-Length": string
+}>
+
+export type FormDataEncoderHeaders =
+  & RawHeaders
+  & LowercaseObjectKeys<RawHeaders>
 
 export interface FormDataEncoderOptions {
   /**
@@ -76,10 +87,7 @@ export class FormDataEncoder {
   /**
    * Returns headers object with Content-Type and Content-Length header
    */
-  readonly headers: {
-    "Content-Type": string
-    "Content-Length": string
-  }
+  readonly headers: FormDataEncoderHeaders
 
   /**
    * Creates a multipart/form-data encoder.
@@ -167,10 +175,10 @@ export class FormDataEncoder {
 
     this.contentLength = String(this.#getContentLength())
 
-    this.headers = Object.freeze({
+    this.headers = proxyHeaders(Object.freeze({
       "Content-Type": this.contentType,
       "Content-Length": this.contentLength
-    })
+    }))
 
     // Make sure following properties read-only in runtime.
     Object.defineProperties(this, {
