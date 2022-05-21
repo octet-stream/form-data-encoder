@@ -1,6 +1,6 @@
-import {promises as fs} from "fs"
-import {Readable} from "stream"
-import {EOL} from "os"
+import {readFile} from "node:fs/promises"
+import {Readable} from "node:stream"
+import {EOL} from "node:os"
 
 import test from "ava"
 
@@ -384,7 +384,7 @@ test("Yields File's content", async t => {
   const filePath = "license"
   const form = new FormData()
 
-  const expected = await fs.readFile(filePath, "utf-8")
+  const expected = await readFile(filePath, "utf-8")
 
   form.set("license", await fileFromPath(filePath))
 
