@@ -8,6 +8,8 @@ import {isFormData} from "./util/isFormData.js"
 import {FormDataLike} from "./FormDataLike.js"
 import {FileLike} from "./FileLike.js"
 
+type FormDataEntryValue = string | FileLike
+
 export interface FormDataEncoderOptions {
   /**
    * When enabled, the encoder will emit additional per part headers, such as `Content-Length`.
@@ -49,8 +51,11 @@ export class FormDataEncoder {
   /**
    * FormData instance
    */
-  readonly #form: FormDataLike
+  readonly #form: [string, FormDataEntryValue][]
 
+  /**
+   * Instance options
+   */
   readonly #options: FormDataEncoderOptions
 
   /**
@@ -146,10 +151,7 @@ export class FormDataEncoder {
       throw new TypeError("Expected options argument to be an object.")
     }
 
-    // ? Should I preserve FormData entries in array instead?
-    // ? That way it will be immutable, but require to allocate a new array
-    // ? and go through entries during initialization.
-    this.#form = form
+    this.#form = Array.from(form.entries())
 
     this.#options = {...defaultOptions, ...options}
 
@@ -163,7 +165,7 @@ export class FormDataEncoder {
       `${this.#DASHES}${this.boundary}${this.#DASHES}${this.#CRLF.repeat(2)}`
     )
 
-    this.contentLength = String(this.getContentLength())
+    this.contentLength = String(this.#getContentLength())
 
     this.headers = Object.freeze({
       "Content-Type": this.contentType,
@@ -202,7 +204,7 @@ export class FormDataEncoder {
   /**
    * Returns form-data content length
    */
-  getContentLength(): number {
+  #getContentLength(): number {
     let length = 0
 
     for (const [name, raw] of this.#form) {
@@ -216,6 +218,15 @@ export class FormDataEncoder {
     }
 
     return length + this.#footer.byteLength
+  }
+
+  /**
+   * Returns form-data content length
+   *
+   * @deprecated Use FormDataEncoder.contentLength or FormDataEncoder.headers["Content-Length"] instead
+   */
+  getContentLength(): number {
+    return this.#getContentLength()
   }
 
   /**
@@ -255,7 +266,7 @@ export class FormDataEncoder {
    * console.log(await response.json())
    */
   * values(): Generator<Uint8Array | FileLike, void, undefined> {
-    for (const [name, raw] of this.#form.entries()) {
+    for (const [name, raw] of this.#form) {
       const value = isFile(raw) ? raw : this.#encoder.encode(normalize(raw))
 
       yield this.#getFieldHeader(name, value)
