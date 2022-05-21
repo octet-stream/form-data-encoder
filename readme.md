@@ -302,14 +302,14 @@ await fetch("https://httpbin.org/post", options)
 
 ### `class FormDataEncoder`
 
-##### `constructor(form[, boundary, options]) -> {Encoder}`
+##### `constructor(form[, boundary, options]) -> {FormDataEncoder}`
 
   - **{FormDataLike}** form - FormData object to encode. This object must be a spec-compatible FormData implementation.
-  - **{string}** [boundary] - An optional boundary string that will be used by the encoder. If there's no boundary string is present, Encoder will generate it automatically.
-  - **{object}** [options] - Encoder options.
+  - **{string}** [boundary] - An optional boundary string that will be used by the encoder. If there's no boundary string is present, FormDataEncoder will generate it automatically.
+  - **{object}** [options] - FormDataEncoder options.
   - **{boolean}** [options.enableAdditionalHeaders = false] - When enabled, the encoder will emit additional per part headers, such as `Content-Length`. Please note that the web clients do not include these, so when enabled this option might cause an error if `multipart/form-data` does not consider additional headers.
 
-Creates a multipart/form-data encoder.
+Creates a `multipart/form-data` encoder.
 
 #### Instance properties
 
@@ -349,13 +349,13 @@ An alias for `Encoder#values()` method.
 
 An alias for `Encoder#encode()` method.
 
-### `isFileLike(value) -> {boolean}`
+### `isFile(value) -> {boolean}`
 
 Check if a value is File-ish object.
 
   - **{unknown}** value - a value to test
 
-### `isFormDataLike(value) -> {boolean}`
+### `isFormData(value) -> {boolean}`
 
 Check if a value is FormData-ish object.
 
