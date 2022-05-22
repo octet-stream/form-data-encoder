@@ -31,7 +31,7 @@
     "test": "ava --fail-fast",
     "cleanup": "del-cli @type lib",
     "prepare": "npm run cleanup && npm run build",
-    "_postinstall": "husky install",
+    "postinstall": "husky install",
     "prepublishOnly": "pinst --disable",
     "postpublish": "pinst --enable"
   },
