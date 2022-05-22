@@ -1,6 +1,6 @@
 import test from "ava"
 
-import escapeName from "./escapeName.js"
+import {escapeName} from "./escapeName.js"
 
 const CR = "%0D"
 const LF = "%0A"

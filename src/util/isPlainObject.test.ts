@@ -1,6 +1,6 @@
 import test from "ava"
 
-import isPlainObject from "./isPlainObject.js"
+import {isPlainObject} from "./isPlainObject.js"
 
 test("Returns true when object literal given", t => {
   t.true(isPlainObject({}))

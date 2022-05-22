@@ -15,7 +15,7 @@ const alphabet = "abcdefghijklmnopqrstuvwxyz0123456789"
  * createBoundary() // -> n2vw38xdagaq6lrv
  * ```
  */
-function createBoundary(): string {
+export function createBoundary(): string {
   let size = 16
   let res = ""
 
@@ -32,5 +32,3 @@ function createBoundary(): string {
 
   return res
 }
-
-export default createBoundary

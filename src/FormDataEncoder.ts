@@ -1,14 +1,13 @@
-import createBoundary from "./util/createBoundary.js"
-import isPlainObject from "./util/isPlainObject.js"
-import normalize from "./util/normalizeValue.js"
-import escape from "./util/escapeName.js"
-
-import {isFile} from "./util/isFile.js"
-import {isFormData} from "./util/isFormData.js"
-import {proxyHeaders} from "./util/proxyHeaders.js"
 import type {LowercaseObjectKeys} from "./util/LowercaseObjectKeys.js"
-import {FormDataLike} from "./FormDataLike.js"
-import {FileLike} from "./FileLike.js"
+import {createBoundary} from "./util/createBoundary.js"
+import {normalizeValue} from "./util/normalizeValue.js"
+import {isPlainObject} from "./util/isPlainObject.js"
+import {proxyHeaders} from "./util/proxyHeaders.js"
+import type {FormDataLike} from "./FormDataLike.js"
+import {isFormData} from "./util/isFormData.js"
+import {escapeName} from "./util/escapeName.js"
+import type {FileLike} from "./FileLike.js"
+import {isFile} from "./util/isFile.js"
 
 type FormDataEntryValue = string | FileLike
 
@@ -195,10 +194,10 @@ export class FormDataEncoder {
     let header = ""
 
     header += `${this.#DASHES}${this.boundary}${this.#CRLF}`
-    header += `Content-Disposition: form-data; name="${escape(name)}"`
+    header += `Content-Disposition: form-data; name="${escapeName(name)}"`
 
     if (isFile(value)) {
-      header += `; filename="${escape(value.name)}"${this.#CRLF}`
+      header += `; filename="${escapeName(value.name)}"${this.#CRLF}`
       header += `Content-Type: ${value.type || "application/octet-stream"}`
     }
 
@@ -218,7 +217,9 @@ export class FormDataEncoder {
     let length = 0
 
     for (const [name, raw] of this.#form) {
-      const value = isFile(raw) ? raw : this.#encoder.encode(normalize(raw))
+      const value = isFile(raw) ? raw : this.#encoder.encode(
+        normalizeValue(raw)
+      )
 
       length += this.#getFieldHeader(name, value).byteLength
 
@@ -277,7 +278,9 @@ export class FormDataEncoder {
    */
   * values(): Generator<Uint8Array | FileLike, void, undefined> {
     for (const [name, raw] of this.#form) {
-      const value = isFile(raw) ? raw : this.#encoder.encode(normalize(raw))
+      const value = isFile(raw) ? raw : this.#encoder.encode(
+        normalizeValue(raw)
+      )
 
       yield this.#getFieldHeader(name, value)
 

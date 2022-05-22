@@ -2,7 +2,7 @@ const getType = (value: unknown): string => (
   Object.prototype.toString.call(value).slice(8, -1).toLowerCase()
 )
 
-function isPlainObject(value: unknown): value is object {
+export function isPlainObject(value: unknown): value is object {
   if (getType(value) !== "object") {
     return false
   }
@@ -17,5 +17,3 @@ function isPlainObject(value: unknown): value is object {
 
   return Ctor === Object.toString()
 }
-
-export default isPlainObject

@@ -1,6 +1,5 @@
-import isFunction from "./isFunction.js"
-
-import {FileLike} from "../FileLike.js"
+import type {FileLike} from "../FileLike.js"
+import {isFunction} from "./isFunction.js"
 
 /**
  * Check if given object is `File`.

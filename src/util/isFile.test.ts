@@ -2,8 +2,7 @@ import test from "ava"
 
 import {File, Blob} from "formdata-node"
 
-import {FileLike} from "../FileLike.js"
-
+import type {FileLike} from "../FileLike.js"
 import {isFile} from "./isFile.js"
 
 test("Returns true for a File", t => {

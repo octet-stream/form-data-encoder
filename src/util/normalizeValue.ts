@@ -7,7 +7,7 @@
  *
  * @api private
  */
-const normalizeValue = (value: unknown): string => String(value)
+export const normalizeValue = (value: unknown): string => String(value)
   .replace(/\r|\n/g, (match: string, i: number, str: string) => {
     if (
       (match === "\r" && str[i + 1] !== "\n")
@@ -18,5 +18,3 @@ const normalizeValue = (value: unknown): string => String(value)
 
     return match
   })
-
-export default normalizeValue
