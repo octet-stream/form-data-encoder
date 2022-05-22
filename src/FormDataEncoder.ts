@@ -174,7 +174,7 @@ export class FormDataEncoder {
       `${this.#DASHES}${this.boundary}${this.#DASHES}${this.#CRLF.repeat(2)}`
     )
 
-    this.contentLength = String(this.#getContentLength())
+    this.contentLength = this.#getContentLength()
 
     this.headers = proxyHeaders(Object.freeze({
       "Content-Type": this.contentType,
