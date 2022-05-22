@@ -1,4 +1,7 @@
 export default {
+  environmentVariables: {
+    TS_NODE_PREFER_TS_EXTS: "true"
+  },
   extensions: {
     ts: "module"
   },
