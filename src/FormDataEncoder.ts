@@ -36,6 +36,8 @@ const defaultOptions: FormDataEncoderOptions = {
   enableAdditionalHeaders: false
 }
 
+const readonlyProp: PropertyDescriptor = {writable: false, configurable: false}
+
 /**
  * Implements [`multipart/form-data` encoding algorithm](https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#multipart/form-data-encoding-algorithm),
  * allowing to add support for spec-comliant [`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/FormData) to an HTTP client.
@@ -182,10 +184,10 @@ export class FormDataEncoder {
 
     // Make sure following properties read-only in runtime.
     Object.defineProperties(this, {
-      boundary: {writable: false, configurable: false},
-      contentType: {writable: false, configurable: false},
-      contentLength: {writable: false, configurable: false},
-      headers: {writable: false, configurable: false}
+      boundary: readonlyProp,
+      contentType: readonlyProp,
+      contentLength: readonlyProp,
+      headers: readonlyProp
     })
   }
 
