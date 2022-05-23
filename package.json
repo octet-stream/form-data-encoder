@@ -6,7 +6,7 @@
   "repository": "octet-stream/form-data-encoder",
   "sideEffects": false,
   "engines": {
-    "node": ">= 14.18"
+    "node": ">= 14.17"
   },
   "keywords": [
     "form-data",
