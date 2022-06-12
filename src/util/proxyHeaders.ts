@@ -2,9 +2,9 @@ import type {LowercaseObjectKeys} from "./LowercaseObjectKeys.js"
 
 type AnyObject = Record<string | symbol, string>
 
-function getProperty<T extends AnyObject>(
-  target: T, prop: string | symbol
-): string | undefined {
+function getProperty<
+  T extends AnyObject
+>(target: T, prop: string | symbol): string | undefined {
   if (typeof prop !== "string") {
     return target[prop]
   }
@@ -18,8 +18,8 @@ function getProperty<T extends AnyObject>(
   return undefined
 }
 
-export const proxyHeaders = <T extends AnyObject>(target: T) => new Proxy(
-  target,
+export const proxyHeaders = <T extends AnyObject>(object: T) => new Proxy(
+  object,
 
   {
     get: (target, prop) => getProperty(target, prop),

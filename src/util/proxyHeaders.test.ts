@@ -23,10 +23,12 @@ test("Has no affect on symbols", t => {
 })
 
 test("Returns indefined if property doesn't exists", t => {
-  const object: Record<string, string> = proxyHeaders({FOO: "foo"})
+  const object = proxyHeaders({FOO: "foo"})
 
   t.is(object.FOO, "foo")
   t.is(object.foo, "foo")
+
+  // @ts-expect-error This property is not defined on purpose
   t.is(object.bar, undefined)
 })
 
