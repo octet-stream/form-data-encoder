@@ -22,16 +22,9 @@
     "@octetstream/eslint-config/esm/typescript"
   ],
   "rules": {
-    "no-use-before-define": 0,
-    "no-plusplus": 0,
     // These two rules are false-positive and have no solution for TS
     "no-redeclare": 0,
     "no-dupe-class-members": 0,
-    "lines-between-class-members": 0,
-
-    "import/no-extraneous-dependencies": ["error", {
-      "devDependencies": ["**/*.test.ts"]
-    }],
-    "import/extensions": ["error", {"ts": "never"}]
+    "lines-between-class-members": 0
   }
 }
