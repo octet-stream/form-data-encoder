@@ -201,7 +201,8 @@ export class FormDataEncoder {
       header += `Content-Type: ${value.type || "application/octet-stream"}`
     }
 
-    if (this.#options.enableAdditionalHeaders === true) {
+    const size = isFile(value) ? value.size : value.byteLength
+    if (this.#options.enableAdditionalHeaders === true && size != null) {
       header += `${this.#CRLF}Content-Length: ${
         isFile(value) ? value.size : value.byteLength
       }`
