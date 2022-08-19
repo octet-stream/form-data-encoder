@@ -223,26 +223,6 @@ test("The footer ends with double crlf", async t => {
   t.true(actual.endsWith("\r\n\r\n"))
 })
 
-test("Returns correct length of the empty FormData content", async t => {
-  const encoder = new FormDataEncoder(new FormData())
-  const expected = await readStream(encoder).then(({length}) => length)
-
-  t.is(encoder.getContentLength(), expected)
-})
-
-test("Returns the length of the FormData content", async t => {
-  const form = new FormData()
-
-  form.set("field", "Some string")
-  form.set("file", new File(["Some content"], "file.txt"))
-
-  const encoder = new FormDataEncoder(form)
-
-  const expected = await readStream(encoder).then(({length}) => length)
-
-  t.is(encoder.getContentLength(), expected)
-})
-
 test(".values() yields headers as Uint8Array", t => {
   const form = new FormData()
 
