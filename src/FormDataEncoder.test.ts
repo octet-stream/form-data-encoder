@@ -399,6 +399,41 @@ test(
   }
 )
 
+test(
+  "Does not imclude Content-Length header with enableAdditionalHeaders "
+    + "option if entry does not have known length",
+
+  async t => {
+    const form = new FormData()
+
+    form.set("stream", {
+      [Symbol.toStringTag]: "File",
+      name: "file.txt",
+      stream() {
+        return Readable.from([Buffer.from("foo")])
+      }
+    })
+
+    const encoder = new FormDataEncoder(form, {
+      enableAdditionalHeaders: true
+    })
+
+    const iterable = readLine(Readable.from(encoder))
+
+    await skip(iterable, 1)
+    const headers: string[] = []
+    for await (const chunk of iterable) {
+      if (chunk === "") {
+        break
+      }
+
+      headers.push(chunk.split(":")[0].toLowerCase())
+    }
+
+    t.false(headers.includes("content-length"))
+  }
+)
+
 test("Yields File's content", async t => {
   const filePath = "license"
   const form = new FormData()

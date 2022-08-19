@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 import type {LowercaseObjectKeys} from "./util/LowercaseObjectKeys.js"
 import {createBoundary} from "./util/createBoundary.js"
 import {normalizeValue} from "./util/normalizeValue.js"
@@ -207,7 +208,11 @@ export class FormDataEncoder {
     }
 
     const size = isFile(value) ? value.size : value.byteLength
-    if (this.#options.enableAdditionalHeaders === true && size != null) {
+    if (
+      this.#options.enableAdditionalHeaders === true
+        && size != null
+        && !isNaN(size)
+    ) {
       header += `${this.#CRLF}Content-Length: ${
         isFile(value) ? value.size : value.byteLength
       }`
@@ -230,7 +235,7 @@ export class FormDataEncoder {
       const size = isFile(value) ? value.size : value.byteLength
 
       // Return `undefined` if encountered part without known size
-      if (size == null || Number.isNaN(size)) {
+      if (size == null || isNaN(size)) {
         return undefined
       }
 
