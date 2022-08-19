@@ -188,6 +188,25 @@ test("Content-Length header is read-only", t => {
   t.is(headers["Content-Length"], expected)
 })
 
+test(
+  "Does not return Content-Length header "
+    + "if FormData has entry without known length",
+
+  t => {
+    const form = new FormData()
+
+    form.set("stream", {
+      [Symbol.toStringTag]: "File",
+      name: "file.txt",
+      stream() { }
+    })
+
+    const encoder = new FormDataEncoder(form)
+
+    t.false("Content-Length" in encoder.headers)
+  }
+)
+
 test("Yields correct footer for empty FormData", async t => {
   const encoder = new FormDataEncoder(new FormData())
 
@@ -208,7 +227,7 @@ test("Returns correct length of the empty FormData content", async t => {
   const encoder = new FormDataEncoder(new FormData())
   const expected = await readStream(encoder).then(({length}) => length)
 
-  t.is<number, number>(encoder.getContentLength(), expected)
+  t.is(encoder.getContentLength(), expected)
 })
 
 test("Returns the length of the FormData content", async t => {
@@ -221,7 +240,7 @@ test("Returns the length of the FormData content", async t => {
 
   const expected = await readStream(encoder).then(({length}) => length)
 
-  t.is<number, number>(encoder.getContentLength(), expected)
+  t.is(encoder.getContentLength(), expected)
 })
 
 test(".values() yields headers as Uint8Array", t => {

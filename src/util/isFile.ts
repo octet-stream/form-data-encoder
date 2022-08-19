@@ -36,8 +36,6 @@ export const isFile = (value: unknown): value is FileLike => Boolean(
     && (value as FileLike)[Symbol.toStringTag] === "File"
     && isFunction((value as FileLike).stream)
     && (value as FileLike).name != null
-    && (value as FileLike).size != null
-    && (value as FileLike).lastModified != null
 )
 
 /**
