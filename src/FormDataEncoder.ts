@@ -254,6 +254,7 @@ export class FormDataEncoder {
    *
    * @deprecated Use FormDataEncoder.contentLength or FormDataEncoder.headers["Content-Length"] instead
    */
+  /* c8 ignore next 3 */
   getContentLength(): number | undefined {
     return this.contentLength == null ? undefined : Number(this.contentLength)
   }
