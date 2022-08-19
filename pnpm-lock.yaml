@@ -16,7 +16,7 @@ specifiers:
   eslint-plugin-import: ^2.26.0
   eslint-plugin-jsx-a11y: 6.6.1
   eslint-plugin-react: 7.30.1
-  formdata-node: 4.3.3
+  formdata-node: 4.4.0
   husky: 8.0.1
   lint-staged: 13.0.3
   pinst: 3.0.0
@@ -40,7 +40,7 @@ devDependencies:
   eslint-plugin-import: 2.26.0_s6f7spxf43rfknbsivdq2mydle
   eslint-plugin-jsx-a11y: 6.6.1_eslint@8.22.0
   eslint-plugin-react: 7.30.1_eslint@8.22.0
-  formdata-node: 4.3.3
+  formdata-node: 4.4.0
   husky: 8.0.1
   lint-staged: 13.0.3
   pinst: 3.0.0
@@ -1618,12 +1618,12 @@ packages:
       signal-exit: 3.0.7
     dev: true
 
-  /formdata-node/4.3.3:
-    resolution: {integrity: sha512-coTew7WODO2vF+XhpUdmYz4UBvlsiTMSNaFYZlrXIqYbFd4W7bMwnoALNLE6uvNgzTg2j1JDF0ZImEfF06VPAA==}
+  /formdata-node/4.4.0:
+    resolution: {integrity: sha512-Q1LZsZggMqcmiAv1VIf4qSo1jxROFYUtuwNbJxman4UurKp3kdcDhtIK2+rKKqa0Xgqlga0qea3s+qH4I4v5kw==}
     engines: {node: '>= 12.20'}
     dependencies:
       node-domexception: 1.0.0
-      web-streams-polyfill: 4.0.0-beta.1
+      web-streams-polyfill: 4.0.0-beta.2
     dev: true
 
   /fs.realpath/1.0.0:
@@ -3356,9 +3356,9 @@ packages:
       spdx-expression-parse: 3.0.1
     dev: true
 
-  /web-streams-polyfill/4.0.0-beta.1:
-    resolution: {integrity: sha512-3ux37gEX670UUphBF9AMCq8XM6iQ8Ac6A+DSRRjDoRBm1ufCkaCDdNVbaqq60PsEkdNlLKrGtv/YBP4EJXqNtQ==}
-    engines: {node: '>= 12'}
+  /web-streams-polyfill/4.0.0-beta.2:
+    resolution: {integrity: sha512-UHhhnoe2M40uh2r0KVdJTN7qjFytm6o0Yp3VcjwV3bfo6rz8uqvxNoE5yNmGF0y3eFfXaFeb6M09MDSwwLmq4w==}
+    engines: {node: '>= 14'}
     dev: true
 
   /well-known-symbols/2.0.0:
