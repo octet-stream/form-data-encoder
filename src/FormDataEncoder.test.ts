@@ -380,7 +380,7 @@ test(
 )
 
 test(
-  "Does not imclude Content-Length header with enableAdditionalHeaders "
+  "Does not include Content-Length header with enableAdditionalHeaders "
     + "option if entry does not have known length",
 
   async t => {
