@@ -20,8 +20,8 @@
   "main": "./lib/index.js",
   "module": "./lib/index.js",
   "exports": {
-    "default": "./lib/index.js",
-    "types": "./@type/index.d.ts"
+    "types": "./@type/index.d.ts",
+    "default": "./lib/index.js"
   },
   "types": "./@type/index.d.ts",
   "scripts": {
