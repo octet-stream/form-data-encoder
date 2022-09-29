@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-globals */
-import type {LowercaseObjectKeys} from "./util/LowercaseObjectKeys.js"
+import type {RawHeaders, FormDataEncoderHeaders} from "./util/Headers.js"
 import {createBoundary} from "./util/createBoundary.js"
 import {normalizeValue} from "./util/normalizeValue.js"
 import {isPlainObject} from "./util/isPlainObject.js"
@@ -11,15 +11,6 @@ import type {FileLike} from "./FileLike.js"
 import {isFile} from "./util/isFile.js"
 
 type FormDataEntryValue = string | FileLike
-
-interface RawHeaders {
-  "Content-Type": string
-  "Content-Length"?: string
-}
-
-export type FormDataEncoderHeaders =
-  & Readonly<RawHeaders>
-  & Readonly<LowercaseObjectKeys<RawHeaders>>
 
 export interface FormDataEncoderOptions {
   /**
