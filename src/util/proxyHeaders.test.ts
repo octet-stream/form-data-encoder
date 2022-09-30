@@ -14,38 +14,33 @@ test("Properties can be accessed by lowercased name", t => {
   t.is(object["content-type"], "application/json")
 })
 
-test("Has no affect on symbols", t => {
-  const name = Symbol("something")
-
-  const object = proxyHeaders({[name]: "value"})
-
-  t.is(object[name], "value")
-})
-
-test("Returns indefined if property doesn't exists", t => {
-  const object = proxyHeaders({FOO: "foo"})
-
-  t.is(object.FOO, "foo")
-  t.is(object.foo, "foo")
+test("Returns undefined if property doesn't exists", t => {
+  const object = proxyHeaders({"Content-Type": "text/plain"})
 
   // @ts-expect-error This property is not defined on purpose
   t.is(object.bar, undefined)
 })
 
 test("Lowercases properties can be recognized by the in operator", t => {
-  const object = proxyHeaders({"Content-Length": "42"})
+  const object = proxyHeaders({
+    "Content-Type": "text/plain",
+    "Content-Length": "42"
+  })
 
   t.true("content-length" in object)
 })
 
 test("Original property name can be recognized by the in operator", t => {
-  const object = proxyHeaders({"Content-Length": "451"})
+  const object = proxyHeaders({
+    "Content-Type": "text/plain",
+    "Content-Length": "451"
+  })
 
   t.true("Content-Length" in object)
 })
 
 test("The in operator will return false for non-existent properties", t => {
-  const object: Record<string, string> = proxyHeaders({FOO: "foo"})
+  const object = proxyHeaders({"Content-Type": "text/plain"})
 
   t.false("bar" in object)
 })
