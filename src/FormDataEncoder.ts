@@ -80,7 +80,7 @@ export class FormDataEncoder {
   /**
    * Returns headers object with Content-Type and Content-Length header
    */
-  readonly headers: FormDataEncoderHeaders
+  readonly headers: Readonly<FormDataEncoderHeaders>
 
   /**
    * Creates a multipart/form-data encoder.
