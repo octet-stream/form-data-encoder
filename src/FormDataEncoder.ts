@@ -1,5 +1,6 @@
 /* eslint-disable no-restricted-globals */
 import type {RawHeaders, FormDataEncoderHeaders} from "./util/Headers.js"
+import {getStreamIterator} from "./util/getStreamIterator.js"
 import {createBoundary} from "./util/createBoundary.js"
 import {normalizeValue} from "./util/normalizeValue.js"
 import {isPlainObject} from "./util/isPlainObject.js"
@@ -201,12 +202,11 @@ export class FormDataEncoder {
     const size = isFile(value) ? value.size : value.byteLength
     if (
       this.#options.enableAdditionalHeaders === true
-      && size != null
-      && !isNaN(size)
+        && size != null
+        && !isNaN(size)
     ) {
       header += `${this.#CRLF}Content-Length: ${
-        isFile(value)
-          ? value.size : value.byteLength
+        isFile(value) ? value.size : value.byteLength
       }`
     }
 
@@ -337,15 +337,7 @@ export class FormDataEncoder {
   async* encode(): AsyncGenerator<Uint8Array, void, undefined> {
     for (const part of this.values()) {
       if (isFile(part)) {
-        const stream: any = part.stream()
-        if (stream.getReader instanceof Function) {
-          const reader: any = stream.getReader()
-          let result
-          do {
-            result = await reader.read()
-            if (result.value) yield result.value
-          } while (!result.done)
-        } else yield* stream
+        yield* getStreamIterator(part.stream())
       } else {
         yield part
       }
