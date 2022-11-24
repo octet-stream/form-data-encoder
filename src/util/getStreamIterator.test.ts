@@ -49,3 +49,14 @@ test("Reads from the stream using fallback", async t => {
 
   t.is(actual, expected)
 })
+
+test("Throws TypeError for unsupported data sources", t => {
+  // @ts-expect-error
+  const trap = () => getStreamIterator({})
+
+  t.throws(trap, {
+    instanceOf: TypeError,
+    message: "Unsupported data source: Expected either "
+      + "ReadableStream or async iterable."
+  })
+})

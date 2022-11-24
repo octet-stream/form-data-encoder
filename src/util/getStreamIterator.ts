@@ -37,6 +37,17 @@ async function* readStream(
  */
 export const getStreamIterator = (
   source: ReadableStream<Uint8Array> | AsyncIterable<Uint8Array>
-): AsyncIterable<Uint8Array> => (
-  isAsyncIterable(source) ? source : readStream(source)
-)
+): AsyncIterable<Uint8Array> => {
+  if (isAsyncIterable(source)) {
+    return source
+  }
+
+  if (isFunction(source.getReader)) {
+    return readStream(source)
+  }
+
+  // Throw an error otherwise (for example, in case if encountered Node.js Readable stream without Symbol.asyncIterator method)
+  throw new TypeError(
+    "Unsupported data source: Expected either ReadableStream or async iterable."
+  )
+}
