@@ -1,5 +1,6 @@
 /* eslint-disable no-restricted-globals */
 import type {RawHeaders, FormDataEncoderHeaders} from "./util/Headers.js"
+import {getStreamIterator} from "./util/getStreamIterator.js"
 import {createBoundary} from "./util/createBoundary.js"
 import {normalizeValue} from "./util/normalizeValue.js"
 import {isPlainObject} from "./util/isPlainObject.js"
@@ -336,7 +337,7 @@ export class FormDataEncoder {
   async* encode(): AsyncGenerator<Uint8Array, void, undefined> {
     for (const part of this.values()) {
       if (isFile(part)) {
-        yield* part.stream()
+        yield* getStreamIterator(part.stream())
       } else {
         yield part
       }
