@@ -5,7 +5,7 @@ type Input = Readable | {
 }
 
 async function readToBuffer(input: Input): Promise<Buffer> {
-  const chunks = []
+  const chunks: Buffer[] = []
 
   for await (const chunk of input) {
     chunks.push(chunk)
