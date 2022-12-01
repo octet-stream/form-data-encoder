@@ -100,8 +100,8 @@ await fetch("https://httpbin.org/post", options)
 import {Readable} from "stream"
 
 import {FormDataEncoder} from "form-data-encoder"
-
-import {FormData, File, Blob, fileFromPath} from "formdata-node"
+import {FormData, File, Blob} from "formdata-node"
+import {fileFromPath} from "formdata-node/file-from-path"
 
 import fetch from "node-fetch"
 
@@ -133,8 +133,8 @@ console.log(await response.json())
 
 ```js
 import {FormData} from "formdata-polyfill/esm-min.js"
-import {blobFrom} from "fetch-blob/from.js"
 import {FormDataEncoder} from "form-data-encoder"
+import {blobFrom} from "fetch-blob/from.js"
 
 import Blob from "fetch-blob"
 import fetch from "node-fetch"
