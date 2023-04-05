@@ -32,7 +32,7 @@
     "test": "ava --fail-fast",
     "cleanup": "npx del-cli @type \"lib/**/*.js\"",
     "postinstall": "husky install",
-    "prepublishOnly": "pinst --disable",
+    "prepublishOnly": "npm run cleanup && npm run build && pinst --disable",
     "postpublish": "pinst --enable"
   },
   "author": "Nick K.",
