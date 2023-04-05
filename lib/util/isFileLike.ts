@@ -28,13 +28,11 @@ import {FileLike} from "../FileLike"
  * isFileLike(fs.createReadStream("path/to/a/file.txt")) // -> false
  * ```
  */
-export const isFileLike = (value?: unknown): value is FileLike => Boolean(
+export const isFileLike = (value: unknown): value is FileLike => Boolean(
   (value as FileLike)
     && typeof (value as FileLike) === "object"
     && isFunction((value as FileLike).constructor)
     && (value as FileLike)[Symbol.toStringTag] === "File"
     && isFunction((value as FileLike).stream)
     && (value as FileLike).name != null
-    && (value as FileLike).size != null
-    && (value as FileLike).lastModified != null
 )

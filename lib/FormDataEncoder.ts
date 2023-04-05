@@ -1,3 +1,5 @@
+/* eslint-disable no-restricted-globals */
+
 import createBoundary from "./util/createBoundary"
 import isPlainObject from "./util/isPlainObject"
 import normalize from "./util/normalizeValue"
@@ -7,6 +9,11 @@ import {isFileLike} from "./util/isFileLike"
 import {isFormData} from "./util/isFormData"
 import {FormDataLike} from "./FormDataLike"
 import {FileLike} from "./FileLike"
+
+interface Headers {
+  "Content-Type": string
+  "Content-Length"?: string
+}
 
 export interface FormDataEncoderOptions {
   /**
@@ -66,15 +73,12 @@ export class FormDataEncoder {
   /**
    * Returns Content-Length header
    */
-  readonly contentLength: string
+  readonly contentLength: string | undefined
 
   /**
    * Returns headers object with Content-Type and Content-Length header
    */
-  readonly headers: {
-    "Content-Type": string
-    "Content-Length": string
-  }
+  readonly headers: Readonly<Headers>
 
   /**
    * Creates a multipart/form-data encoder.
@@ -163,12 +167,17 @@ export class FormDataEncoder {
       `${this.#DASHES}${this.boundary}${this.#DASHES}${this.#CRLF.repeat(2)}`
     )
 
-    this.contentLength = String(this.getContentLength())
+    const contentLength = this.getContentLength()
+    const headers: Headers = {
+      "Content-Type": this.contentType
+    }
 
-    this.headers = Object.freeze({
-      "Content-Type": this.contentType,
-      "Content-Length": this.contentLength
-    })
+    if (contentLength != null) {
+      this.contentLength = String(contentLength)
+      headers["Content-Length"] = this.contentLength
+    }
+
+    this.headers = Object.freeze(headers)
 
     // Make sure following properties read-only in runtime.
     Object.defineProperties(this, {
@@ -191,9 +200,10 @@ export class FormDataEncoder {
     }
 
     if (this.#options.enableAdditionalHeaders === true) {
-      header += `${this.#CRLF}Content-Length: ${
-        isFileLike(value) ? value.size : value.byteLength
-      }`
+      const size = isFileLike(value) ? value.size : value.byteLength
+      if (size != null && !isNaN(size)) {
+        header += `${this.#CRLF}Content-Length: ${size}`
+      }
     }
 
     return this.#encoder.encode(`${header}${this.#CRLF.repeat(2)}`)
@@ -202,15 +212,22 @@ export class FormDataEncoder {
   /**
    * Returns form-data content length
    */
-  getContentLength(): number {
+  getContentLength(): number | undefined {
     let length = 0
 
     for (const [name, raw] of this.#form) {
       const value = isFileLike(raw) ? raw : this.#encoder.encode(normalize(raw))
 
+      const size = isFileLike(value) ? value.size : value.byteLength
+
+      // Return `undefined` if encountered part without known size
+      if (size == null || isNaN(size)) {
+        return undefined
+      }
+
       length += this.#getFieldHeader(name, value).byteLength
 
-      length += isFileLike(value) ? value.size : value.byteLength
+      length += size
 
       length += this.#CRLF_BYTES_LENGTH
     }

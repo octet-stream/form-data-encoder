@@ -106,6 +106,26 @@ test("Has contentLength property", async t => {
   )
 })
 
+test(
+  "contentLength property is undefined if there's file without known length",
+
+  t => {
+    const form = new FormData()
+
+    form.set("stream", {
+      [Symbol.toStringTag]: "File",
+      name: "file.txt",
+      stream() {
+        return Readable.from([Buffer.from("foo")])
+      }
+    })
+
+    const encoder = new FormDataEncoder(form)
+
+    t.is(encoder.contentLength, undefined)
+  }
+)
+
 test("contentLength property is read-only", t => {
   const encoder = new FormDataEncoder(new FormData())
 
@@ -137,6 +157,28 @@ test("Has correct headers", async t => {
   })
 })
 
+test(
+  "Has only Content-Type header if there's file without known length",
+
+  t => {
+    const form = new FormData()
+
+    form.set("stream", {
+      [Symbol.toStringTag]: "File",
+      name: "file.txt",
+      stream() {
+        return Readable.from([Buffer.from("foo")])
+      }
+    })
+
+    const encoder = new FormDataEncoder(form)
+
+    t.deepEqual(encoder.headers, {
+      "Content-Type": `multipart/form-data; boundary=${encoder.boundary}`
+    })
+  }
+)
+
 test("Yields correct footer for empty FormData", async t => {
   const encoder = new FormDataEncoder(new FormData())
 
@@ -157,7 +199,7 @@ test("Returns correct length of the empty FormData content", async t => {
   const encoder = new FormDataEncoder(new FormData())
   const expected = await readStream(encoder).then(({length}) => length)
 
-  t.is<number>(encoder.getContentLength(), expected)
+  t.is(encoder.getContentLength(), expected)
 })
 
 test("Returns the length of the FormData content", async t => {
@@ -170,8 +212,28 @@ test("Returns the length of the FormData content", async t => {
 
   const expected = await readStream(encoder).then(({length}) => length)
 
-  t.is<number>(encoder.getContentLength(), expected)
+  t.is(encoder.getContentLength(), expected)
 })
+
+test(
+  ".getContentLength() returns undefined if there's file without known length",
+
+  t => {
+    const form = new FormData()
+
+    form.set("stream", {
+      [Symbol.toStringTag]: "File",
+      name: "file.txt",
+      stream() {
+        return Readable.from([Buffer.from("foo")])
+      }
+    })
+
+    const encoder = new FormDataEncoder(form)
+
+    t.is(encoder.getContentLength(), undefined)
+  }
+)
 
 test(".values() yields headers as Uint8Array", t => {
   const form = new FormData()
@@ -329,6 +391,41 @@ test(
   }
 )
 
+test(
+  "Does not imclude Content-Length header with enableAdditionalHeaders "
+    + "option if entry does not have known length",
+
+  async t => {
+    const form = new FormData()
+
+    form.set("stream", {
+      [Symbol.toStringTag]: "File",
+      name: "file.txt",
+      stream() {
+        return Readable.from([Buffer.from("foo")])
+      }
+    })
+
+    const encoder = new FormDataEncoder(form, {
+      enableAdditionalHeaders: true
+    })
+
+    const iterable = readLine(Readable.from(encoder))
+
+    await skip(iterable, 1)
+    const headers: string[] = []
+    for await (const chunk of iterable) {
+      if (chunk === "") {
+        break
+      }
+
+      headers.push(chunk.split(":")[0].toLowerCase())
+    }
+
+    t.false(headers.includes("content-length"))
+  }
+)
+
 test("Yields File's content", async t => {
   const filePath = "license"
   const form = new FormData()
@@ -354,7 +451,7 @@ test("Yields File's content", async t => {
   chunks.pop() // Remove trailing empty line
 
   // It looks like files on Windows have different EOL when you read them, even though they were created on macOS x)
-  t.is<string>(chunks.join(EOL), expected)
+  t.is(chunks.join(EOL), expected)
 })
 
 test("Yields every appended field", async t => {

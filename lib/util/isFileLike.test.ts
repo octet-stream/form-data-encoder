@@ -56,6 +56,23 @@ test("Returns true for a file-shaped object", t => {
   t.true(isFileLike(object))
 })
 
+test("Returns true for minimal valid file-ish object shape", t => {
+  // eslint-disable-next-line max-len
+  const object: Pick<FileLike, "name" | "stream" | typeof Symbol.toStringTag> = {
+    name: "",
+
+    async* stream(): AsyncGenerator<Uint8Array> {
+      yield new Uint8Array(0)
+    },
+
+    get [Symbol.toStringTag](): string {
+      return "File"
+    }
+  }
+
+  t.true(isFileLike(object))
+})
+
 test("Returns false for null", t => {
   t.false(isFileLike(null))
 })
