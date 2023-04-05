@@ -33,9 +33,8 @@
     "build": "tsc && npm run build:types",
     "test": "ava --fail-fast",
     "cleanup": "del-cli @type lib",
-    "prepare": "npm run cleanup && npm run build",
     "postinstall": "husky install",
-    "prepublishOnly": "pinst --disable",
+    "prepublishOnly": "npm run cleanup && npm run build && pinst --disable",
     "postpublish": "pinst --enable"
   },
   "author": "Nick K.",
