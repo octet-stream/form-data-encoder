@@ -214,15 +214,11 @@ export class FormDataEncoder {
       header += `Content-Type: ${value.type || "application/octet-stream"}`
     }
 
-    const size = isFile(value) ? value.size : value.byteLength
-    if (
-      this.#options.enableAdditionalHeaders === true
-        && size != null
-        && !isNaN(size)
-    ) {
-      header += `${this.#CRLF}Content-Length: ${
-        isFile(value) ? value.size : value.byteLength
-      }`
+    if (this.#options.enableAdditionalHeaders === true) {
+      const size = isFile(value) ? value.size : value.byteLength
+      if (size != null && !isNaN(size)) {
+        header += `${this.#CRLF}Content-Length: ${size}`
+      }
     }
 
     return this.#encoder.encode(`${header}${this.#CRLF.repeat(2)}`)
