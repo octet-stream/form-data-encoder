@@ -1,5 +1,6 @@
 /* eslint-disable no-restricted-globals */
 
+import getStreamIterator from "./util/getStreamIterator"
 import createBoundary from "./util/createBoundary"
 import isPlainObject from "./util/isPlainObject"
 import normalize from "./util/normalizeValue"
@@ -319,7 +320,7 @@ export class FormDataEncoder {
   async* encode(): AsyncGenerator<Uint8Array, void, undefined> {
     for (const part of this.values()) {
       if (isFileLike(part)) {
-        yield* part.stream()
+        yield* getStreamIterator(part.stream())
       } else {
         yield part
       }
