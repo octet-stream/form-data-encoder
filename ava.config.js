@@ -1,15 +1,12 @@
 export default {
   environmentVariables: {
-    TS_NODE_PREFER_TS_EXTS: "true"
+    TS_NODE_PREFER_TS_EXTS: "true",
+    SWC_NODE_PROJECT: "./tsconfig.ava.json",
+    SWCRC: "true"
   },
   extensions: {
     ts: "module"
   },
-  nodeArguments: [
-    "--no-warnings",
-    "--experimental-fetch",
-    "--loader=ts-node/esm/transpile-only"
-  ],
   files: [
     "src/**/*.test.ts"
   ]

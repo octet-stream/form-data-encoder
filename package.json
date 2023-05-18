@@ -36,7 +36,7 @@
     "ci": "c8 pnpm test && c8 report --reporter=json",
     "build:types": "tsc --project tsconfig.d.ts.json",
     "build": "tsc && pnpm run build:types",
-    "test": "ava --fail-fast",
+    "test": "cross-env NODE_OPTIONS=\"--no-warnings --experimental-fetch --loader=@swc-node/register/esm\" ava --fail-fast",
     "cleanup": "del-cli @type lib",
     "postinstall": "husky install",
     "prepublishOnly": "pnpm run cleanup && pnpm run build && pinst --disable",
@@ -46,6 +46,7 @@
   "license": "MIT",
   "devDependencies": {
     "@octetstream/eslint-config": "7.2.1",
+    "@swc-node/register": "^1.6.5",
     "@types/mime-types": "2.1.1",
     "@types/node": "20.2.1",
     "@types/sinon": "^10.0.15",
@@ -53,6 +54,7 @@
     "@typescript-eslint/parser": "5.59.6",
     "ava": "5.2.0",
     "c8": "7.13.0",
+    "cross-env": "^7.0.3",
     "del-cli": "5.0.0",
     "eslint": "8.40.0",
     "eslint-config-airbnb-typescript": "17.0.0",
@@ -66,7 +68,6 @@
     "lint-staged": "13.2.2",
     "pinst": "3.0.0",
     "sinon": "^15.0.4",
-    "ts-node": "10.9.1",
     "ttypescript": "1.5.15",
     "typescript": "5.0.4",
     "web-streams-polyfill": "4.0.0-beta.3"
