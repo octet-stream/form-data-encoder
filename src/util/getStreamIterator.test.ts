@@ -4,30 +4,44 @@ import {ReadableStream} from "web-streams-polyfill"
 import {stub} from "sinon"
 
 import {getStreamIterator} from "./getStreamIterator.js"
+import {isAsyncIterable} from "./isAsyncIterable.js"
 
-test(
-  "Returns readable stream as is, if it implements Symbol.asyncIterator",
+test("Returns async iterable for streams w/ Symbol.asyncIterator", t => {
+  const stream = new ReadableStream()
 
-  t => {
-    const stream = new ReadableStream()
+  t.true(isAsyncIterable(getStreamIterator(stream)))
+})
 
-    t.is(getStreamIterator(stream), stream)
+test("Iterates over given stream", async t => {
+  const expected = "Some text"
+
+  const stream = new ReadableStream({
+    pull(controller) {
+      controller.enqueue(new TextEncoder().encode(expected))
+      controller.close()
+    }
+  })
+
+  let actual = ""
+  const decoder = new TextDecoder()
+  for await (const chunk of getStreamIterator(stream)) {
+    actual += decoder.decode(chunk, {stream: true})
   }
-)
 
-test(
-  "Returns fallback when given stream does not implement Symbol.asyncIterator",
+  actual += decoder.decode()
 
-  t => {
-    const stream = new ReadableStream()
+  t.is(actual, expected)
+})
 
-    stub(stream, Symbol.asyncIterator).get(() => undefined)
+test("Returns async iterable for streams w/o Symbol.asyncIterator", t => {
+  const stream = new ReadableStream()
 
-    t.false(getStreamIterator(stream) instanceof ReadableStream)
-  }
-)
+  stub(stream, Symbol.asyncIterator).get(() => undefined)
 
-test("Reads from the stream using fallback", async t => {
+  t.false(getStreamIterator(stream) instanceof ReadableStream)
+})
+
+test("Iterates over the stream using fallback", async t => {
   const expected = "Some text"
 
   const stream = new ReadableStream({

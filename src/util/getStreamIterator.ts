@@ -1,13 +1,6 @@
+import {isAsyncIterable} from "./isAsyncIterable.js"
 import {isFunction} from "./isFunction.js"
-
-/**
- * Checks if the value is async iterable
- */
-const isAsyncIterable = (
-  value: unknown
-): value is AsyncIterable<Uint8Array> => (
-  isFunction((value as AsyncIterable<Uint8Array>)[Symbol.asyncIterator])
-)
+import {chunk} from "./chunk.js"
 
 /**
  * Reads from given ReadableStream
@@ -30,6 +23,14 @@ async function* readStream(
   }
 }
 
+async function* chunkStream(
+  stream: AsyncIterable<Uint8Array>
+): AsyncGenerator<Uint8Array, void> {
+  for await (const value of stream) {
+    yield* chunk(value)
+  }
+}
+
 /**
  * Turns ReadableStream into async iterable when the `Symbol.asyncIterable` is not implemented on given stream.
  *
@@ -39,11 +40,11 @@ export const getStreamIterator = (
   source: ReadableStream<Uint8Array> | AsyncIterable<Uint8Array>
 ): AsyncIterable<Uint8Array> => {
   if (isAsyncIterable(source)) {
-    return source
+    return chunkStream(source)
   }
 
   if (isFunction(source.getReader)) {
-    return readStream(source)
+    return chunkStream(readStream(source))
   }
 
   // Throw an error otherwise (for example, in case if encountered Node.js Readable stream without Symbol.asyncIterator method)
