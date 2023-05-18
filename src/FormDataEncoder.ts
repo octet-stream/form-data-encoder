@@ -265,7 +265,7 @@ export class FormDataEncoder {
 
   /**
    * Creates an iterator allowing to go through form-data parts (with metadata).
-   * This method **will not** read the files.
+   * This method **will not** read the files and **will not** split values big into smaller chunks.
    *
    * Using this method, you can convert form-data content into Blob:
    *
@@ -317,7 +317,7 @@ export class FormDataEncoder {
 
   /**
    * Creates an async iterator allowing to perform the encoding by portions.
-   * This method **will** also read files.
+   * This method reads through files and splits big values into smaller pieces (65536 bytes per each).
    *
    * @example
    *

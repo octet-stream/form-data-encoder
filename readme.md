@@ -340,12 +340,12 @@ Returns headers object with Content-Type and Content-Length header.
 ##### `values() -> {Generator<Uint8Array | FileLike, void, undefined>}`
 
 Creates an iterator allowing to go through form-data parts (with metadata).
-This method **will not** read the files.
+This method **will not** read the files and **will not** split values big into smaller chunks.
 
 ##### `encode() -> {AsyncGenerator<Uint8Array, void, undefined>}`
 
 Creates an async iterator allowing to perform the encoding by portions.
-This method **will** also read files.
+This method reads through files and splits big values into smaller pieces (65536 bytes per each).
 
 ##### `[Symbol.iterator]() -> {Generator<Uint8Array | FileLike, void, undefined>}`
 
