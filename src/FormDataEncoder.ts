@@ -10,6 +10,7 @@ import {isFormData} from "./util/isFormData.js"
 import {escapeName} from "./util/escapeName.js"
 import type {FileLike} from "./FileLike.js"
 import {isFile} from "./util/isFile.js"
+import {chunk} from "./util/chunk.js"
 
 type FormDataEntryValue = string | FileLike
 
@@ -350,7 +351,7 @@ export class FormDataEncoder {
       if (isFile(part)) {
         yield* getStreamIterator(part.stream())
       } else {
-        yield part
+        yield* chunk(part)
       }
     }
   }

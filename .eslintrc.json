@@ -9,14 +9,6 @@
       "typescript": {}
     }
   },
-  "env": {
-    "browser": true,
-    "node": true
-  },
-  "plugins": [
-    "@typescript-eslint",
-    "ava"
-  ],
   "extends": [
     "plugin:ava/recommended",
     "@octetstream/eslint-config/esm/typescript"
@@ -25,6 +17,9 @@
     // These two rules are false-positive and have no solution for TS
     "no-redeclare": 0,
     "no-dupe-class-members": 0,
-    "lines-between-class-members": 0
+    "lines-between-class-members": 0,
+
+    // FIXME: This is a workaround to prevent false-positive errors for this rule. It shouln't be exposed from my eslint config. I need to find why it happens.
+    "react/jsx-filename-extension": 0
   }
 }
