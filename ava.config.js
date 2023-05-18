@@ -7,6 +7,7 @@ export default {
   },
   nodeArguments: [
     "--no-warnings",
+    "--experimental-fetch",
     "--loader=ts-node/esm/transpile-only"
   ],
   files: [

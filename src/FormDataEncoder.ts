@@ -271,6 +271,7 @@ export class FormDataEncoder {
    *
    * @example
    *
+   * ```ts
    * import {Readable} from "stream"
    *
    * import {FormDataEncoder} from "form-data-encoder"
@@ -298,6 +299,7 @@ export class FormDataEncoder {
    * const response = await fetch("https://httpbin.org/post", options)
    *
    * console.log(await response.json())
+   * ```
    */
   * values(): Generator<Uint8Array | FileLike, void, undefined> {
     for (const [name, raw] of this.#form) {
@@ -321,6 +323,7 @@ export class FormDataEncoder {
    *
    * @example
    *
+   * ```ts
    * import {Readable} from "stream"
    *
    * import {FormData, File, fileFromPath} from "formdata-node"
@@ -345,6 +348,7 @@ export class FormDataEncoder {
    * const response = await fetch("https://httpbin.org/post", options)
    *
    * console.log(await response.json())
+   * ```
    */
   async* encode(): AsyncGenerator<Uint8Array, void, undefined> {
     for (const part of this.values()) {
