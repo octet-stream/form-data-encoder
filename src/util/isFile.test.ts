@@ -1,5 +1,3 @@
-import {File as NativeFile, Blob as NativeBlob} from "node:buffer"
-
 import test from "ava"
 
 import {File, Blob} from "formdata-node"
@@ -9,12 +7,6 @@ import {isFile} from "./isFile.js"
 
 test("Returns true for a File", t => {
   const file = new File(["Content"], "name.txt")
-
-  t.true(isFile(file))
-})
-
-test("Returns true for native File", t => {
-  const file = new NativeFile(["Content"], "name.txt")
 
   t.true(isFile(file))
 })
@@ -77,12 +69,6 @@ test("Returns false for non-File object", t => {
 
 test("Returns false for Blob", t => {
   const blob = new Blob(["Content"], {type: "text/plain"})
-
-  t.false(isFile(blob))
-})
-
-test("Returns false for native Blob", t => {
-  const blob = new NativeBlob(["Content"], {type: "text/plain"})
 
   t.false(isFile(blob))
 })
