@@ -1,11 +1,13 @@
 {
-  "packageManager": "pnpm@8.5.1",
   "type": "module",
   "name": "form-data-encoder",
-  "version": "2.1.4",
   "description": "Encode FormData content into the multipart/form-data format",
+  "version": "2.1.4",
+  "author": "Nick K.",
+  "license": "MIT",
   "repository": "octet-stream/form-data-encoder",
   "sideEffects": false,
+  "packageManager": "pnpm@8.5.1",
   "engines": {
     "node": ">= 16.5"
   },
@@ -36,17 +38,14 @@
     "ci": "c8 pnpm test && c8 report --reporter=json",
     "build:types": "tsc --project tsconfig.d.ts.json",
     "build": "tsc && pnpm run build:types",
-    "test": "cross-env NODE_OPTIONS=\"--no-warnings --experimental-fetch --loader=@swc-node/register/esm\" ava --fail-fast",
+    "test": "cross-env NODE_OPTIONS=\"--no-warnings --experimental-fetch --loader=ts-node/esm\" ava --fail-fast",
     "cleanup": "del-cli @type lib",
     "postinstall": "husky install",
     "prepublishOnly": "pnpm run cleanup && pnpm run build && pinst --disable",
     "postpublish": "pinst --enable"
   },
-  "author": "Nick K.",
-  "license": "MIT",
   "devDependencies": {
     "@octetstream/eslint-config": "7.2.1",
-    "@swc-node/register": "^1.6.5",
     "@types/mime-types": "2.1.1",
     "@types/node": "20.2.1",
     "@types/sinon": "^10.0.15",
@@ -68,6 +67,7 @@
     "lint-staged": "13.2.2",
     "pinst": "3.0.0",
     "sinon": "^15.0.4",
+    "ts-node": "^10.9.1",
     "ttypescript": "1.5.15",
     "typescript": "5.0.4",
     "web-streams-polyfill": "4.0.0-beta.3"

@@ -1,7 +1,6 @@
 export default {
   environmentVariables: {
-    SWC_NODE_PROJECT: "./tsconfig.ava.json",
-    SWCRC: "true"
+    TS_NODE_PROJECT: "./tsconfig.ava.json"
   },
   extensions: {
     ts: "module"
