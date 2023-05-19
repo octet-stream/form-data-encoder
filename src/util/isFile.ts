@@ -1,4 +1,5 @@
 import type {FileLike} from "../FileLike.js"
+
 import {isFunction} from "./isFunction.js"
 
 /**
@@ -38,8 +39,3 @@ export const isFile = (value: unknown): value is FileLike => Boolean(
     && isFunction((value as FileLike).stream)
     && (value as FileLike).name != null
 )
-
-/**
- * @deprecated use `isFile` instead
-  */
-export const isFileLike = isFile

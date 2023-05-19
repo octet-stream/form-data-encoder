@@ -1,4 +1,5 @@
 /* eslint-disable no-restricted-globals */
+
 import type {RawHeaders, FormDataEncoderHeaders} from "./util/Headers.js"
 import {getStreamIterator} from "./util/getStreamIterator.js"
 import {createBoundary} from "./util/createBoundary.js"
@@ -251,16 +252,6 @@ export class FormDataEncoder {
     }
 
     return String(length + this.#footer.byteLength)
-  }
-
-  /**
-   * Returns form-data content length
-   *
-   * @deprecated Use FormDataEncoder.contentLength or FormDataEncoder.headers["Content-Length"] instead
-   */
-  /* c8 ignore next 3 */
-  getContentLength(): number | undefined {
-    return this.contentLength == null ? undefined : Number(this.contentLength)
   }
 
   /**
