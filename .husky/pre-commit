@@ -1,1 +1,2 @@
 pnpm run staged
+pnpm run lint:types

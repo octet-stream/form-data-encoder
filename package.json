@@ -33,6 +33,8 @@
   "types": "./@type/index.d.ts",
   "scripts": {
     "eslint": "eslint src/**/*.ts",
+    "lint:types": "tsc --noEmit",
+    "lint": "pnpm eslint && pnpm lint:types",
     "staged": "lint-staged",
     "coverage": "c8 pnpm test",
     "ci": "c8 pnpm test && c8 report --reporter=json",
