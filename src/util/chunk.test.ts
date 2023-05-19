@@ -11,12 +11,13 @@ test("Copies the whole value if the size is less <= MAX_CHUNK_SIZE", t => {
   t.is(chunks.length, 1)
 })
 
-test("Splits value if the size evenly is MAX_CHUNK_SIZE * n", t => {
-  const view = new Uint8Array(MAX_CHUNK_SIZE * 2)
+test("Splits value evenly if the size is MAX_CHUNK_SIZE * multiplier", t => {
+  const multiplier = 2
+  const view = new Uint8Array(MAX_CHUNK_SIZE * multiplier)
   const chunks = Array.from(chunk(view))
 
   t.true(chunks.every(ch => ch.byteLength === MAX_CHUNK_SIZE))
-  t.is(chunks.length, 2)
+  t.is(chunks.length, multiplier)
 })
 
 test("The size of the last chunk can be < MAX_CHUNK_SIZE", t => {
