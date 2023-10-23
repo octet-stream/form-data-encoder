@@ -47,6 +47,8 @@
     "postpublish": "pinst --enable"
   },
   "devDependencies": {
+    "@changesets/changelog-github": "0.4.8",
+    "@changesets/cli": "2.26.2",
     "@octetstream/eslint-config": "7.2.1",
     "@types/mime-types": "2.1.1",
     "@types/node": "20.2.1",
