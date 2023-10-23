@@ -35,12 +35,12 @@ export interface FormDataLike {
    * Returns an [`iterator`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) allowing to go through the `FormData` key/value pairs.
    * The key of each pair is a string; the value is a [`FormDataValue`](https://developer.mozilla.org/en-US/docs/Web/API/FormDataEntryValue).
    */
-  entries(): Generator<[string, FormDataEntryValue]>
+  entries(): IterableIterator<[string, FormDataEntryValue]>
 
   /**
    * An alias for FormDataLike#entries()
    */
-  [Symbol.iterator](): Generator<[string, FormDataEntryValue]>
+  [Symbol.iterator](): IterableIterator<[string, FormDataEntryValue]>
 
   readonly [Symbol.toStringTag]: string
 }
