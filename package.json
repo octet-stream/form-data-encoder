@@ -45,8 +45,8 @@
     "ci": "c8 pnpm test && c8 report --reporter=json",
     "build": "pnpm exec del-cli lib && pnpm exec tsup",
     "test": "cross-env NODE_OPTIONS=\"--no-warnings --experimental-fetch --loader=ts-node/esm\" ava",
-    "postinstall": "husky install",
-    "prepublishOnly": "pnpm run cleanup && pnpm run build && pinst --disable",
+    "prepare": "husky install",
+    "prepublishOnly": "pinst --disable",
     "postpublish": "pinst --enable",
     "release": "pnpm build && pnpm changeset publish"
   },
