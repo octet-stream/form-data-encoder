@@ -1,4 +1,5 @@
-@type
 *.js
 *.cjs
 *.mjs
+*.d.ts
+*.d.cts
