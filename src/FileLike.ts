@@ -22,7 +22,7 @@ export interface FileLike {
   /**
    * Returns a [`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream) which upon reading returns the data contained within the [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File).
    */
-  stream(): AsyncIterable<Uint8Array>
+  stream(): ReadableStream<Uint8Array> | AsyncIterable<Uint8Array>
 
-  readonly [Symbol.toStringTag]: string
+  readonly [Symbol.toStringTag]?: string
 }

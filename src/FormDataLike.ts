@@ -42,5 +42,5 @@ export interface FormDataLike {
    */
   [Symbol.iterator](): IterableIterator<[string, FormDataEntryValue]>
 
-  readonly [Symbol.toStringTag]: string
+  readonly [Symbol.toStringTag]?: string
 }
