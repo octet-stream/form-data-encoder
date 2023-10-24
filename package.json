@@ -25,12 +25,17 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "types": "./@type/index.d.ts",
-      "import": "./lib/index.js",
-      "default": "./lib/index.js"
+      "import": {
+        "types": "./lib/index.d.ts",
+        "default": "./lib/index.js"
+      },
+      "require": {
+        "types": "./lib/index.d.cts",
+        "default": "./lib/index.cjs"
+      }
     }
   },
-  "types": "./@type/index.d.ts",
+  "types": "./lib/index.d.ts",
   "scripts": {
     "eslint": "eslint src/**/*.ts",
     "lint:types": "tsc --noEmit",
@@ -38,10 +43,8 @@
     "staged": "lint-staged",
     "coverage": "c8 pnpm test",
     "ci": "c8 pnpm test && c8 report --reporter=json",
-    "build:types": "tsc --project tsconfig.d.ts.json",
-    "build": "tsc && pnpm run build:types",
+    "build": "pnpm exec del-cli lib && pnpm exec tsup",
     "test": "cross-env NODE_OPTIONS=\"--no-warnings --experimental-fetch --loader=ts-node/esm\" ava --fail-fast",
-    "cleanup": "del-cli @type lib",
     "postinstall": "husky install",
     "prepublishOnly": "pnpm run cleanup && pnpm run build && pinst --disable",
     "postpublish": "pinst --enable",
@@ -73,6 +76,7 @@
     "pinst": "3.0.0",
     "sinon": "15.0.4",
     "ts-node": "10.9.1",
+    "tsup": "7.2.0",
     "ttypescript": "1.5.15",
     "typescript": "5.0.4",
     "web-streams-polyfill": "4.0.0-beta.3"

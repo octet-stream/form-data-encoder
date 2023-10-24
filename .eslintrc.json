@@ -5,7 +5,7 @@
     "globalThis": true
   },
   "parserOptions": {
-    "project": "./tsconfig.eslint.json"
+    "project": "./tsconfig.json"
   },
   "settings": {
     "import/resolver": {
