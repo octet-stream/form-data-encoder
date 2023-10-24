@@ -1,5 +1,11 @@
 # form-data-encoder
 
+## 4.0.1
+
+### Patch Changes
+
+- [`247fb3e`](https://github.com/octet-stream/form-data-encoder/commit/247fb3e913e61a15c599e3988747fc993927ca32) Thanks [@octet-stream](https://github.com/octet-stream)! - Remove removeComments from tsconfig.json
+
 ## 4.0.0
 
 ### Major Changes
