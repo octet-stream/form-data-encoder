@@ -9,7 +9,7 @@
   "sideEffects": false,
   "packageManager": "pnpm@8.5.1",
   "engines": {
-    "node": ">= 16.5"
+    "node": ">= 18"
   },
   "keywords": [
     "form-data",

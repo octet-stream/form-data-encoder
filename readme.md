@@ -9,7 +9,7 @@ Encode `FormData` content into the `multipart/form-data` format
 
 ## Requirements
 
-- Node.js v16.5 or higher;
+- Node.js v18.0.0 or higher;
 - Runtime should support `TextEncoder`, `TextDecoder`, `WeakMap`, `WeakSet` and async generator functions;
 - For TypeScript users: tsc v4.3 or higher.
 
