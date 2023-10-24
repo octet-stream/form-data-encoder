@@ -1,3 +1,5 @@
+import {File} from "node:buffer"
+
 import test from "ava"
 
 import {expectType} from "ts-expect"
