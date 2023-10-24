@@ -2,7 +2,7 @@
 
 Encode `FormData` content into the `multipart/form-data` format
 
-[![Code Coverage](https://codecov.io/github/octet-stream/form-data-encoder/coverage.svg?branch=master)](https://codecov.io/github/octet-stream/form-data-encoder?branch=master)
+[![Code Coverage](https://codecov.io/github/octet-stream/form-data-encoder/coverage.svg?branch=main)](https://codecov.io/github/octet-stream/form-data-encoder?branch=main)
 [![CI](https://github.com/octet-stream/form-data-encoder/workflows/CI/badge.svg)](https://github.com/octet-stream/form-data-encoder/actions/workflows/ci.yml)
 [![ESLint](https://github.com/octet-stream/form-data-encoder/workflows/ESLint/badge.svg)](https://github.com/octet-stream/form-data-encoder/actions/workflows/eslint.yml)
 [![TypeScript Types](https://github.com/octet-stream/form-data-encoder/actions/workflows/typescript.yml/badge.svg)](https://github.com/octet-stream/form-data-encoder/actions/workflows/typescript.yml)
