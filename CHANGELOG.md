@@ -1,5 +1,11 @@
 # form-data-encoder
 
+## 4.0.2
+
+### Patch Changes
+
+- [`0cc9cd4`](https://github.com/octet-stream/form-data-encoder/commit/0cc9cd4c4ce0dd9cf8d468494be7904577309433) Thanks [@octet-stream](https://github.com/octet-stream)! - Remove changelog from distro
+
 ## 4.0.1
 
 ### Patch Changes
