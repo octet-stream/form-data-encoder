@@ -65,7 +65,7 @@ jobs:
 
       - name: Codecov
         uses: codecov/codecov-action@v3
-        if: matrix.node == '18.x' && matrix.os == 'ubuntu-latest'
+        if: matrix.node == '20.x' && matrix.os == 'ubuntu-latest'
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./coverage/coverage-final.json
