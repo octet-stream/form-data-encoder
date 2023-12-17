@@ -209,7 +209,7 @@ form.set("avatar", await blobFrom("path/to/an/avatar.png"), "avatar.png")
 const encoder = new FormDataEncoder(form)
 
 // Note that node-fetch@2 performs more strictness tests for Blob objects, so you may need to do extra steps before you set up request body (like, maybe you'll need to instaniate a Blob with BlobDataItem as one of its blobPart)
-const blob = new BlobDataItem(enocoder) // or new Blob([new BlobDataItem(enocoder)], {type: encoder.contentType})
+const blob = new BlobDataItem(encoder) // or new Blob([new BlobDataItem(encoder)], {type: encoder.contentType})
 
 const options = {
   method: "post",
