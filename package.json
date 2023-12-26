@@ -51,7 +51,7 @@
   "devDependencies": {
     "@changesets/changelog-github": "0.4.8",
     "@changesets/cli": "2.26.2",
-    "@octetstream/eslint-config": "7.2.1",
+    "@octetstream/eslint-config": "8.0.2",
     "@types/mime-types": "2.1.1",
     "@types/node": "20.2.1",
     "@types/sinon": "10.0.15",
@@ -61,7 +61,7 @@
     "c8": "7.13.0",
     "cross-env": "7.0.3",
     "del-cli": "5.0.0",
-    "eslint": "8.40.0",
+    "eslint": "8.56.0",
     "eslint-config-airbnb-typescript": "17.0.0",
     "eslint-import-resolver-typescript": "3.5.5",
     "eslint-plugin-ava": "14.0.0",
