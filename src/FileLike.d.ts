@@ -1,3 +1,15 @@
+declare global {
+  /**
+   * Needed until @types/node includes the ReadableStream on globalThis
+   * See:
+   * - https://github.com/DefinitelyTyped/DefinitelyTyped/discussions/69452
+   * - https://github.com/octet-stream/form-data-encoder/issues/24
+   */ 
+  interface ReadableStream<R = any> extends
+    // @ts-ignore Needed In environments other than NodeJS. Degrades gracefully.
+    NodeJS.ReadableStream {}
+}
+
 export interface FileLike {
   /**
    * Name of the file referenced by the File object.
