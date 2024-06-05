@@ -2,7 +2,7 @@
   "type": "module",
   "name": "form-data-encoder",
   "description": "Encode FormData content into the multipart/form-data format",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "author": "Nick K.",
   "license": "MIT",
   "repository": "octet-stream/form-data-encoder",

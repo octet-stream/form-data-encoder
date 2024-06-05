@@ -1,5 +1,11 @@
 # form-data-encoder
 
+## 4.0.3
+
+### Patch Changes
+
+- [`f12451a`](https://github.com/octet-stream/form-data-encoder/commit/f12451ab2e10ee5c1d07c1230f9345945de7477f) Thanks [@octet-stream](https://github.com/octet-stream)! - Update dependencies
+
 ## 4.0.2
 
 ### Patch Changes
