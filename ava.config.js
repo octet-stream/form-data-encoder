@@ -1,8 +1,6 @@
 export default {
   failFast: true,
-  environmentVariables: {
-    TS_NODE_PROJECT: "./tsconfig.ava.json"
-  },
+  nodeArguments: ["--no-warnings", "--import=tsimp"],
   extensions: {
     ts: "module"
   },

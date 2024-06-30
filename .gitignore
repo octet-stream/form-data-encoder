@@ -12,5 +12,8 @@ coverage
 *.old
 @type
 
+# tsimp cache
+.tsimp
+
 /src/**/*.js
 /lib

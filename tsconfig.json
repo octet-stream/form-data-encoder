@@ -13,7 +13,7 @@
     "baseUrl": "src",
     "checkJs": false,
     "allowJs": false,
-    "skipLibCheck": false,
+    "skipLibCheck": true,
     "strict": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
