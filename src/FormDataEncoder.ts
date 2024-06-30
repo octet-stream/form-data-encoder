@@ -1,5 +1,3 @@
-/* eslint-disable no-restricted-globals */
-
 import type {RawHeaders, FormDataEncoderHeaders} from "./util/Headers.js"
 import {getStreamIterator} from "./util/getStreamIterator.js"
 import {createBoundary} from "./util/createBoundary.js"
@@ -233,9 +231,9 @@ export class FormDataEncoder {
     let length = 0
 
     for (const [name, raw] of this.#form) {
-      const value = isFile(raw) ? raw : this.#encoder.encode(
-        normalizeValue(raw)
-      )
+      const value = isFile(raw)
+        ? raw
+        : this.#encoder.encode(normalizeValue(raw))
 
       const size = isFile(value) ? value.size : value.byteLength
 
@@ -292,11 +290,11 @@ export class FormDataEncoder {
    * console.log(await response.json())
    * ```
    */
-  * values(): Generator<Uint8Array | FileLike, void, undefined> {
+  *values(): Generator<Uint8Array | FileLike, void, undefined> {
     for (const [name, raw] of this.#form) {
-      const value = isFile(raw) ? raw : this.#encoder.encode(
-        normalizeValue(raw)
-      )
+      const value = isFile(raw)
+        ? raw
+        : this.#encoder.encode(normalizeValue(raw))
 
       yield this.#getFieldHeader(name, value)
 
@@ -341,7 +339,7 @@ export class FormDataEncoder {
    * console.log(await response.json())
    * ```
    */
-  async* encode(): AsyncGenerator<Uint8Array, void, undefined> {
+  async *encode(): AsyncGenerator<Uint8Array, void, undefined> {
     for (const part of this.values()) {
       if (isFile(part)) {
         yield* getStreamIterator(part.stream())

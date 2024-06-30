@@ -28,8 +28,12 @@ test("boundary property is read-only", t => {
 
   const {boundary: expected} = encoder
 
-  // @ts-expect-error
-  try { encoder.boundary = "some string" } catch { /* noop */ }
+  try {
+    // @ts-expect-error Intended use for the test
+    encoder.boundary = "some string"
+  } catch {
+    /* noop */
+  }
 
   t.is(encoder.boundary, expected)
 })
@@ -39,8 +43,13 @@ test("boundary property cannot be deleted", t => {
 
   const {boundary: expected} = encoder
 
-  // @ts-expect-error
-  try { delete encoder.boundary } catch { /* noop */ }
+  try {
+    // @ts-expect-error Intended use for the test
+    // biome-ignore lint/performance/noDelete: Intended use for the test
+    delete encoder.boundary
+  } catch {
+    /* noop */
+  }
 
   t.is(encoder.boundary, expected)
 })
@@ -66,8 +75,12 @@ test("contentType property is read-only", t => {
 
   const {contentType: expected} = encoder
 
-  // @ts-expect-error
-  try { encoder.contentType = "application/json" } catch { /* noop */ }
+  try {
+    // @ts-expect-error Intended use for the test
+    encoder.contentType = "application/json"
+  } catch {
+    /* noop */
+  }
 
   t.is(encoder.contentType, expected)
 })
@@ -77,8 +90,13 @@ test("contentType cannot be deleted", t => {
 
   const {contentType: expected} = encoder
 
-  // @ts-expect-error
-  try { delete encoder.contentType } catch { /* noop */ }
+  try {
+    // @ts-expect-error Intended use for the test
+    // biome-ignore lint/performance/noDelete: Intended use for the test
+    delete encoder.contentType
+  } catch {
+    /* noop */
+  }
 
   t.is(encoder.contentType, expected)
 })
@@ -111,8 +129,12 @@ test("contentLength property is read-only", t => {
 
   const {contentLength: expected} = encoder
 
-  // @ts-expect-error
-  try { encoder.contentLength = String(Date.now()) } catch { /* noop */ }
+  try {
+    // @ts-expect-error Intended use for the test
+    encoder.contentLength = String(Date.now())
+  } catch {
+    /* noop */
+  }
 
   t.is(encoder.contentLength, expected)
 })
@@ -122,8 +144,12 @@ test("contentLength property cannot be deleted", t => {
 
   const {contentLength: expected} = encoder
 
-  // @ts-expect-error
-  try { encoder.contentLength = String(Date.now()) } catch { /* noop */ }
+  try {
+    // @ts-expect-error Intended use for the test
+    encoder.contentLength = String(Date.now())
+  } catch {
+    /* noop */
+  }
 
   t.is(encoder.contentLength, expected)
 })
@@ -131,10 +157,15 @@ test("contentLength property cannot be deleted", t => {
 test("Has correct headers", async t => {
   const encoder = new FormDataEncoder(new FormData())
 
-  t.deepEqual({...encoder.headers}, {
-    "Content-Type": `multipart/form-data; boundary=${encoder.boundary}`,
-    "Content-Length": await readStream(encoder).then(({length}) => `${length}`)
-  })
+  t.deepEqual(
+    {...encoder.headers},
+    {
+      "Content-Type": `multipart/form-data; boundary=${encoder.boundary}`,
+      "Content-Length": await readStream(encoder).then(
+        ({length}) => `${length}`
+      )
+    }
+  )
 })
 
 test("Headers can be accessed by lowercased keys", async t => {
@@ -160,8 +191,12 @@ test("FormDataEncoder.headers property is read-only", t => {
 
   const expected = {...encoder.headers}
 
-  // @ts-expect-error
-  try { encoder.headers = {foo: "foo"} } catch { /* noop */ }
+  try {
+    // @ts-expect-error Intended use for the test
+    encoder.headers = {foo: "foo"}
+  } catch {
+    /* noop */
+  }
 
   t.deepEqual({...encoder.headers}, expected)
 })
@@ -171,8 +206,12 @@ test("Content-Type header is read-only", t => {
 
   const expected = headers["Content-Type"]
 
-  // @ts-expect-error
-  try { headers["Content-Type"] = "can't override" } catch { /* noop */ }
+  try {
+    // @ts-expect-error Intended use for the test
+    headers["Content-Type"] = "can't override"
+  } catch {
+    /* noop */
+  }
 
   t.is(headers["Content-Type"], expected)
 })
@@ -182,15 +221,19 @@ test("Content-Length header is read-only", t => {
 
   const expected = headers["Content-Length"]
 
-  // @ts-expect-error
-  try { headers["Content-Length"] = "can't override" } catch { /* noop */ }
+  try {
+    // @ts-expect-error Intended use for the test
+    headers["Content-Length"] = "can't override"
+  } catch {
+    /* noop */
+  }
 
   t.is(headers["Content-Length"], expected)
 })
 
 test(
-  "Does not return Content-Length header "
-    + "if FormData has entry without known length",
+  "Does not return Content-Length header " +
+    "if FormData has entry without known length",
 
   t => {
     const form = new FormData()
@@ -198,7 +241,7 @@ test(
     form.set("stream", {
       [Symbol.toStringTag]: "File",
       name: "file.txt",
-      stream() { }
+      stream() {}
     })
 
     const encoder = new FormDataEncoder(form)
@@ -280,7 +323,7 @@ test("Yields correct headers for a field", async t => {
 
   const {value} = await skip(iterable, 2)
 
-  t.is(value, "Content-Disposition: form-data; name=\"field\"")
+  t.is(value, 'Content-Disposition: form-data; name="field"')
 })
 
 test("Yields field's content", async t => {
@@ -290,9 +333,10 @@ test("Yields field's content", async t => {
 
   form.set("field", expected)
 
-  const {
-    value
-  } = await skip(readLine(Readable.from(new FormDataEncoder(form))), 4)
+  const {value} = await skip(
+    readLine(Readable.from(new FormDataEncoder(form))),
+    4
+  )
 
   t.is(value, expected)
 })
@@ -302,86 +346,88 @@ test("Yields Content-Disposition header for a File", async t => {
 
   form.set("file", new File(["My hovercraft is full of eels"], "file.txt"))
 
-  const {
-    value
-  } = await skip(readLine(Readable.from(new FormDataEncoder(form))), 2)
+  const {value} = await skip(
+    readLine(Readable.from(new FormDataEncoder(form))),
+    2
+  )
 
   t.is(
     value,
-    "Content-Disposition: form-data; name=\"file\"; filename=\"file.txt\""
+    'Content-Disposition: form-data; name="file"; filename="file.txt"'
   )
 })
 
 test("Yields Content-Type header for a File", async t => {
   const form = new FormData()
 
-  form.set("file", new File(["My hovercraft is full of eels"], "file.txt", {
-    type: "text/plain"
-  }))
+  form.set(
+    "file",
+    new File(["My hovercraft is full of eels"], "file.txt", {
+      type: "text/plain"
+    })
+  )
 
-  const {
-    value
-  } = await skip(readLine(Readable.from(new FormDataEncoder(form))), 3)
+  const {value} = await skip(
+    readLine(Readable.from(new FormDataEncoder(form))),
+    3
+  )
 
   t.is(value, "Content-Type: text/plain")
 })
 
-test(
-  "File has default Content-Type set to application/octet-stream",
-  async t => {
-    const form = new FormData()
+test("File has default Content-Type set to application/octet-stream", async t => {
+  const form = new FormData()
 
-    form.set("file", new File(["Some content"], "file"))
+  form.set("file", new File(["Some content"], "file"))
 
-    const iterable = readLine(Readable.from(new FormDataEncoder(form)))
+  const iterable = readLine(Readable.from(new FormDataEncoder(form)))
 
-    const {value} = await skip(iterable, 3)
+  const {value} = await skip(iterable, 3)
 
-    t.is(value, "Content-Type: application/octet-stream")
-  }
-)
+  t.is(value, "Content-Type: application/octet-stream")
+})
 
-test(
-  "Yields Content-Length File header when enableAdditionalHeaders option is on",
+test("Yields Content-Length File header when enableAdditionalHeaders option is on", async t => {
+  const form = new FormData()
+  const file = new File(["Some content"], "file")
 
-  async t => {
-    const form = new FormData()
-    const file = new File(["Some content"], "file")
+  form.set("file", file)
 
-    form.set("file", file)
+  const iterable = readLine(
+    Readable.from(
+      new FormDataEncoder(form, {
+        enableAdditionalHeaders: true
+      })
+    )
+  )
 
-    const iterable = readLine(Readable.from(new FormDataEncoder(form, {
-      enableAdditionalHeaders: true
-    })))
+  const {value} = await skip(iterable, 4)
 
-    const {value} = await skip(iterable, 4)
+  t.is(value, `Content-Length: ${file.size}`)
+})
 
-    t.is(value, `Content-Length: ${file.size}`)
-  }
-)
+test("Yields Content-Length header when enableAdditionalHeaders option is on", async t => {
+  const form = new FormData()
+  const field = "Some value"
 
-test(
-  "Yields Content-Length header when enableAdditionalHeaders option is on",
+  form.set("field", field)
 
-  async t => {
-    const form = new FormData()
-    const field = "Some value"
+  const iterable = readLine(
+    Readable.from(
+      new FormDataEncoder(form, {
+        enableAdditionalHeaders: true
+      })
+    )
+  )
 
-    form.set("field", field)
+  const {value} = await skip(iterable, 3)
 
-    const iterable = readLine(Readable.from(new FormDataEncoder(form, {
-      enableAdditionalHeaders: true
-    })))
-
-    const {value} = await skip(iterable, 3)
-
-    t.is(value, `Content-Length: ${Buffer.byteLength(field)}`)
-  }
-)
+  t.is(value, `Content-Length: ${Buffer.byteLength(field)}`)
+})
 
 test(
-  "Does not include Content-Length header with enableAdditionalHeaders "
-    + "option if entry does not have known length",
+  "Does not include Content-Length header with enableAdditionalHeaders " +
+    "option if entry does not have known length",
 
   async t => {
     const form = new FormData()
@@ -443,7 +489,7 @@ test("Yields File's content", async t => {
 })
 
 test("Yields every appended field", async t => {
-  const expectedDisposition = "Content-Disposition: form-data; name=\"field\""
+  const expectedDisposition = 'Content-Disposition: form-data; name="field"'
 
   const form = new FormData()
 
@@ -470,7 +516,7 @@ test("Yields every appended field", async t => {
 })
 
 test("Yields every appended File", async t => {
-  const expectedDisposition = "Content-Disposition: form-data; name=\"file\""
+  const expectedDisposition = 'Content-Disposition: form-data; name="file"'
 
   const form = new FormData()
 
@@ -516,30 +562,27 @@ test("Can be read through using Blob", async t => {
   form.set("file", await fileFromPath("license", {type: "text/plain"}))
 
   const encoder = new FormDataEncoder(form)
-  const blob = new Blob([...encoder] as any[])
+  const blob = new Blob([...encoder] as unknown[])
 
   t.true(
-    Buffer
-      .from(await blob.arrayBuffer())
-      .equals(await readStream(Readable.from(encoder)))
+    Buffer.from(await blob.arrayBuffer()).equals(
+      await readStream(Readable.from(encoder))
+    )
   )
 })
 
-test(
-  "Throws TypeError when the first argument is not a FormData instance",
-  t => {
-    // @ts-expect-error
-    const trap = () => new FormDataEncoder({})
+test("Throws TypeError when the first argument is not a FormData instance", t => {
+  // @ts-expect-error Intended use for the test
+  const trap = () => new FormDataEncoder({})
 
-    t.throws(trap, {
-      instanceOf: TypeError,
-      message: "Expected first argument to be a FormData instance."
-    })
-  }
-)
+  t.throws(trap, {
+    instanceOf: TypeError,
+    message: "Expected first argument to be a FormData instance."
+  })
+})
 
 test("Throws TypeError when given boundary is not a string", t => {
-  // @ts-expect-error
+  // @ts-expect-error Intended use for the test
   const trap = () => new FormDataEncoder(new FormData(), 42)
 
   t.throws(trap, {
@@ -549,7 +592,7 @@ test("Throws TypeError when given boundary is not a string", t => {
 })
 
 test("Throws TypeError when options argument is not an object", t => {
-  // @ts-expect-error
+  // @ts-expect-error Intended use for the test
   const trap = () => new FormDataEncoder(new FormData(), undefined, "451")
 
   t.throws(trap, {

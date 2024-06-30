@@ -37,9 +37,8 @@
   },
   "types": "./lib/index.d.ts",
   "scripts": {
-    "eslint": "eslint src/**/*.ts",
     "lint:types": "tsc --project tsconfig.json --noEmit",
-    "lint": "pnpm eslint && pnpm lint:types",
+    "lint": "pnpm biome && pnpm lint:types",
     "staged": "lint-staged",
     "coverage": "c8 pnpm test",
     "ci": "c8 pnpm test && c8 report --reporter=json",
@@ -49,9 +48,9 @@
     "prepare": "npx is-in-ci || husky install"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.8.3",
     "@changesets/changelog-github": "0.5.0",
     "@changesets/cli": "2.27.6",
-    "@octetstream/eslint-config": "8.2.5",
     "@types/mime-types": "2.1.4",
     "@types/node": "20.14.2",
     "@types/sinon": "17.0.3",
@@ -59,7 +58,6 @@
     "c8": "10.1.2",
     "cross-env": "7.0.3",
     "del-cli": "5.1.0",
-    "eslint": "9.6.0",
     "formdata-node": "6.0.3",
     "husky": "9.0.11",
     "lint-staged": "15.2.7",

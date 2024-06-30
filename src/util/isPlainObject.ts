@@ -1,6 +1,5 @@
-const getType = (value: unknown): string => (
+const getType = (value: unknown): string =>
   Object.prototype.toString.call(value).slice(8, -1).toLowerCase()
-)
 
 export function isPlainObject(value: unknown): value is object {
   if (getType(value) !== "object") {
@@ -13,7 +12,5 @@ export function isPlainObject(value: unknown): value is object {
     return true
   }
 
-  const Ctor = pp.constructor && pp.constructor.toString()
-
-  return Ctor === Object.toString()
+  return pp.constructor?.toString?.() === Object.toString()
 }

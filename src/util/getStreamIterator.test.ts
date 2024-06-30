@@ -70,7 +70,8 @@ test("Throws TypeError for unsupported data sources", t => {
 
   t.throws(trap, {
     instanceOf: TypeError,
-    message: "Unsupported data source: Expected either "
-      + "ReadableStream or async iterable."
+    message:
+      "Unsupported data source: Expected either " +
+      "ReadableStream or async iterable."
   })
 })

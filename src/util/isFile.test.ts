@@ -21,7 +21,7 @@ test("Returns true for a class that implements File", t => {
 
     lastModified = Date.now()
 
-    async* stream(): AsyncIterable<Uint8Array> {
+    async *stream(): AsyncIterable<Uint8Array> {
       yield new Uint8Array(0)
     }
 
@@ -43,7 +43,7 @@ test("Returns true for a file-shaped object", t => {
 
     lastModified: Date.now(),
 
-    async* stream(): AsyncGenerator<Uint8Array> {
+    async *stream(): AsyncGenerator<Uint8Array> {
       yield new Uint8Array(0)
     },
 

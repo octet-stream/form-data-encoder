@@ -17,7 +17,7 @@ test("Returns true for a class that implements minimal FormData", t => {
       return []
     }
 
-    * entries(): Generator<[string, FormDataEntryValue]> {
+    *entries(): Generator<[string, FormDataEntryValue]> {
       yield ["name", "value"]
     }
 
@@ -41,7 +41,7 @@ test("Returns true for FormData-shaped object", t => {
       return []
     },
 
-    * entries(): Generator<[string, FormDataEntryValue]> {
+    *entries(): Generator<[string, FormDataEntryValue]> {
       yield ["name", "value"]
     },
 

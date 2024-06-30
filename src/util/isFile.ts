@@ -31,11 +31,12 @@ import {isFunction} from "./isFunction.js"
  * isFile(createReadStream("path/to/a/file.txt")) // -> false
  * ```
  */
-export const isFile = (value: unknown): value is FileLike => Boolean(
-  (value as FileLike)
-    && typeof (value as FileLike) === "object"
-    && isFunction((value as FileLike).constructor)
-    && (value as FileLike)[Symbol.toStringTag] === "File"
-    && isFunction((value as FileLike).stream)
-    && (value as FileLike).name != null
-)
+export const isFile = (value: unknown): value is FileLike =>
+  Boolean(
+    (value as FileLike) &&
+      typeof (value as FileLike) === "object" &&
+      isFunction((value as FileLike).constructor) &&
+      (value as FileLike)[Symbol.toStringTag] === "File" &&
+      isFunction((value as FileLike).stream) &&
+      (value as FileLike).name != null
+  )

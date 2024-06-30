@@ -1,8 +1,11 @@
-import {Readable} from "stream"
+import type {Readable} from "node:stream"
 
-type Input = Readable | {
-  [Symbol.asyncIterator](): AsyncIterableIterator<any>
-}
+type Input =
+  | Readable
+  | {
+      // biome-ignore lint/suspicious/noExplicitAny: Intended use of any
+      [Symbol.asyncIterator](): AsyncIterableIterator<any>
+    }
 
 async function readToBuffer(input: Input): Promise<Buffer> {
   const chunks: Buffer[] = []
@@ -29,17 +32,12 @@ async function readToString(input: Input): Promise<string> {
 }
 
 async function readStream(input: Input): Promise<Buffer>
+async function readStream(input: Input, stringify: boolean): Promise<string>
 async function readStream(
   input: Input,
-
-  toString: boolean
-): Promise<string>
-async function readStream(
-  input: Input,
-
-  toString: boolean = false
+  stringify = false
 ): Promise<string | Buffer> {
-  return toString ? readToString(input) : readToBuffer(input)
+  return stringify ? readToString(input) : readToBuffer(input)
 }
 
 export default readStream

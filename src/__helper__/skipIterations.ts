@@ -1,5 +1,6 @@
 type Unwrap<T> = T extends AsyncGenerator<infer U> ? U : T
 
+// biome-ignore lint/suspicious/noExplicitAny: Expected use of any for tests
 async function skipIterations<T extends AsyncGenerator<any>>(
   iterable: T,
   iterations = 1

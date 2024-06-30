@@ -1,4 +1,4 @@
-import {FileLike} from "./FileLike.js"
+import type {FileLike} from "./FileLike.js"
 
 /**
  * A `string` or `File` that represents a single value from a set of `FormData` key-value pairs.

@@ -15,12 +15,13 @@ function getProperty(
   return undefined
 }
 
-export const proxyHeaders = (object: RawHeaders) => new Proxy(
-  object,
+export const proxyHeaders = (object: RawHeaders) =>
+  new Proxy(
+    object,
 
-  {
-    get: (target, prop) => getProperty(target, prop),
+    {
+      get: (target, prop) => getProperty(target, prop),
 
-    has: (target, prop) => getProperty(target, prop) !== undefined
-  }
-) as unknown as FormDataEncoderHeaders
+      has: (target, prop) => getProperty(target, prop) !== undefined
+    }
+  ) as unknown as FormDataEncoderHeaders

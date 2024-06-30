@@ -15,7 +15,7 @@ test("Returns false when array-like object given", t => {
 })
 
 test("Returns false when any other non-plain object passed", t => {
-  class Noop { }
+  class Noop {}
 
   t.false(isPlainObject(new Map()))
   t.false(isPlainObject(new Noop()))

@@ -27,5 +27,5 @@ test("Keeps escaped LF as is", t => {
 })
 
 test("Escapes all double quotes in the name", t => {
-  t.is<string, string>(escapeName("\"name\""), `${Q}name${Q}`)
+  t.is<string, string>(escapeName('"name"'), `${Q}name${Q}`)
 })
