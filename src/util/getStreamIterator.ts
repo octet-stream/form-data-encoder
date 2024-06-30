@@ -1,5 +1,5 @@
+import {isReadableStreamFallback} from "./isReadableStreamFallback.js"
 import {isAsyncIterable} from "./isAsyncIterable.js"
-import {isFunction} from "./isFunction.js"
 import {chunk} from "./chunk.js"
 
 /**
@@ -43,7 +43,7 @@ export const getStreamIterator = (
     return chunkStream(source)
   }
 
-  if (isFunction(source.getReader)) {
+  if (isReadableStreamFallback(source)) {
     return chunkStream(readStream(source))
   }
 
