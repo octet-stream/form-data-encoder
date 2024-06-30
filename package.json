@@ -43,7 +43,7 @@
     "coverage": "c8 pnpm test",
     "ci": "c8 pnpm test && c8 report --reporter=json",
     "build": "pnpm exec del-cli lib && pnpm exec tsup",
-    "test": "ava",
+    "test": "cross-env NODE_OPTIONS=\"--no-warnings --experimental-fetch --loader=ts-node/esm\" ava",
     "report:html": "c8 -r=html pnpm test",
     "release": "pnpm build && pnpm changeset publish",
     "prepare": "npx is-in-ci@latest || husky install"
@@ -65,9 +65,8 @@
     "node-fetch": "3.3.2",
     "sinon": "18.0.0",
     "ts-expect": "1.3.0",
-    "tsimp": "2.0.11",
+    "ts-node": "10.9.2",
     "tsup": "8.1.0",
-    "ttypescript": "1.5.15",
     "typescript": "5.5.2",
     "undici": "6.19.2",
     "web-streams-polyfill": "4.0.0"
