@@ -20,6 +20,7 @@
     "spec-compatible",
     "form"
   ],
+  "files": ["lib"],
   "main": "./lib/index.js",
   "module": "./lib/index.js",
   "exports": {
