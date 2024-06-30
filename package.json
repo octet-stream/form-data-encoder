@@ -38,7 +38,7 @@
   "types": "./lib/index.d.ts",
   "scripts": {
     "lint:types": "tsc --project tsconfig.json --noEmit",
-    "lint": "pnpm biome && pnpm lint:types",
+    "lint": "biome lint --write --no-errors-on-unmatched . && pnpm lint:types",
     "staged": "lint-staged",
     "coverage": "c8 pnpm test",
     "ci": "c8 pnpm test && c8 report --reporter=json",
