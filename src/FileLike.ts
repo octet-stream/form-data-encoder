@@ -1,3 +1,12 @@
+/**
+ * Declare DOM interfaces in case dom.d.ts is not added to the tsconfig lib, causing
+ * interfaces to not be defined. For developers with dom.d.ts added, the interfaces will
+ * be merged correctly.
+ */
+declare global {
+  export interface ReadableStream<R = any> {}
+}
+
 export interface FileLike {
   /**
    * Name of the file referenced by the File object.
