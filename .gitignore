@@ -13,7 +13,8 @@ coverage
 @type
 
 # tsimp cache
-.tsimp
+/.tsimp
+/.direnv
 
 /src/**/*.js
 /lib

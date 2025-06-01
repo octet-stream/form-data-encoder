@@ -26,5 +26,10 @@
     "editor.codeActionsOnSave": {
       "quickfix.biome": "explicit"
     }
+  },
+
+  "[nix]": {
+    "editor.defaultFormatter": "jnoortheen.nix-ide",
+    "editor.formatOnSave": true
   }
 }
