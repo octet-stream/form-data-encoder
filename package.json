@@ -40,7 +40,6 @@
   "scripts": {
     "lint:types": "tsc --project tsconfig.json --noEmit",
     "lint": "biome lint --write --no-errors-on-unmatched . && pnpm lint:types",
-    "staged": "lint-staged",
     "coverage": "c8 pnpm test",
     "ci": "c8 pnpm test && c8 report --reporter=json",
     "build": "pnpm exec del-cli lib && pnpm exec tsup",
