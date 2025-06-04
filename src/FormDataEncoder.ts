@@ -1,15 +1,15 @@
-import type {RawHeaders, FormDataEncoderHeaders} from "./util/Headers.js"
-import {getStreamIterator} from "./util/getStreamIterator.js"
-import {createBoundary} from "./util/createBoundary.js"
-import {normalizeValue} from "./util/normalizeValue.js"
-import {isPlainObject} from "./util/isPlainObject.js"
-import {proxyHeaders} from "./util/proxyHeaders.js"
-import type {FormDataLike} from "./FormDataLike.js"
-import {isFormData} from "./util/isFormData.js"
-import {escapeName} from "./util/escapeName.js"
 import type {FileLike} from "./FileLike.js"
-import {isFile} from "./util/isFile.js"
+import type {FormDataLike} from "./FormDataLike.js"
+import type {FormDataEncoderHeaders, RawHeaders} from "./util/Headers.js"
 import {chunk} from "./util/chunk.js"
+import {createBoundary} from "./util/createBoundary.js"
+import {escapeName} from "./util/escapeName.js"
+import {getStreamIterator} from "./util/getStreamIterator.js"
+import {isFile} from "./util/isFile.js"
+import {isFormData} from "./util/isFormData.js"
+import {isPlainObject} from "./util/isPlainObject.js"
+import {normalizeValue} from "./util/normalizeValue.js"
+import {proxyHeaders} from "./util/proxyHeaders.js"
 
 type FormDataEntryValue = string | FileLike
 
@@ -157,7 +157,7 @@ export class FormDataEncoder {
 
     // Use default generator when the boundary argument is not present
     if (!boundary) {
-      boundary = createBoundary()
+      boundary = `form-data-encoder-${createBoundary()}`
     }
 
     if (typeof boundary !== "string") {
@@ -175,7 +175,7 @@ export class FormDataEncoder {
     this.#CRLF_BYTES = this.#encoder.encode(this.#CRLF)
     this.#CRLF_BYTES_LENGTH = this.#CRLF_BYTES.byteLength
 
-    this.boundary = `form-data-boundary-${boundary}`
+    this.boundary = boundary
     this.contentType = `multipart/form-data; boundary=${this.boundary}`
 
     this.#footer = this.#encoder.encode(
