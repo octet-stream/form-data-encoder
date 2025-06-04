@@ -1,5 +1,11 @@
 # form-data-encoder
 
+## 4.1.0
+
+### Minor Changes
+
+- [#34](https://github.com/octet-stream/form-data-encoder/pull/34) [`da91d4e`](https://github.com/octet-stream/form-data-encoder/commit/da91d4e257d3224118b33586c2cfd9a006653b4d) Thanks [@Justin99b](https://github.com/Justin99b)! - Make boundary fully customizable
+
 ## 4.0.2
 
 ### Patch Changes
