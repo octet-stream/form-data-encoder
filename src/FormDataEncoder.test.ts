@@ -1,18 +1,18 @@
 import {readFile} from "node:fs/promises"
-import {Readable} from "node:stream"
 import {EOL} from "node:os"
+import {Readable} from "node:stream"
 
 import test from "ava"
 
 // eslint-disable-next-line import/no-unresolved
 import {fileFromPath} from "formdata-node/file-from-path"
 
-import {FormData, Blob, File} from "formdata-node"
+import {Blob, File, FormData} from "formdata-node"
 
-import skipSync from "./__helper__/skipIterationsSync.js"
+import readLine from "./__helper__/readLine.js"
 import readStream from "./__helper__/readStream.js"
 import skip from "./__helper__/skipIterations.js"
-import readLine from "./__helper__/readLine.js"
+import skipSync from "./__helper__/skipIterationsSync.js"
 
 import {FormDataEncoder} from "./FormDataEncoder.js"
 
@@ -21,6 +21,12 @@ test("Has boundary string", t => {
 
   t.true("boundary" in encoder)
   t.is(typeof encoder.boundary, "string")
+})
+
+test("Default boundary starts with a prefix", t => {
+  const encoder = new FormDataEncoder(new FormData())
+
+  t.true(encoder.boundary.startsWith("form-data-encoder-"))
 })
 
 test("boundary property is read-only", t => {
@@ -59,7 +65,7 @@ test("Accepts custom boundary as the second argument", t => {
 
   const encoder = new FormDataEncoder(new FormData(), expected)
 
-  t.is(encoder.boundary, `form-data-boundary-${expected}`)
+  t.is(encoder.boundary, expected)
 })
 
 test("Has content-type string", t => {
@@ -106,10 +112,7 @@ test("Has content-type string with custom boundary string", t => {
 
   const encoder = new FormDataEncoder(new FormData(), expected)
 
-  t.is(
-    encoder.contentType,
-    `multipart/form-data; boundary=form-data-boundary-${expected}`
-  )
+  t.is(encoder.contentType, `multipart/form-data; boundary=${expected}`)
 })
 
 test("Has contentLength property", async t => {
